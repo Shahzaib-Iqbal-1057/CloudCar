@@ -1,8 +1,13 @@
-const express = require("express");
+import express from 'express';
 const app = express();
-const http = require("http");
-const {Server} = require('socket.io')
-const cors = require('cors')
+import http from 'http';
+import { Server } from 'socket.io';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import eventHanlder from './eventhandler.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 app.use(cors())
 const server = http.createServer(app)
@@ -13,14 +18,26 @@ const io = new Server(
     },
 })
 
+//connecting to mongoDB
+mongoose.connect(process.env.MONG_URI)
+ .then(()=>{ console.log("Connected to the database")} )
+ .catch((error)=>{
+    console.log(error)
+})
+
 server.listen(3001, ()=>{
     console.log("SERVER IS LISTENING ON PORT 3001")
 })
+
+
 io.on("connection",(socket)=>{
-    console.log("user connected with a socket id", socket.id)
-    //add custom events here
-    socket.on("myEvent",(myData)=>{
-        console.log('Received myMessage:', myData);
-    })
+    console.log("Socket connected", socket.id)
+    
+    eventHanlder(socket,io)
+
+    socket.on("disconnect", () => {
+        console.log("Socket disconnected:", socket.id);
+    });
 
 })
+
