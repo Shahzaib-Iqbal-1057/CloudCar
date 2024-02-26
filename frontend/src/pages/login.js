@@ -1,11 +1,12 @@
 import React from 'react'
-
+import { Frame13 } from '../components/login.tsx'
 const Login = () => {
     //Login Code for frontend here
 
-
   return (
-    <div>Login</div>
+    <>
+      <Frame13 />    
+    </>
   )
 }
 

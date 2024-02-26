@@ -1,0 +1,16 @@
+.message-input-container {
+   
+    border: 1px solid #36454F;
+    display: flex;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    height: fit-content;
+    margin-top: 8px;
+    background: transparent;
+    color: white;
+  }
+  
+  .message-input-container:focus {
+    outline: none;
+  }
