@@ -36,7 +36,44 @@ import styled from "@emotion/styled";
  * <!-- Info: Please do not remove this comment unless intended. removing this section will break grida integrations. -->
  * <!-- grida.meta.widget_declaration | engine : 0.0.1 | source : figma://asUgXa0tsHsNH105i1oLCa/65:129 -->
  */
-export function Frame15() {
+export function Frame15({socket}) {
+
+	const [signup_data,setSignupData] = React.useState({
+		full_name : "",
+		email : "",
+		phone_number : "",
+		city: "",
+		address: "",
+		postal_code: "",
+		password: "",
+		re_enter_password: ""
+	})
+
+	function changeSignupData(e) {
+		setSignupData({
+			...signup_data,
+			[e.target.name] : e.target.value
+		})
+		console.log(signup_data)
+	}
+
+	React.useEffect(()=>{
+		socket.on("signup",(status)=>{
+			if(status == "successfull") {
+				alert("Signup Successfull")
+			}
+			else {
+				alert("Signup Failed")
+			}
+		})
+		return ()=>{
+			socket.off("signup")
+		}
+	},[socket])
+
+
+
+
   return (
     <RootWrapperFrame15>
       <Frame10>
@@ -76,10 +113,6 @@ export function Frame15() {
         <Email>
           Email
         </Email>
-        <Username>
-          Username<br/>
-
-        </Username>
         <PhoneNumber>
           Phone number
         </PhoneNumber>
@@ -99,6 +132,9 @@ export function Frame15() {
             placeholder="Enter full name"
             // Add CSS classes for styling
             className="message-input-container"
+			name="full_name"
+			onChange={changeSignupData}
+			value={signup_data.full_name}
             />
         </Group24>
         <Group38>
@@ -107,6 +143,9 @@ export function Frame15() {
             placeholder="Enter password"
             // Add CSS classes for styling
             className="message-input-container"
+			name="password"
+			onChange={changeSignupData}
+			value={signup_data.password}
             />
         </Group38>
         <Group39>
@@ -115,6 +154,9 @@ export function Frame15() {
             placeholder="Re-enter password"
             // Add CSS classes for styling
             className="message-input-container"
+			name="re_enter_password"
+			onChange={changeSignupData}
+			value={signup_data.re_enter_password}
             />
         </Group39>
         <Group29>
@@ -123,22 +165,20 @@ export function Frame15() {
             placeholder="Enter email"
             // Add CSS classes for styling
             className="message-input-container"
+			name="email"
+			onChange={changeSignupData}
+			value={signup_data.email}
             />
         </Group29>
-        <Group30>
-		<input
-            type="text"
-            placeholder="Enter username"
-            // Add CSS classes for styling
-            className="message-input-container"
-            />
-        </Group30>
         <Group32>
 		  <input
             type="text"
             placeholder="Enter Phone number"
             // Add CSS classes for styling
             className="message-input-container"
+			name="phone_number"
+			onChange={changeSignupData}
+			value={signup_data.phone_number}
             />
         </Group32>
         <Group33>
@@ -147,6 +187,9 @@ export function Frame15() {
             placeholder="Enter city here"
             // Add CSS classes for styling
             className="message-input-container"
+			name="city"
+			onChange={changeSignupData}
+			value={signup_data.city}
             />
         </Group33>
         <Group34>
@@ -155,6 +198,9 @@ export function Frame15() {
             placeholder="Enter password here"
             // Add CSS classes for styling
             className="message-input-container"
+			name="address"
+			onChange={changeSignupData}
+			value={signup_data.address}
             />
         </Group34>
         <Group35>
@@ -163,12 +209,16 @@ export function Frame15() {
             placeholder="Enter postal code"
             // Add CSS classes for styling
             className="message-input-container"
+			name="postal_code"
+			onChange={changeSignupData}
+			value={signup_data.postal_code}
             />
+			
         </Group35>
         <Group26>
           <Group29_0001>
             <Rectangle18/>
-            <SignUp>
+            <SignUp onClick={()=>{socket.emit("signup",signup_data)}}>
               Sign up
             </SignUp>
           </Group29_0001>
@@ -702,6 +752,7 @@ const Group26 = styled.div`
 	position: absolute;
 	left: 1140px;
 	top: 440px;
+	cursor: pointer
 `;
 
 const Group29_0001 = styled.div`

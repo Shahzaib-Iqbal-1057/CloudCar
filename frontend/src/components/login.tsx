@@ -37,7 +37,40 @@ import styled from "@emotion/styled";
  * <!-- Info: Please do not remove this comment unless intended. removing this section will break grida integrations. -->
  * <!-- grida.meta.widget_declaration | engine : 0.0.1 | source : figma://asUgXa0tsHsNH105i1oLCa/60:77 -->
  */
-export function Frame13() {
+export function Frame13({socket}) {
+
+	
+	const [login_data,setloginData] = React.useState({
+		username : "",
+		password : ""
+	})
+
+	function changeLoginData(e) {
+		setloginData({
+			...login_data,
+			[e.target.name] : e.target.value
+		})
+		console.log(login_data)
+	}
+
+
+
+	React.useEffect(()=>{
+		socket.on("login",(status)=>{
+			if (status=== "successfull") {
+				alert("login successfull")
+				window.location.href = '/'
+			}
+			else {
+				alert("incorrect username or password")
+			}
+		})
+		return ()=>{
+			socket.off("login")
+		}
+	},[socket])
+
+
   return (
     <RootWrapperFrame13>
       <Frame10>
@@ -65,6 +98,8 @@ export function Frame13() {
             placeholder="Enter username here"
             // Add CSS classes for styling
             className="message-input-container"
+			name="username"
+			onChange={changeLoginData}
             />
         </Group24>
         <Group28>
@@ -77,10 +112,12 @@ export function Frame13() {
             placeholder="Enter password here"
             // Add CSS classes for styling
             className="message-input-container"
+			name = "password"
+			onChange={changeLoginData}
             />
         </Group28>
         <Rectangle19/>
-        <Group26>
+        <Group26 onClick={()=>{socket.emit("login",login_data)}}>
           <Group29>
             <Rectangle18/>
             <Login>
@@ -293,6 +330,7 @@ const Group26 = styled.div`
 	position: absolute;
 	left: 1150px;
 	top: 566px;
+	cursor: pointer
 `;
 
 const Group29 = styled.div`

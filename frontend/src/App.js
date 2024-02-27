@@ -20,9 +20,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage socket = {socket}/>} /> {/*This is our default landing page, user will be redirected to a different page if they are not logged in*/}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/homepage" element={<Homepage />} />
+          <Route path="/login" element={<Login socket = {socket}/>} />
+          <Route path="/signup" element={<Signup socket = {socket}/>} />
+          <Route path="/homepage" element={<Homepage socket = {socket}/>} />
         </Routes>
       </Router>
     </div>

@@ -1,11 +1,11 @@
 import React from 'react'
 import { Frame13 } from '../components/login.tsx'
-const Login = () => {
+const Login = ({socket}) => {
     //Login Code for frontend here
 
   return (
     <>
-      <Frame13 />    
+      <Frame13 socket={socket}/>    
     </>
   )
 }
