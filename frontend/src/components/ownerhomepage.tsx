@@ -148,7 +148,7 @@ from 14/02/2024 till 15/02/2024
           <Group5_0003>
             <Rectangle11_0003/>
           </Group5_0003>
-          <Group9_0002>
+          <Group9_0002 onClick={()=>{window.location.href = "/renterform"}}>
             <ListACar>
               List a car
             </ListACar>
@@ -810,6 +810,7 @@ const Group9_0002 = styled.div`
 	position: absolute;
 	left: 98px;
 	top: 6px;
+	cursor:pointer;
 `;
 
 const ListACar = styled.span`
