@@ -37,6 +37,14 @@ import styled from "@emotion/styled";
  * <!-- grida.meta.widget_declaration | engine : 0.0.1 | source : figma://OKTwofbyHtclu6ojQMhVcq/1:3 -->
  */
 export function RenterHomepage() {
+
+
+	function takeToRenterForm() {
+		window.location.href = "/renterform"
+	}
+
+
+
   return (
     <RootWrapperRenterHomepage>
       <Frame23>
@@ -126,37 +134,37 @@ export function RenterHomepage() {
           Convenient hourly and daily rentals. Insurance included. 
         </ConvenientHourlyAndDailyRentalsInsuranceIncluded>
         <Rectangle16/>
-        <SearchByLocationDateOrCarModel>
+        {/* <SearchByLocationDateOrCarModel>
           Search by location, date or car model
-        </SearchByLocationDateOrCarModel>
-        <Group24>
+        </SearchByLocationDateOrCarModel> */}
+        {/* <Group24>
           <Rectangle15/>
           <Search>
             Search
           </Search>
-        </Group24>
-        <Group20_0002>
+        </Group24> */}
+        {/* <Group20_0002>
           <Group5_0001>
             <Rectangle11_0001/>
           </Group5_0001>
-        </Group20_0002>
-        <Group5_0003>
+        </Group20_0002> */}
+        {/* <Group5_0003>
           <Rectangle11_0003/>
-        </Group5_0003>
-        <Group24>
+        </Group5_0003> */}
+        {/* <Group24>
           <Rectangle11_0003/>
-        </Group24>
-        <Group9_0002>
+        </Group24> */}
+        <Group9_0002 onClick={takeToRenterForm}>
           <RentACar>
             Rent a Car
           </RentACar>
         </Group9_0002>
-        <Group24>
+        {/* <Group24>
           <Inbox>
             Inbox
           </Inbox>
-        </Group24>
-        <Group24>
+        </Group24> */}
+        {/* <Group24>
           <Rectangle25/>
           <WelcomeToCloudCarHappyRenting>
             Welcome to CloudCar, Happy Renting!
@@ -172,8 +180,8 @@ export function RenterHomepage() {
           <ViewDetails>
             View details
           </ViewDetails>
-        </Group24>
-        <Group59>
+        </Group24> */}
+        {/* <Group59>
           <Rectangle25/>
           <WelcomeToCloudCarHappyRenting>
             Welcome to CloudCar, Happy Renting!
@@ -189,7 +197,7 @@ export function RenterHomepage() {
           <ViewDetails>
             View details
           </ViewDetails>
-        </Group59>
+        </Group59> */}
       </Frame23>
     </RootWrapperRenterHomepage>
   )

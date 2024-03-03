@@ -59,7 +59,7 @@ export function Frame13({socket}) {
 		socket.on("login",(status)=>{
 			if (status=== "successfull") {
 				alert("login successfull")
-				window.location.href = '/'
+				window.location.href = '/renterhomepage'
 			}
 			else {
 				alert("incorrect username or password")
