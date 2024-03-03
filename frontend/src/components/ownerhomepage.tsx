@@ -192,6 +192,7 @@ from 14/02/2024 till 15/02/2024
 
 const RootWrapperOwnerHomepage = styled.div`
 	min-height: 100vh;
+	min-width: 100vw;
 	background: rgb(255, 255, 255);
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -854,7 +855,7 @@ const Frame10 = styled.div`
 	height: 10vh;
 	position: relative;
 	left: 136px;
-	top: -200px;
+	top: -180px;
 `;
 
 const Group5_0007 = styled.div`
