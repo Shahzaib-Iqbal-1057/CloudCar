@@ -152,17 +152,21 @@ export function LandingPageComponent() {
 }
 
 const RootWrapperLogIn = styled.div`
-	min-height: 100vh;
-	background: rgb(255, 255, 255);
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center;
-	position: relative;
+  min-height: 100vh; /* This will ensure the div is at least the height of the viewport */
+  width: 100vw; /* This will ensure the div is at least the width of the viewport */
+  background: rgb(255, 255, 255);
+  background-repeat: no-repeat;
+  background-size: cover; /* This will ensure the background image covers the entire div */
+  background-position: center;
+  position: relative;
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
 `;
 
+
 const Frame27 = styled.div`
-	width: 1440px;
-	height: 1047px;
+min-height: 100vh; /* This will ensure the div is at least the height of the viewport */
+width: 100vw; /* This will ensure the div is at least the width of the viewport */
 	position: absolute;
 	left: 0px;
 	top: -23px;
@@ -291,7 +295,7 @@ const HowItWorks = styled.span`
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 100px;
+	width: 200px;
 	min-height: 17px;
 	position: absolute;
 	left: 27px;
