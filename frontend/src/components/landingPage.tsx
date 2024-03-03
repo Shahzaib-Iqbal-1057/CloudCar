@@ -224,12 +224,12 @@ const SignUp = styled.span`
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 59px;
+	width: 100px;
 	min-height: 20px;
 	position: absolute;
-	left: 27px;
-	top: calc((calc((50% + 2px)) - 10px));
-	height: 20px;
+	left: 23px;
+	top: calc((calc((50% + 2px)) - 13px));
+	height: 25px;
 `;
 
 const Frame21 = styled.div`
