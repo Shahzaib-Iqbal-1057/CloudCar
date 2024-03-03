@@ -855,7 +855,7 @@ const Frame10 = styled.div`
 	height: 10vh;
 	position: relative;
 	left: 136px;
-	top: -180px;
+	top: 0px;
 `;
 
 const Group5_0007 = styled.div`
