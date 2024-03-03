@@ -767,19 +767,19 @@ const ViewDetails_0001 = styled.span`
 `;
 
 const Frame9 = styled.div`
-	width: 1440px;
-	height: 64px;
-	position: absolute;
+	width: 10vw;
+	height: 10vh;
+	position: relative;
 	left: 136px;
-	top: calc((calc((100% + -135px)) - 16px));
+	top: 0px;
 `;
 
 const Frame8 = styled.div`
-	width: 1440px;
-	height: 64px;
-	position: absolute;
+	width: 10vw;
+	height: 8vh;
+	position: relative;
 	left: 136px;
-	top: calc((calc((100% + -75px)) - 16px));
+	top: 0px;
 `;
 
 const Group5_0003 = styled.div`
@@ -850,11 +850,11 @@ const ViewBookings = styled.span`
 `;
 
 const Frame10 = styled.div`
-	width: 114px;
-	height: 32px;
-	position: absolute;
+	width: 10vw;
+	height: 10vh;
+	position: relative;
 	left: 136px;
-	top: calc((calc((100% + -195px)) - 16px));
+	top: -200px;
 `;
 
 const Group5_0007 = styled.div`
