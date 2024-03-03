@@ -111,7 +111,7 @@ export function OwnerHomepage() {
         <RentItOutAndEarnFromHomeHassleFree>
           Rent it out and earn from home, hassle-free.
         </RentItOutAndEarnFromHomeHassleFree>
-        <Group57>
+        {/* <Group57>
           <Rectangle25/>
           <AbdulAhadHasBookedAudiA5From14022024Till15022024>
             Abdul Ahad has booked Audi A5<br/>
@@ -138,7 +138,7 @@ from 14/02/2024 till 15/02/2024
           <ViewDetails_0001>
             View details
           </ViewDetails_0001>
-        </Group57>
+        </Group57> */}
         <Frame8>
           <Group20_0001>
             <Group5_0001>
@@ -154,7 +154,7 @@ from 14/02/2024 till 15/02/2024
             </ListACar>
           </Group9_0002>
         </Frame8>
-        <Frame8>
+        <Frame9>
           <Group20_0001>
             <Group5_0001>
               <Rectangle11_0001/>
@@ -169,7 +169,7 @@ from 14/02/2024 till 15/02/2024
 
             </ViewBookings>
           </Group9_0003>
-        </Frame8>
+        </Frame9>
         <Frame10>
           <Group20_0001>
             <Group5_0001>
@@ -215,16 +215,16 @@ const Text = styled.span`
 `;
 
 const Frame22 = styled.div`
-	width: 1440px;
-	height: 1064px;
-	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	position: relative;
 	left: 0px;
 	top: 0px;
 `;
 
 const Rectangle1 = styled.div`
-	width: 1440px;
-	height: 64px;
+	width: 100vw;
+	height: 10vh;
 	background: rgb(57, 168, 161);
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -243,14 +243,14 @@ const CloudCar = styled.span`
 	text-align: left;
 	width: 114px;
 	min-height: 32px;
-	position: absolute;
+	position: relative;
 	left: 136px;
-	top: calc((calc((50% + -500px)) - 16px));
+	top: 15px;
 	height: 32px;
 `;
 
 const Group15 = styled.div`
-	width: 138px;
+	width: 250px;
 	height: 37px;
 	position: absolute;
 	left: 256px;
@@ -277,7 +277,7 @@ const HowItWorks = styled.span`
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 89px;
+	width: 120px;
 	min-height: 17px;
 	position: absolute;
 	left: 27px;
@@ -330,8 +330,8 @@ const Group17 = styled.div`
 `;
 
 const Rectangle7 = styled.div`
-	width: 86px;
-	height: 37px;
+	width: 100px;
+	height: 40px;
 	background: rgb(57, 168, 161);
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -345,11 +345,12 @@ const Rectangle7 = styled.div`
 const AboutUs = styled.span`
 	color: black;
 	text-overflow: ellipsis;
+	
 	font-size: 14px;
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 66px;
+	width: 70px;
 	min-height: 17px;
 	position: absolute;
 	left: 26px;
@@ -394,8 +395,8 @@ const Notifications = styled.span`
 `;
 
 const Rectangle12 = styled.div`
-	width: 1440px;
-	height: 1000px;
+	width: 100vw;
+	height: 100vh;
 	background: linear-gradient(-180deg, rgb(26, 44, 46), black);
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -473,7 +474,7 @@ const Frame7 = styled.div`
 	width: 214px;
 	height: 37px;
 	position: absolute;
-	left: 0px;
+	left: 20px;
 	top: calc((calc((50% + 0px)) - 19px));
 `;
 
@@ -529,7 +530,7 @@ const User1_0001 = styled.div`
 const ViewMyProfile = styled.span`
 	color: black;
 	text-overflow: ellipsis;
-	font-size: 16px;
+	font-size: 13px;
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
@@ -569,16 +570,17 @@ const Ellipse3 = styled.div`
 `;
 
 const VecteezyCarHeadlightAndIsolatedOnBlack21181671 = styled.div`
-	width: 1250px;
-	height: 540px;
+	
+	width: 85vw;
+	height: 85vh;
 	background: url(https://s3-alpha-sig.figma.com/img/a655/fb92/a2d62a1fd313b90a9517ae85950e219b?Expires=1710115200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=pu5Qp9pnY7MHdiEEj6XWIUeymPGKnGAa9c5jvTgEyTy4ac5~Njl4ce~lQBtdWk0eQlioV8X-WscrOiDI1p0KJdBnq21o6tRS2ngNOUl5OlCp-xj1QBaEgWArUwIiSifFK5tX7CsloWqejN6rzPp0xUDurFm~5mUWL-O7-skqnLfq-B~XZEQSMkgScA6CksDER9LCr82tSoZ8SNckh7V8jH06k0FWGcJt19JMUslqjbSWiT4U~rS89kqHrTei~YR0DSIfnQ~vm~10jP5UGZUhi7Gcv02Z4SD7jQl1EMF3A2TJw-cY~tEV0oeHGMqy9leSX7LVHBjaoo59SqrZYg21Tw__);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
 	border-radius: 66px;
-	position: absolute;
-	left: calc((calc((50% + 0px)) - 625px));
-	top: 198px;
+	position: relative;
+	left: calc((calc((50% + 0px)) - 675px));
+	top: 15vh;
 `;
 
 const UnlockThePotentialOfYourIdleCar = styled.span`
@@ -609,15 +611,16 @@ const RentItOutAndEarnFromHomeHassleFree = styled.span`
 	left: 149px;
 	top: 358px;
 	height: 47px;
+	padding-top : 100px
 `;
 
-const Group57 = styled.div`
-	width: 281px;
-	height: 135px;
-	position: absolute;
-	left: 656px;
-	top: 64px;
-`;
+// const Group57 = styled.div`
+// 	width: 281px;
+// 	height: 135px;
+// 	position: absolute;
+// 	left: 656px;
+// 	top: 64px;
+// `;
 
 const Rectangle25 = styled.div`
 	width: 268px;
@@ -763,12 +766,20 @@ const ViewDetails_0001 = styled.span`
 	height: 28px;
 `;
 
+const Frame9 = styled.div`
+	width: 1440px;
+	height: 64px;
+	position: absolute;
+	left: 136px;
+	top: calc((calc((100% + -135px)) - 16px));
+`;
+
 const Frame8 = styled.div`
 	width: 1440px;
 	height: 64px;
 	position: absolute;
-	left: 0px;
-	top: 0px;
+	left: 136px;
+	top: calc((calc((100% + -75px)) - 16px));
 `;
 
 const Group5_0003 = styled.div`
@@ -807,7 +818,7 @@ const ListACar = styled.span`
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 92px;
+	width: 120px;
 	min-height: 17px;
 	position: absolute;
 	left: 0px;
@@ -830,7 +841,7 @@ const ViewBookings = styled.span`
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 143px;
+	width: 170px;
 	min-height: 17px;
 	position: absolute;
 	left: 0px;
@@ -843,7 +854,7 @@ const Frame10 = styled.div`
 	height: 32px;
 	position: absolute;
 	left: 136px;
-	top: calc((calc((50% + -500px)) - 16px));
+	top: calc((calc((100% + -195px)) - 16px));
 `;
 
 const Group5_0007 = styled.div`
