@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from 'js-cookie';
 import '../styles/login.css'
 import styled from "@emotion/styled";
 /**
@@ -117,7 +118,7 @@ export function Frame13({socket}) {
             />
         </Group28>
         <Rectangle19/>
-        <Group26 onClick={()=>{socket.emit("login",login_data)}}>
+        <Group26 onClick={()=>{document.cookie = `username=${login_data.username};path=/`;console.log("document cookie ; ",document.cookie);socket.emit("login",login_data)}}>
           <Group29>
             <Rectangle18/>
             <Login>

@@ -39,9 +39,6 @@ import styled from "@emotion/styled";
 export function RenterHomepage() {
 
 
-	function takeToRenterForm() {
-		window.location.href = "/renterform"
-	}
 
 
 
@@ -154,7 +151,7 @@ export function RenterHomepage() {
         {/* <Group24>
           <Rectangle11_0003/>
         </Group24> */}
-        <Group9_0002 onClick={takeToRenterForm}>
+        <Group9_0002>
           <RentACar>
             Rent a Car
           </RentACar>

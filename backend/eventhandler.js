@@ -76,14 +76,36 @@ const eventHanlder = (socket, io) => {
         catch(error) {
             console.log("error logging in",error)
         }
-
-              
-
-
+        
     })
 
     //more even hanlders here which will receive data from the client and respond depending upon the situation
-
+    socket.on("carform",async (data)=>{
+        console.log("car form data",data)
+        //car form logic here(will be using the database here)
+        try {
+            const newCar = new Car({
+                make: data.make,
+                model: data.model,
+                variant: data.year,
+                plateNumber: data.plate_number,
+                price: data.rental_price,
+                location: data.pickup_location,
+                startDate: data.availability_from,
+                endDate: data.availability_till,
+                owner: data.owner,
+                //other data
+            }); 
+            const savedCar = await newCar.save(); 
+            console.log('Car form submitted:', savedCar);
+            io.to(socket.id).emit("carform", "successfull")
+        }
+        catch(error) {
+            console.log("error submitting car form",error)
+            io.to(socket.id).emit("carform", "failed")
+        }
+    
+    })
 
 };
 export default eventHanlder;
