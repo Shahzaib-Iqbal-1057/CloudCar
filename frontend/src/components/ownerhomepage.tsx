@@ -148,7 +148,7 @@ from 14/02/2024 till 15/02/2024
           <Group5_0003>
             <Rectangle11_0003/>
           </Group5_0003>
-          <Group9_0002>
+          <Group9_0002 onClick={()=>{window.location.href = "/renterform"}}>
             <ListACar>
               List a car
             </ListACar>
@@ -167,26 +167,24 @@ from 14/02/2024 till 15/02/2024
             <ViewBookings>
               View Bookings<br/>
 
-					</ViewBookings>
-				</Group9_0003>
-				</Frame9>
-				{/* <Frame10>
-				<Group20_0001>
-					<Group5_0001>
-					<Rectangle11_0001/>
-					</Group5_0001>
-				</Group20_0001>
-				<Group5_0007>
-					<Rectangle11_0007/>
-				</Group5_0007>
-				<Group9_0004>
-					<Inbox>
-					Inbox
-					</Inbox>
-				</Group9_0004>
-				</Frame10> */}
-			</DivButtons>
-		</div>
+            </ViewBookings>
+          </Group9_0003>
+        </Frame9>
+        <Frame10>
+          <Group20_0001>
+            <Group5_0001>
+              <Rectangle11_0001/>
+            </Group5_0001>
+          </Group20_0001>
+          <Group5_0007>
+            <Rectangle11_0007/>
+          </Group5_0007>
+          <Group9_0004>
+            <Inbox>
+              Inbox
+            </Inbox>
+          </Group9_0004>
+        </Frame10>
       </Frame22>
     </RootWrapperOwnerHomepage>
   )
@@ -486,13 +484,13 @@ const Group20_0001 = styled.div`
 	height: 37px;
 	position: absolute;
 	left: 18px;
-	top: -100px;
+	top: 0px;
 `;
 
 const Group5_0001 = styled.div`
 	width: 200px;
 	height: 37px;
-	position: relative;
+	position: absolute;
 	left: 0px;
 	top: 0px;
 `;
@@ -617,188 +615,13 @@ const RentItOutAndEarnFromHomeHassleFree = styled.span`
 	padding-top : 100px
 `;
 
-const DivButtons = styled.div`
-	postion: absolute;
-	top: -100px;
-	left: 300px;
-
-
-`
-
-
-const Frame9 = styled.div`
-	width: 10vw;
-	height: 10vh;
-	position: relative;
-	left: 136px;
-	top: 0px;
-`;
-
-const Frame8 = styled.div`
-	width: 10vw;
-	height: 8vh;
-	position: relative;
-	left: 136px;
-	top: 0px;
-`;
-
-const Group5_0003 = styled.div`
-	width: 209px;
-	height: 37px;
-	position: absolute;
-	left: 36px;
-	top: -100px;
-`;
-
-const Rectangle11_0003 = styled.div`
-	width: 209px;
-	height: 37px;
-	background: rgb(57, 168, 161);
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center;
-	border-radius: 19px;
-	position: absolute;
-	left: 0px;
-	top: 0px;
-`;
-
-const Group9_0002 = styled.div`
-	width: 86px;
-	height: 17px;
-	position: relative;
-	left: 98px;
-	top: -100px;
-`;
-
-const ListACar = styled.span`
-	color: black;
-	text-overflow: ellipsis;
-	font-size: 20px;
-	font-family: Urbanist, sans-serif;
-	font-weight: 800;
-	text-align: left;
-	width: 120px;
-	min-height: 17px;
-	position: absolute;
-	left: 0px;
-	top: calc((calc((50% + 0px)) - 9px));
-	height: 17px;
-`;
-
-const Group9_0003 = styled.div`
-	width: 137px;
-	height: 17px;
-	position: relative;
-	left: 72px;
-	top: -100px;
-`;
-
-const ViewBookings = styled.span`
-	color: black;
-	text-overflow: ellipsis;
-	font-size: 20px;
-	font-family: Urbanist, sans-serif;
-	font-weight: 800;
-	text-align: left;
-	width: 170px;
-	min-height: 17px;
-	position: absolute;
-	left: 0px;
-	top: calc((calc((50% + 0px)) - 9px));
-	height: 17px;
-`;
-
-const Frame10 = styled.div`
-	position: relative;
-	left: 136px;
-	
-
-`;
-
-const Group5_0007 = styled.div`
-	width: 207px;
-	height: 37px;
-	position: relative;
-	left: 36px;
-	top: -100px;
-`;
-
-const Rectangle11_0007 = styled.div`
-	width: 207px;
-	height: 37px;
-	background: rgb(57, 168, 161);
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center;
-	border-radius: 19px;
-	position: absolute;
-	left: 0px;
-	top: 0px;
-`;
-
-const Group9_0004 = styled.div`
-	width: 56px;
-	height: 17px;
-	position: relative;
-	left: 112px;
-	top: -133px;
-`;
-
-const Inbox = styled.span`
-	color: rgb(26, 45, 46);
-	text-overflow: ellipsis;
-	font-size: 20px;
-	font-family: Urbanist, sans-serif;
-	font-weight: 800;
-	text-align: left;
-	width: 56px;
-	min-height: 17px;
-	position: absolute;
-	left: 0px;
-	top: calc((calc((50% + 0px)) - 9px));
-	height: 17px;
-`;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// const Group57 = styled.div`
+// 	width: 281px;
+// 	height: 135px;
+// 	position: absolute;
+// 	left: 656px;
+// 	top: 64px;
+// `;
 
 const Rectangle25 = styled.div`
 	width: 268px;
@@ -987,6 +810,7 @@ const Group9_0002 = styled.div`
 	position: absolute;
 	left: 98px;
 	top: 6px;
+	cursor:pointer;
 `;
 
 const ListACar = styled.span`
@@ -1078,4 +902,3 @@ const Inbox = styled.span`
 	top: calc((calc((50% + 0px)) - 9px));
 	height: 17px;
 `;
-

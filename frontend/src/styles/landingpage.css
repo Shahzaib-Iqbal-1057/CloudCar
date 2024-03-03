@@ -60,7 +60,7 @@
     align-items: center;
     justify-content: center;
     height: calc(100vh - 68px); /* Adjusted for the height of the navbar */
-    background: url('C:\Users\Hasan Malik\OneDrive\Desktop\SE_CloudCar\CloudCar\frontend\public\lamborghini.png') center center no-repeat;
+    background: url('../../public/lamborghini.png') center center no-repeat;
     background-size: cover;
     color: white;
     text-align: center;

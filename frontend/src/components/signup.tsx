@@ -63,7 +63,7 @@ export function Frame15({socket}) {
 			return
 		}
 		if(signup_data.full_name == "" || signup_data.email == "" || signup_data.phone_number == "" || signup_data.city == "" || signup_data.address == "" || signup_data.postal_code == "" || signup_data.password == "" || signup_data.re_enter_password == "") {
-			alert("Please fill all the fields")
+			alert("Please fill all fields")
 			return
 		}
 		socket.emit("signup",signup_data)
