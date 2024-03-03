@@ -111,35 +111,61 @@ export function OwnerHomepage() {
         <RentItOutAndEarnFromHomeHassleFree>
           Rent it out and earn from home, hassle-free.
         </RentItOutAndEarnFromHomeHassleFree>
-        <div>
-			<DivButtons>
-				<Frame8>
-				<Group20_0001>
-					<Group5_0001>
-					<Rectangle11_0001/>
-					</Group5_0001>
-				</Group20_0001>
-				<Group5_0003>
-					<Rectangle11_0003/>
-				</Group5_0003>
-				<Group9_0002>
-					<ListACar>
-					List a car
-					</ListACar>
-				</Group9_0002>
-				</Frame8>
-				<Frame9>
-				<Group20_0001>
-					<Group5_0001>
-					<Rectangle11_0001/>
-					</Group5_0001>
-				</Group20_0001>
-				<Group5_0003>
-					<Rectangle11_0003/>
-				</Group5_0003>
-				<Group9_0003>
-					<ViewBookings>
-					View Bookings<br/>
+        {/* <Group57>
+          <Rectangle25/>
+          <AbdulAhadHasBookedAudiA5From14022024Till15022024>
+            Abdul Ahad has booked Audi A5<br/>
+from 14/02/2024 till 15/02/2024
+          </AbdulAhadHasBookedAudiA5From14022024Till15022024>
+          <_0732Pm>
+            07:32 PM
+          </_0732Pm>
+          <_0340Pm>
+            03:40 PM
+          </_0340Pm>
+          <Line7/>
+          <Line8/>
+          <Line9/>
+          <UmerJamilAddedAReview>
+            Umer Jamil added a review
+          </UmerJamilAddedAReview>
+          <ViewAll>
+            View all
+          </ViewAll>
+          <ViewDetails>
+            View details
+          </ViewDetails>
+          <ViewDetails_0001>
+            View details
+          </ViewDetails_0001>
+        </Group57> */}
+        <Frame8>
+          <Group20_0001>
+            <Group5_0001>
+              <Rectangle11_0001/>
+            </Group5_0001>
+          </Group20_0001>
+          <Group5_0003>
+            <Rectangle11_0003/>
+          </Group5_0003>
+          <Group9_0002>
+            <ListACar>
+              List a car
+            </ListACar>
+          </Group9_0002>
+        </Frame8>
+        <Frame9>
+          <Group20_0001>
+            <Group5_0001>
+              <Rectangle11_0001/>
+            </Group5_0001>
+          </Group20_0001>
+          <Group5_0003>
+            <Rectangle11_0003/>
+          </Group5_0003>
+          <Group9_0003>
+            <ViewBookings>
+              View Bookings<br/>
 
 					</ViewBookings>
 				</Group9_0003>
@@ -917,3 +943,139 @@ const ViewDetails_0001 = styled.span`
 	top: 78px;
 	height: 28px;
 `;
+
+const Frame9 = styled.div`
+	width: 10vw;
+	height: 10vh;
+	position: relative;
+	left: 136px;
+	top: 0px;
+`;
+
+const Frame8 = styled.div`
+	width: 10vw;
+	height: 8vh;
+	position: relative;
+	left: 136px;
+	top: 0px;
+`;
+
+const Group5_0003 = styled.div`
+	width: 209px;
+	height: 37px;
+	position: absolute;
+	left: 36px;
+	top: 0px;
+`;
+
+const Rectangle11_0003 = styled.div`
+	width: 209px;
+	height: 37px;
+	background: rgb(57, 168, 161);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	border-radius: 19px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+`;
+
+const Group9_0002 = styled.div`
+	width: 86px;
+	height: 17px;
+	position: absolute;
+	left: 98px;
+	top: 6px;
+`;
+
+const ListACar = styled.span`
+	color: black;
+	text-overflow: ellipsis;
+	font-size: 20px;
+	font-family: Urbanist, sans-serif;
+	font-weight: 800;
+	text-align: left;
+	width: 120px;
+	min-height: 17px;
+	position: absolute;
+	left: 0px;
+	top: calc((calc((50% + 0px)) - 9px));
+	height: 17px;
+`;
+
+const Group9_0003 = styled.div`
+	width: 137px;
+	height: 17px;
+	position: absolute;
+	left: 72px;
+	top: 6px;
+`;
+
+const ViewBookings = styled.span`
+	color: black;
+	text-overflow: ellipsis;
+	font-size: 20px;
+	font-family: Urbanist, sans-serif;
+	font-weight: 800;
+	text-align: left;
+	width: 170px;
+	min-height: 17px;
+	position: absolute;
+	left: 0px;
+	top: calc((calc((50% + 0px)) - 9px));
+	height: 17px;
+`;
+
+const Frame10 = styled.div`
+	width: 10vw;
+	height: 10vh;
+	position: relative;
+	left: 136px;
+	top: -180px;
+`;
+
+const Group5_0007 = styled.div`
+	width: 207px;
+	height: 37px;
+	position: absolute;
+	left: 36px;
+	top: 0px;
+`;
+
+const Rectangle11_0007 = styled.div`
+	width: 207px;
+	height: 37px;
+	background: rgb(57, 168, 161);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	border-radius: 19px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+`;
+
+const Group9_0004 = styled.div`
+	width: 56px;
+	height: 17px;
+	position: absolute;
+	left: 112px;
+	top: 6px;
+`;
+
+const Inbox = styled.span`
+	color: rgb(26, 45, 46);
+	text-overflow: ellipsis;
+	font-size: 20px;
+	font-family: Urbanist, sans-serif;
+	font-weight: 800;
+	text-align: left;
+	width: 56px;
+	min-height: 17px;
+	position: absolute;
+	left: 0px;
+	top: calc((calc((50% + 0px)) - 9px));
+	height: 17px;
+`;
+

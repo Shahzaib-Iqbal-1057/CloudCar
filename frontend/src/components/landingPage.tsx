@@ -152,24 +152,21 @@ export function LandingPageComponent() {
 }
 
 const RootWrapperLogIn = styled.div`
-  min-height: 100vh; /* This will ensure the div is at least the height of the viewport */
-  width: 100vw; /* This will ensure the div is at least the width of the viewport */
-  background: rgb(255, 255, 255);
-  background-repeat: no-repeat;
-  background-size: cover; /* This will ensure the background image covers the entire div */
-  background-position: center;
-  position: relative;
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f0f0f0;
 `;
 
-
 const Frame27 = styled.div`
-min-height: 100vh; /* This will ensure the div is at least the height of the viewport */
-width: 100vw; /* This will ensure the div is at least the width of the viewport */
-	position: absolute;
-	left: 0px;
-	top: -23px;
+  min-height: 100vh; /* This ensures the div is at least the height of the viewport */
+  width: 100vw; /* This ensures the div is at least the width of the viewport */
+  position: relative; /* Changed from absolute to relative for responsiveness */
+  max-width: 1440px; /* Max width for larger screens */
+  margin: 0 auto; /* Center the content */
 `;
 
 const Text = styled.span`
@@ -181,7 +178,7 @@ const Text = styled.span`
 	text-align: left;
 	width: 69px;
 	min-height: 21px;
-	position: absolute;
+	position: relative;
 	left: 1285px;
 	top: calc((calc((50% + -470px)) - 11px));
 	height: 21px;
@@ -190,7 +187,7 @@ const Text = styled.span`
 const Frame8 = styled.div`
 	width: 111px;
 	height: 37px;
-	position: absolute;
+	position: relative;
 	left: 1199px;
 	top: 36px;
 `;
@@ -198,7 +195,7 @@ const Frame8 = styled.div`
 const Group20 = styled.div`
 	width: 111px;
 	height: 37px;
-	position: absolute;
+	position: relative;
 	left: 0px;
 	top: 0px;
     cursor: pointer;
@@ -212,7 +209,7 @@ const Rectangle10 = styled.div`
 	background-size: contain;
 	background-position: center;
 	border-radius: 19px;
-	position: absolute;
+	position: relative;
 	left: 0px;
 	top: 0px;
 `;
@@ -530,13 +527,13 @@ const Rectangle13 = styled.div`
 `;
 
 const Wp27075774KCarWallpaper1 = styled.div`
-	width: 1440px;
-	height: 556px;
+	width: 100%;
+	height: 100vh;
 	background: url(https://s3-alpha-sig.figma.com/img/1bd7/d9ba/cf3121640ac1ab18517f74fbf8a79372?Expires=1710115200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=On3Cn7pMfziA2Ga66QQnYV9zBxK-qwJlQ62KHd5kr7MC-13V~FUG~-n9AyjrnAWqzVudqesFpE1a8chnUJIUYpl6aMDq0I~g5CsiJ6ca8BJ6LDYG2JhvAtQCSNzxVWn~u6pFfG2Sv0gj7Cy-arXJxzNKykc4yMy-RDdrYzWAol9lPQfdijtMvdclZH0HKghtfS4corKTfbwNXroTPqIUIeYvONGOfN22XMmzlHIdq~PVmZlY8W5Flv7jFWjrOEb~Qsgwzt3W8KbrLQEw1ZkGhXHfekth7vmYO~OC6ZtpOC1DgYWwUv~3vqK7mDX9NVxD-9tZfJxeab3U7Gsc6aWnvQ__);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
-	position: absolute;
+	position: relative;
 	left: 0px;
 	top: 152px;
 `;
