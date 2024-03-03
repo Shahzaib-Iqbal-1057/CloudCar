@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const user = new Schema({
-    username: {
+    email: {
         type: String,
         required: true,
     },
@@ -18,12 +18,27 @@ const user = new Schema({
         type: String,
         required: true
     },
+    phoneNumber: {
+        type: Number,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    postalCode: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
     currentRentedCar: {
         type : String,
         required: false,
         default: null
     }
-
 }, {timestamps: true});
 
 const User = mongoose.model('User', user);

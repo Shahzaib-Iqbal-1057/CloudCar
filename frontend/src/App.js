@@ -8,6 +8,7 @@ import LandingPage from "./pages/landingpage";
 import SignupRenter from './pages/signuprenter';
 import OwnerHomePage from './pages/ownerhomepage.js';
 import RenterHomepage from './pages/renterhomepage';
+import RenterForm from './pages/renterform';
 const socket = io('http://localhost:3001',{ transports: ["websocket"] });
 
 
@@ -26,9 +27,8 @@ function App() {
           <Route path="/signup" element={<Signup socket = {socket}/>} />
           <Route path="/signuprenter" element={<SignupRenter socket = {socket}/>} />
           <Route path="/renterhomepage" element={<RenterHomepage socket = {socket}/>} />
-
           <Route path="/ownerhomepage" element={<OwnerHomePage socket = {socket}/>} />
-
+          <Route path='/renterform' element = {<RenterForm socket = {socket}/>}/>
         </Routes>
       </Router>
     </div>

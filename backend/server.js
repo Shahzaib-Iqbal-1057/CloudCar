@@ -25,6 +25,7 @@ mongoose.connect(process.env.MONG_URI)
     console.log(error)
 })
 
+
 server.listen(3001, ()=>{
     console.log("SERVER IS LISTENING ON PORT 3001")
 })
