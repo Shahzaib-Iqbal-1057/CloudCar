@@ -23,8 +23,8 @@ const LandingPage = () => {
           <a href="#about-us">About Us</a>
         </div>
         <div className='authLinks'>
-          <button onClick={handleLogin}>Log in</button>
-          <button onClick={handleSignup} className={styles.signupBtn}>Sign up</button>
+          <button onClick={handleLogin} className='loginBtn'>Log in</button>
+          <button onClick={handleSignup} className='signupBtn'>Sign up</button>
         </div>
       </nav>
       <div className='hero'>
