@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from '../styles/landingpage.css'; // rename the CSS file to use .module.css
+import styles from '../styles/landingpage.css'; 
+import { Helmet } from 'react-helmet';
 
 const LandingPage = () => {
 
@@ -15,6 +16,21 @@ const LandingPage = () => {
 
   return (
     <>
+      <Helmet>
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet"
+        />
+      </Helmet>
       <nav className='navbar'>
         <div className='logo'>CloudCar</div>
         <div className='navLinks'>
