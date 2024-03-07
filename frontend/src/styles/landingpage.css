@@ -57,22 +57,23 @@
   .hero {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start; /* Align items to the start of the flex container, which is left */
+    justify-content: flex-start; /* Align items to the start of the container, which is top */
     height: calc(100vh - 68px); /* Adjusted for the height of the navbar */
     background: url('../../public/lamborghini.png') center center no-repeat;
     background-size: cover;
     color: white;
-    text-align: center;
-    padding: 4rem 1rem;
+    text-align: left;
+    padding: 4rem; /* Add padding on all sides */
   }
   
   .hero h1 {
     font-size: 3rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem; /* Reduced space below h1 */
+    align-self: flex-start; /* Aligns the h1 to the start of the flex container on the cross axis */
   }
   
   .hero p {
     font-size: 1.5rem;
-    margin-bottom: 2rem;
+    align-self: flex-start; /* Aligns the paragraph to the start of the flex container on the cross axis */
   }
