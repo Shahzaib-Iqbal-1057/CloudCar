@@ -44,8 +44,12 @@ const LandingPage = () => {
         </div>
       </nav>
       <div className='hero'>
-        <h1>Rent Cars Near You</h1>
-        <p>Convenient hourly and daily rentals. Insurance included.</p>
+        <h1>
+          <span className="highlighted-text">Rent</span> Cars Near You
+        </h1>
+        <p>
+          Convenient <span className="highlighted-text">hourly</span> and <span className="highlighted-text">daily</span> rentals. Insurance included.
+        </p>
       </div>
     </>
   );

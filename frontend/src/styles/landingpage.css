@@ -97,3 +97,8 @@
     font-size: 1.5rem;
     align-self: flex-start; /* Aligns the paragraph to the start of the flex container on the cross axis */
   }
+
+  .hero .highlighted-text {
+    color: rgb(57, 168, 161); /* Your desired color */
+    font-weight: bold; /* Optionally, make it bold or apply other styles */
+  }
