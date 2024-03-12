@@ -34,6 +34,16 @@ const user = new Schema({
         type: String,
         required: true
     },
+    frontPictureCNIC: {
+        type: String,
+        required: false,
+        default: null
+    },
+    backPictureCNIC: {
+        type: String,
+        required: false,
+        default: null
+    },
     currentRentedCar: {
         type : String,
         required: false,

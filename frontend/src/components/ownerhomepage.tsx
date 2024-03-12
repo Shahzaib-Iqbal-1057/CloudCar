@@ -179,9 +179,9 @@ from 14/02/2024 till 15/02/2024
           <Group5_0007>
             <Rectangle11_0007/>
           </Group5_0007>
-          <Group9_0004>
+          <Group9_0004 onClick={()=>{window.location.href = '/renterhomepage'}}>
             <Inbox>
-              Inbox
+              Rent a car!
             </Inbox>
           </Group9_0004>
         </Frame10>
@@ -884,8 +884,9 @@ const Group9_0004 = styled.div`
 	width: 56px;
 	height: 17px;
 	position: absolute;
-	left: 112px;
+	left: 100px;
 	top: 6px;
+	cursor:pointer;
 `;
 
 const Inbox = styled.span`
@@ -895,7 +896,7 @@ const Inbox = styled.span`
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 56px;
+	width: 120px;
 	min-height: 17px;
 	position: absolute;
 	left: 0px;

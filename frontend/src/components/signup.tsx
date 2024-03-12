@@ -47,26 +47,44 @@ export function Frame15({socket}) {
 		postal_code: "",
 		password: "",
 		re_enter_password: "",
+		front_picture_cnic: null,
+		back_picture_cnic: null
 	})
 
 	function changeSignupData(e) {
-		setSignupData({
-			...signup_data,
-			[e.target.name] : e.target.value
-		})
+		if (e.target.files) {
+			const file = e.target.files[0];
+			const reader = new FileReader();
+
+			reader.onloadend = function () {
+				setSignupData({
+					...signup_data,
+					[e.target.name]: reader.result 
+				});
+			};
+			reader.readAsArrayBuffer(file)
+		} 
+		else {
+			setSignupData({
+				...signup_data,
+				[e.target.name] : e.target.value
+			});
+		}
 		console.log(signup_data)
 	}
 
 	function handleSignup() {
 		if(signup_data.password != signup_data.re_enter_password) {
-			alert("Password does not match")
+			alert("Passwords don't match")
 			return
 		}
 		if(signup_data.full_name == "" || signup_data.email == "" || signup_data.phone_number == "" || signup_data.city == "" || signup_data.address == "" || signup_data.postal_code == "" || signup_data.password == "" || signup_data.re_enter_password == "") {
 			alert("Please fill all fields")
 			return
 		}
+		document.cookie = `display_name=${signup_data.full_name};path=/`
 		socket.emit("signup",signup_data)
+		console.log("sent signup data : ", signup_data)
 	}
 	React.useEffect(()=>{
 		socket.on("signup",(status)=>{
@@ -242,32 +260,10 @@ export function Frame15({socket}) {
         </Rectangle20>
         <Line2/>
         <Group43>
-          <Rectangle22/>
-          <Group41>
-            <Upload>
-              Upload
-            </Upload>
-            <Group40>
-              <Rectangle23 xmlns="http://www.w3.org/2000/svg">
-                <path fill="rgba(217, 217, 217, 0)" d="M0 0L8 0L8 2.4L2.4 2.4L2.4 8L0 8L0 0Z"/>
-              </Rectangle23>
-              <Line3/>
-            </Group40>
-          </Group41>
+			<input type="file" accept="image/*" onChange={changeSignupData} name="front_picture_cnic"/>
         </Group43>
         <Group44>
-          <Rectangle23_0001/>
-          <Group41>
-            <Upload>
-              Upload
-            </Upload>
-            <Group40>
-              <Rectangle23 xmlns="http://www.w3.org/2000/svg">
-                <path fill="rgba(217, 217, 217, 0)" d="M0 0L8 0L8 2.4L2.4 2.4L2.4 8L0 8L0 0Z"/>
-              </Rectangle23>
-              <Line3/>
-            </Group40>
-          </Group41>
+        	<input type="file" accept="image/*" onChange={changeSignupData} name="back_picture_cnic"/>
         </Group44>
         <ByContinuingYouAgreeToCloudCarSTermsOfUseAndPrivacyPolicy>
           By continuing, you agree to Cloud Car’s Terms of       Use and Privacy Policy.

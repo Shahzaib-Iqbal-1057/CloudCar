@@ -22,6 +22,10 @@ const car = new Schema({
         type: String,
         required: true
     },
+    ownerDisplayName: {
+        type: String,
+        required: true
+    },
     startDate:{
         type: Date,
         required: true

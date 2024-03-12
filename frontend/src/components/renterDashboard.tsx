@@ -61,10 +61,10 @@ export function RenterHomepage() {
 
           </HowItWorks>
         </Group15>
-        <Group16>
+        <Group16 onClick={()=>{window.location.href = "/ownerhomepage";}}>
           <Rectangle6/>
           <Locations>
-            Locations
+            List a Car
           </Locations>
         </Group16>
         <Group17>
@@ -152,7 +152,7 @@ export function RenterHomepage() {
           <Rectangle11_0003/>
         </Group24> */}
         <Group9_0002>
-          <RentACar>
+          <RentACar onClick={()=>{window.location.href = '/availablecars'}}>
             Rent a Car
           </RentACar>
         </Group9_0002>
@@ -301,6 +301,7 @@ const Group16 = styled.div`
 	position: absolute;
 	left: 402px;
 	top: 13px;
+	cursor: pointer;
 `;
 
 const Rectangle6 = styled.div`
@@ -323,7 +324,7 @@ const Locations = styled.span`
 	font-family: Urbanist, sans-serif;
 	font-weight: 800;
 	text-align: left;
-	width: 62px;
+	width: 80px;
 	min-height: 17px;
 	position: absolute;
 	left: 28px;
@@ -761,6 +762,7 @@ const RentACar = styled.span`
 	left: 0px;
 	top: calc((calc((50% + 0px)) - 9px));
 	height: 17px;
+	cursor: pointer;
 `;
 
 const Inbox = styled.span`

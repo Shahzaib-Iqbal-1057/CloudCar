@@ -21,6 +21,7 @@ const eventHanlder = (socket, io) => {
 
     socket.on("signup",async (data)=>{
         verifyData(data)
+        console.log("signup data recieved : ", data.email)
         //signup logic here(will be using the database here)
 
         //Following is an example of how database will be accessed and used to store the data
@@ -35,6 +36,8 @@ const eventHanlder = (socket, io) => {
                 address: data.address,
                 role: "customer",
                 displayName: data.full_name,
+                frontPictureCNIC: data.front_picture_cnic,
+                backPictureCNIC: data.back_picture_cnic,
                 //other data
             }); 
             const savedUser = await newUser.save(); 
@@ -94,6 +97,7 @@ const eventHanlder = (socket, io) => {
                 startDate: data.availability_from,
                 endDate: data.availability_till,
                 owner: data.owner,
+                ownerDisplayName: data.ownerDisplayName
                 //other data
             }); 
             const savedCar = await newCar.save(); 
@@ -107,5 +111,25 @@ const eventHanlder = (socket, io) => {
     
     })
 
+    socket.on("availablecars",async (data)=>{
+        try {
+            const availableCars = await Car.find({}); 
+            io.to(socket.id).emit("availablecars", availableCars)
+        }
+        catch(error) {
+            console.log("error getting available cars",error)
+        }
+    })
+
+    socket.on("get_display_name",async (data)=>{
+        try {
+            const user = await User.findOne({ email: data });
+            io.to(socket.id).emit("get_display_name", user.displayName)
+            console.log("sending user display name : ", user.displayName)
+        }
+        catch(error) {
+            console.log("error getting available cars",error)
+        }
+    })
 };
 export default eventHanlder;

@@ -69,7 +69,8 @@ export function CarForm({socket}) {
 		car_documents: [],
 		car_pictures: [],
 		plate_number:"",
-		owner: getCookieValue("username")
+		owner: getCookieValue("username"),
+		ownerDisplayName: ""
 	})
 
 	function changeCarDetails(e) {
@@ -104,10 +105,21 @@ export function CarForm({socket}) {
 				alert("Car posting Failed")
 			}
 		})
+		socket.on("get_display_name",(display_name)=>{
+			setCarDetails({
+				...car_details,
+				ownerDisplayName: display_name
+			})
+		})
 		return ()=>{
 			socket.off("carform")
+			socket.off("get_display_name")
 		}
 	},[socket])
+
+	React.useEffect(()=>{
+		socket.emit("get_display_name", getCookieValue("username"))
+	},[])
 
 
 
