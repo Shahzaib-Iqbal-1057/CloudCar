@@ -1,0 +1,44 @@
+.dark-background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+
+  background: linear-gradient(180deg, #1a2c2e 38%, #000000 100%);
+}
+
+.navbar{
+    width:100vw;
+}
+
+.navLinks {
+  position: absolute;
+  left: 100px;
+}
+
+.view-my-profile {
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    left: 70vw;
+    padding-left: 0px;
+    
+    width: 240px;
+}
+
+
+
+
+.vecteezy_car-headlight-and-isolated-on-black_2118167{
+
+ 
+position: absolute;
+width: 1250px;
+height: 540px;
+left: calc(50% - 1250px/2);
+top: 198px;
+
+background: url(vecteezy_car-headlight-and-isolated-on-black_2118167.jpg);
+border-radius: 66px;
+}
