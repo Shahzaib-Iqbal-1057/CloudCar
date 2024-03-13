@@ -20,8 +20,17 @@ const eventHanlder = (socket, io) => {
     });
 
     socket.on("signup",async (data)=>{
-        verifyData(data)
         console.log("signup data recieved : ", data.email)
+        const data_verification_response = verifyData(data);
+        
+        if(data_verification_response === "username_already_exists"){
+            io.to(socket.id).emit("signup", "username_already_exists")
+            return;
+        }
+        if(data_verification_response === "weak_password"){
+            io.to(socket.id).emit("signup", "weak_password")
+            return;
+        }
         //signup logic here(will be using the database here)
 
         //Following is an example of how database will be accessed and used to store the data
@@ -131,5 +140,17 @@ const eventHanlder = (socket, io) => {
             console.log("error getting available cars",error)
         }
     })
+
+    socket.on("listedcars",async (data)=>{
+        try {
+            const listedCars = await Car.find({owner: data}); 
+            io.to(socket.id).emit("listedcars", listedCars)
+        }
+        catch(error) {
+            console.log("error getting listed cars",error)
+        }
+    })
 };
 export default eventHanlder;
+
+

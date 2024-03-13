@@ -60,7 +60,7 @@ export function Frame15({socket}) {
 				setSignupData({
 					...signup_data,
 					[e.target.name]: reader.result 
-				});
+				});  
 			};
 			reader.readAsArrayBuffer(file)
 		} 
@@ -92,7 +92,12 @@ export function Frame15({socket}) {
 				alert("Signup Successfull")
 			}
 			else {
-				alert("Signup Failed")
+				if(status == "username_already_exists") {
+					alert("Email already exists")
+				}
+				if(status == "weak_password") {
+					alert("Password is weak")
+				}
 			}
 		})
 		return ()=>{
@@ -159,7 +164,6 @@ export function Frame15({socket}) {
 		<input
             type="text"
             placeholder="Enter full name"
-            // Add CSS classes for styling
             className="message-input-container"
 			name="full_name"
 			onChange={changeSignupData}
@@ -170,7 +174,6 @@ export function Frame15({socket}) {
 		<input
             type="text"
             placeholder="Enter password"
-            // Add CSS classes for styling
             className="message-input-container"
 			name="password"
 			onChange={changeSignupData}
@@ -181,7 +184,6 @@ export function Frame15({socket}) {
 		<input
             type="text"
             placeholder="Re-enter password"
-            // Add CSS classes for styling
             className="message-input-container"
 			name="re_enter_password"
 			onChange={changeSignupData}
@@ -192,7 +194,6 @@ export function Frame15({socket}) {
 		<input
             type="text"
             placeholder="Enter email"
-            // Add CSS classes for styling
             className="message-input-container"
 			name="email"
 			onChange={changeSignupData}
@@ -200,21 +201,32 @@ export function Frame15({socket}) {
             />
         </Group29>
         <Group32>
-		  <input
+		  {/* <input
             type="text"
             placeholder="Enter Phone number"
-            // Add CSS classes for styling
             className="message-input-container"
 			name="phone_number"
 			onChange={changeSignupData}
 			value={signup_data.phone_number}
-            />
+            /> */}
+
+		<div className="max-w-sm mx-auto">
+			<div className="flex items-center">
+				<button id="dropdown-phone-button" data-dropdown-toggle="dropdown-phone" className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">
+					<img src = "pakistan.png" className="w-5 mr-2 "/>
+				+92 
+				</button>
+				<label typeof="phone-input" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Phone number:</label>
+				<div className="relative w-full">
+					<input type="text" id="phone-input" value={signup_data.phone_number} onChange={changeSignupData} name="phone_number" className=" phone-container block p-2.5 w-full z-20 text-sm text-gray-900 bg-transparent rounded-e-lg border-s-0 border border-gray-300  dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white " pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" required />
+				</div>
+			</div>
+		</div>
         </Group32>
         <Group33>
 		<input
             type="text"
             placeholder="Enter city here"
-            // Add CSS classes for styling
             className="message-input-container"
 			name="city"
 			onChange={changeSignupData}
@@ -224,8 +236,7 @@ export function Frame15({socket}) {
         <Group34>
 		<input
             type="text"
-            placeholder="Enter password here"
-            // Add CSS classes for styling
+            placeholder="Enter address here"
             className="message-input-container"
 			name="address"
 			onChange={changeSignupData}
@@ -236,7 +247,6 @@ export function Frame15({socket}) {
           <input
             type="text"
             placeholder="Enter postal code"
-            // Add CSS classes for styling
             className="message-input-container"
 			name="postal_code"
 			onChange={changeSignupData}
@@ -258,7 +268,7 @@ export function Frame15({socket}) {
         <Rectangle20 xmlns="http://www.w3.org/2000/svg">
           <path fill="rgba(217, 217, 217, 0)" d="M0 0L8 0L8 2.4L2.4 2.4L2.4 8L0 8L0 0Z"/>
         </Rectangle20>
-        <Line2/>
+        {/* <Line2/> */}
         <Group43>
 			<input type="file" accept="image/*" onChange={changeSignupData} name="front_picture_cnic"/>
         </Group43>

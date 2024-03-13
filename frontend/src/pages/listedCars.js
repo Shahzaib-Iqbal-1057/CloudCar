@@ -1,35 +1,19 @@
 import React from 'react'
 
-
-const getCookieValue = (name) => {
-	const cookies = document.cookie.split(';');
-	for (const cookie of cookies) {
-		const [cookieName, cookieValue] = cookie.split('=');
-		if(cookieName.trim() === name.trim()) {
-			return cookieValue.trim();
-		}
-	}
-	return null;
-  };
-
-
-
-
-const AvailableCars = ({socket}) => {
-
+const ListedCars = ({socket}) => {
     const [cars,setCars] = React.useState([]);
    
     React.useEffect( ()=> {
-      socket.emit("availablecars", getCookieValue("username"))
+      socket.emit("listedcars","need cars now!")
     },[])
   
     React.useEffect( ()=> {
-        socket.on('availablecars', (data) => {
+        socket.on('listedcars', (data) => {
             setCars(data);
-            console.log("available cars",data)
+            console.log("listedcars",data)
         })
         return () => {
-            socket.off('availablecars');
+            socket.off('listedcars');
         }
     },[socket])
 
@@ -56,7 +40,7 @@ const AvailableCars = ({socket}) => {
     return (
         <div className="flex flex-col bg-grey-100 min-h-screen bg-gradient-to-t from-blue-900">
         <main className="flex-grow container mx-auto mt-8">
-        <h2 className="text-2xl text-black font-semibold mb-4 text-white">Cars available to rent</h2>
+        <h2 className="text-2xl text-black font-semibold mb-4 text-white">Cars Listed</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-5">
             {cars.map((product) => (
             <ProductObject product={product} key={product.id} />
@@ -82,4 +66,4 @@ const AvailableCars = ({socket}) => {
     )
 }
 
-export default AvailableCars
+export default ListedCars
