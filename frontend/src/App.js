@@ -10,6 +10,7 @@ import OwnerHomePage from './pages/ownerhomepage.js';
 import RenterHomepage from './pages/renterhomepage';
 import RenterForm from './pages/renterform';
 import AvailableCars from './pages/availableCars';
+import ListedCars from './pages/listedCars.js';
 const socket = io('http://localhost:3001',{ transports: ["websocket"] });
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/ownerhomepage" element={<OwnerHomePage socket = {socket}/>} />
           <Route path='/renterform' element = {<RenterForm socket = {socket}/>}/>
           <Route path='/availablecars' element = {<AvailableCars socket = {socket}/>}/>
+          <Route path='/listedcars' element = {<ListedCars socket = {socket}/>}/>
         </Routes>
       </Router>
     </div>

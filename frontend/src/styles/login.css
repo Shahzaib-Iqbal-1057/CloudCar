@@ -14,3 +14,7 @@
   .message-input-container:focus {
     outline: none;
   }
+
+  .phone-container {
+    background: transparent;  
+  }
