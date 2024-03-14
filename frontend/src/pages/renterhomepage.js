@@ -2,7 +2,30 @@ import React from "react";
 // import { Button } from "@material-tailwind/react";
 // import type { ButtonProps } from "@material-tailwind/react";
 
+
+const getCookieValue = (name) => {
+	const cookies = document.cookie.split(';');
+	for (const cookie of cookies) {
+		const [cookieName, cookieValue] = cookie.split('=');
+		if(cookieName.trim() === name.trim()) {
+			return cookieValue.trim();
+		}
+	}
+	return null;
+  };
+
+
+
 const RenterHomePage = ({ socket }) => {
+
+  React.useEffect(()=> {
+    if(getCookieValue('username') === "" || getCookieValue('username') === null){
+      window.location.href = "/login";
+    }
+  },[])
+  
+
+
   return (
     <>
       <div className="flex flex-wrap  h-screen">
