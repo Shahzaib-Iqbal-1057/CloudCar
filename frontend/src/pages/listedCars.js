@@ -4,7 +4,7 @@ const ListedCars = ({socket}) => {
     const [cars,setCars] = React.useState([]);
    
     React.useEffect( ()=> {
-      socket.emit("listedcars","need cars now!")
+        socket.emit("listedcars","need cars now!")
     },[])
   
     React.useEffect( ()=> {

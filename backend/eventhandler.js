@@ -20,17 +20,33 @@ const eventHanlder = (socket, io) => {
     });
 
     socket.on("signup",async (data)=>{
-        console.log("signup data recieved : ", data.email)
-        const data_verification_response = verifyData(data);
-        
+
+        console.log("signup data recieved : ", data)
+        const data_verification_response = await verifyData(data);
         if(data_verification_response === "username_already_exists"){
             io.to(socket.id).emit("signup", "username_already_exists")
             return;
         }
+
         if(data_verification_response === "weak_password"){
             io.to(socket.id).emit("signup", "weak_password")
             return;
         }
+
+        if(data_verification_response === "invalid_phone_number"){
+            io.to(socket.id).emit("signup", "invalid_phone_number")
+            return;
+        }
+        if(data_verification_response === "invalid_email"){
+            io.to(socket.id).emit("signup", "invalid_email")
+            return;
+        }
+
+        if(data_verification_response !== "user_verified"){
+            io.to(socket.id).emit("signup", "failed")
+            return;
+        }
+        
         //signup logic here(will be using the database here)
 
         //Following is an example of how database will be accessed and used to store the data

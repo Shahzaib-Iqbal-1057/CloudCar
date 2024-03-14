@@ -92,11 +92,17 @@ export function Frame15({socket}) {
 				alert("Signup Successfull")
 			}
 			else {
-				if(status == "username_already_exists") {
+				if(status === "username_already_exists") {
 					alert("Email already exists")
 				}
-				if(status == "weak_password") {
-					alert("Password is weak")
+				if(status === "weak_password") {
+					alert("Password is weak, It should be at least 8 characters, 1 uppercase, and 1 number")
+				}
+				if(status === "invalid_email") {
+					alert("Invalid email")
+				}
+				if(status === "invalid_phone_number") {
+					alert("Invalid phone number")
 				}
 			}
 		})
