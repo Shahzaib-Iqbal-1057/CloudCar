@@ -131,7 +131,7 @@ const OwnerHomePage = ({ socket }) => {
         }}
       ></div>
 
-      {/* <div className="Unlock-text absolute text-white">Unlock the Potential of Your Idle Car!</div> */}
+      
       <div
         className="Unlock-text absolute"
         style={{
