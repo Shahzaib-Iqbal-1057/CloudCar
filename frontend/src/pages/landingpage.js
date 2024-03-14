@@ -34,9 +34,9 @@ const LandingPage = () => {
       <nav className='navbar'>
         <div className='logo'>CloudCar</div>
         <div className='navLinks'>
-          <a href="#how-it-works">How it works</a>
-          <a href="#locations">Locations</a>
-          <a href="#about-us">About Us</a>
+          <a href="how-it-works">How it works</a>
+          <a href="locations">Locations</a>
+          <a href="about-us">About Us</a>
         </div>
         <div className='authLinks'>
           <button onClick={handleLogin} className='loginBtn'>Log in</button>
