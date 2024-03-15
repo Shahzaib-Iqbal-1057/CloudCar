@@ -2,66 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 
-const fields = [
-  {
-    label: "First Name",
-    type: "text",
-    placeholder: "John",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Last Name",
-    type: "text",
-    placeholder: "Doe",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Email",
-    type: "email",
-    placeholder: "john.doe@example.com",
-    required: true,
-    gridCols: 2,
-  },
-  {
-    label: "Display Name",
-    type: "text",
-    placeholder: "johndoe1122",
-    required: true,
-    gridCols: 2,
-  },
-  {
-    label: "Phone",
-    type: "tel",
-    placeholder: "+92 300 1234567",
-    required: true,
-    gridCols: 2,
-  },
-  {
-    label: "Address",
-    type: "text",
-    placeholder: "123 Main St, City, Country",
-    required: true,
-    gridCols: 2,
-  },
-  {
-    label: "Password",
-    type: "password",
-    placeholder: "Enter your password",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Confirm Password",
-    type: "password",
-    placeholder: "Confirm your password",
-    required: true,
-    gridCols: 1,
-  },
-];
 
-export default function Signup() {
+
+export default function Signup({socket}) {
   const {
     register,
     handleSubmit,
@@ -69,10 +12,165 @@ export default function Signup() {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // You can perform further actions with the form data here
-  };
+  
+  const [signup_data,setSignupData] = React.useState({
+		"first name" : "",
+    "last name" : "",
+    "display name" : "",
+		email : "",
+		phone : "",
+		address: "",
+		password: "",
+		"confirm password": "",
+
+	})
+
+
+  const fields = [
+    {
+      label: "First Name",
+      value: signup_data["first name"],
+      name: "first_name",
+      type: "text",
+      placeholder: "John",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Last Name",
+      value: signup_data["last name"],
+      name:"last_name",
+      type: "text",
+      placeholder: "Doe",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Email",
+      value : signup_data.email,
+      name: "email",
+      type: "email",
+      placeholder: "john.doe@example.com",
+      required: true,
+      gridCols: 2,
+    },
+    {
+      label: "Display Name",
+      name: "display_name",
+      value: signup_data["display name"],
+      type: "text",
+      placeholder: "johndoe1122",
+      required: true,
+      gridCols: 2,
+    },
+    {
+      label: "Phone",
+      name: "phone",
+      type: "tel",
+      value: signup_data.phone,
+      placeholder: "+92 300 1234567",
+      required: true,
+      gridCols: 2,
+    },
+    {
+      label: "Address",
+      name : "address",
+      type: "text",
+      value: signup_data.address,
+      placeholder: "123 Main St, City, Country",
+      required: true,
+      gridCols: 2,
+    },
+    {
+      label: "Password",
+      name: "password",
+      value: signup_data.password,
+      type: "password",
+      placeholder: "Enter your password",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Confirm Password",
+      name: "password_again",
+      value: signup_data["confirm password"],
+      type: "password",
+      placeholder: "Confirm your password",
+      required: true,
+      gridCols: 1,
+    },
+  ];
+
+
+
+
+	function changeSignupData(e) {
+		
+    console.log(e)
+    if (e.target.files) {
+			const file = e.target.files[0];
+			const reader = new FileReader();
+			reader.onloadend = function () {
+				setSignupData({
+					...signup_data,
+					[e.target.name]: reader.result 
+				});  
+			};
+			reader.readAsArrayBuffer(file)
+		} 
+		else {
+
+			setSignupData({
+				...signup_data,
+				[e.target.name] : e.target.value
+			});
+		}
+		console.log(signup_data)
+	}
+
+	function handleSignup(event) {
+    event.preventDefault()
+    console.log("signup data : ", signup_data)
+		if(signup_data.password != signup_data["confirm password"]) {
+			alert("Passwords don't match")
+			return
+		}
+		if(signup_data["first name"] === "" || signup_data["last name"] === ""|| signup_data.email === "" || signup_data.phone === ""  || signup_data.address === "" || signup_data.password === "" || signup_data["confirm password"] === "") {
+			alert("Please fill all fields")
+			return
+		}
+		document.cookie = `display_name=${signup_data["display name"]};path=/`
+		socket.emit("signup",signup_data)
+		console.log("sent signup data : ", signup_data)
+	}
+	React.useEffect(()=>{
+		socket.on("signup",(status)=>{
+			if(status == "successfull") {
+				alert("Signup Successfull")
+        window.location.href = '/ownerhomepage'
+			}
+			else {
+				if(status === "username_already_exists") {
+					alert("Email already exists")
+				}
+				if(status === "weak_password") {
+					alert("Password is weak, It should be at least 8 characters, 1 uppercase, and 1 number")
+				}
+				if(status === "invalid_email") {
+					alert("Invalid email")
+				}
+				if(status === "invalid_phone_number") {
+					alert("Invalid phone number")
+				}
+			}
+		})
+		return ()=>{
+			socket.off("signup")
+		}
+	},[socket])
+
+
+
   return (
     <div>
       <div className="container mx-auto h-screen">
@@ -86,13 +184,13 @@ export default function Signup() {
         >
           <div className="lg:w-7/12 pb-10 pt-5 w-full p-4 flex flex-wrap justify-center shadow-2xl rounded-md bg-gradient-to-b from-gray-900 via-gray-700 to-black">
             <div className="pb-3">
-              <a href = "/ "><h1 className="text-4xl font-bold text-teal-600">CloudCar</h1></a>
-              <h2 className="text-2xl font-bold text-white pt-5">
+              <h1 className="text-4xl font-bold text-white"> CloudCar</h1>
+              <h2 className="text-2xl font-bold text-teal-600 pt-5">
                 SignUp Form
               </h2>
             </div>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={(event)=>event.preventDefault()}
               className="flex flex-col justify-start items-center w-full m-auto"
             >
               <div className="grid grid-cols-1 mb-6 md:grid-cols-2 gap-3 w-full">
@@ -107,6 +205,7 @@ export default function Signup() {
                       {field.label}
                     </label>
                     <input
+                      value={field.value}
                       {...register(field.label.toLowerCase(), {
                         required: field.required,
                       })}
@@ -115,6 +214,7 @@ export default function Signup() {
                       }`}
                       type={field.type}
                       placeholder={field.placeholder}
+                      onChange={changeSignupData}
                     />
                     {errors[field.label.toLowerCase()] && (
                       <span>This field is required</span>
@@ -125,7 +225,7 @@ export default function Signup() {
 
               <div className="w-full text-left">
                 <button
-                  type="submit"
+                  onClick={handleSignup}
                   className="flex justify-center items-center gap-2 w-full py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 lg:m-0 md:px-6"
                   title="Confirm Order"
                 >
