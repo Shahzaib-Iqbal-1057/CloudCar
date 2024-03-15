@@ -60,7 +60,7 @@ const OwnerHomePage = ({ socket }) => {
                 {/* <li><a className="hover:text-gray-200" href="#">Contact Us</a></li> */}
               </ul>
               {/* <!-- Header Icons --> */}
-              <div className="hidden xl:flex items-center space-x-5 items-center">
+              <div className="hidden xl:flex items-center space-x-3 items-center">
                 <a className="hover:text-gray-200" href="#">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
