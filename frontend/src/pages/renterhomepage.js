@@ -30,14 +30,11 @@ const RenterHomePage = ({ socket }) => {
     <>
       <div className="flex flex-wrap  h-screen">
         <section className="relative mx-auto">
-          {/* <!-- navbar --> */}
           <nav className="flex justify-between bg-teal-600 text-black w-screen">
             <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-              <a className="text-3xl font-bold font-heading" href="/ ">
-                {/* <!-- <img className="h-9" src="logo.png" alt="logo"> --> */}
+              <a className="text-3xl font-bold font-heading" href="ownerhomepage">
                 CloudCar
               </a>
-              {/* <!-- Nav Links --> */}
               <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
                 <li>
                   <a className="hover:text-gray-200" href="#">
@@ -50,7 +47,7 @@ const RenterHomePage = ({ socket }) => {
                   </a>
                 </li>
                 <li>
-                  <a className="hover:text-gray-200" href="#">
+                  <a className="hover:text-gray-200" href="about-us">
                     About Us
                   </a>
                 </li>
@@ -234,7 +231,7 @@ const RenterHomePage = ({ socket }) => {
               required
             />
             <button
-              type="submit"
+              onClick={(e) => {e.preventDefault(); window.location.href = "/availablecars"}}
               class="text-white absolute end-2.5 bottom-2.5 bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:bg-teal-600 dark:focus:ring-blue-800"
             >
               Search

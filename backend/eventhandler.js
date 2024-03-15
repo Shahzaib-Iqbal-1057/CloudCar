@@ -80,9 +80,9 @@ const eventHanlder = (socket, io) => {
         //Login logic here(will be using the database here)
 
         try {
-            const { username, password } = data;
-            console.log("login data recieved : ", username, password)
-            const existingUser = await User.findOne({ email: username });
+            const { email, password } = data;
+            console.log("login data recieved : ", email, password)
+            const existingUser = await User.findOne({ email: email });
 
             if (!existingUser) {
                 console.log('User does not exist. Login failed.');
@@ -116,11 +116,11 @@ const eventHanlder = (socket, io) => {
                 make: data.make,
                 model: data.model,
                 variant: data.year,
-                plateNumber: data.plate_number,
-                price: data.rental_price,
-                location: data.pickup_location,
-                startDate: data.availability_from,
-                endDate: data.availability_till,
+                plateNumber: data["plate number"],
+                price: data["rental price"],
+                location: data["pickup location"],
+                startDate: data["availability from"],
+                endDate: data["availability till"],
                 owner: data.owner,
                 ownerDisplayName: data.ownerDisplayName
                 //other data
@@ -148,6 +148,7 @@ const eventHanlder = (socket, io) => {
 
     socket.on("get_display_name",async (data)=>{
         try {
+            console.log("getting display name for user : ", data)
             const user = await User.findOne({ email: data });
             io.to(socket.id).emit("get_display_name", user.displayName)
             console.log("sending user display name : ", user.displayName)

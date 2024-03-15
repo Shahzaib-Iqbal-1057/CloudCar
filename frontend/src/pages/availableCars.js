@@ -11,30 +11,26 @@ const getCookieValue = (name) => {
   return null;
 };
 
-const PlantCard = ({ backgroundColor, imageSrc, category, name, price }) => (
-  <div
-    className="bg-cover bg-center bg-no-repeat h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110"
-    style={{ backgroundImage: `url(${imageSrc})` }}
-  >
+const ProductObject = (props) => {
+  console.log("product : ", props.product.ownerDisplayName)
+  return (
+    <div className="bg-cover bg-center bg-no-repeat h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110" style={{ backgroundImage: `url(${props.product.imageUrl})` }}>
     <div className="absolute inset-0 bg-black bg-opacity-50 p-4 text-white flex flex-col justify-between rounded-md">
       <div>
-        <h3 className="text-lg font-semibold mb-2">{name}</h3>
-        <div className="flex flex-col">
-          <span className="text-green-600 font-semibold">{category}</span>
-          <span className="text-green-600 font-semibold">Owner: {name}</span>
+        <h3 className="text-lg font-semibold mb-2">{props.product.make}</h3>
+        <div className='flex flex-col'>
+          <span className="text-green-600 font-semibold">{props.product.model}</span>
+          <span className="text-green-600 font-semibold">Owner : {props.product.ownerDisplayName}</span>
         </div>
-      </div>
-      <div className="flex justify-between">
-        <span className="block font-semibold text-xl">{name}</span>
-        <span
-          className={`block bg-white rounded-full text-${backgroundColor}-500 text-xs font-bold px-3 py-2 leading-none flex items-center`}
-        >
-          {`$${price}`}
-        </span>
+        {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
       </div>
     </div>
   </div>
-);
+  );
+};
+  
+  
+
 
 const AvailableCars = ({ socket }) => {
   const [cars, setCars] = React.useState([]);
@@ -61,13 +57,13 @@ const AvailableCars = ({ socket }) => {
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 p-4 text-white flex flex-col justify-between rounded-md">
           <div>
-            <h3 className="text-lg font-semibold mb-2">{props.product.make}</h3>
+            <h3 className="text-lg font-semibold mb-2">Car : {props.product.make}</h3>
             <div className="flex flex-col">
               <span className="text-green-600 font-semibold">
-                {props.product.model}
+                Model : {props.product.model}
               </span>
               <span className="text-green-600 font-semibold">
-                Owner : {props.product.owner}
+                Owner : {props.product.ownerDisplayName}
               </span>
             </div>
             {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
@@ -186,23 +182,14 @@ const AvailableCars = ({ socket }) => {
               </svg>
             </a>
           </nav>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-5 ml-5">
+            {cars.map((product) => (
+            <ProductObject product={product} key={product.id} />
+            ))}
+          </div>
         </section>
 
-        <div className="dark-background relative w-screen h-screen bg-gradient-to-b from-gray-900 to-black"></div>
         {/* <div className="black-rectangle flex justify-center absolute w-1250 h-540 left-1/2 bg-black rounded-3xl" ></div> */}
-      </div>
-
-      <div className="p-24 flex flex-wrap items-center justify-center">
-        {cars.map((car, index) => (
-          <PlantCard
-            key={index}
-            backgroundColor="orange" // You can set background color dynamically based on car data
-            imageSrc={car.imageUrl}
-            category="Car" // You can set category dynamically based on car data
-            name={car.make} // You can set name dynamically based on car data
-            price={car.price} // You can set price dynamically based on car data
-          />
-        ))}
       </div>
     </>
   );

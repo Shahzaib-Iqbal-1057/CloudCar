@@ -51,12 +51,12 @@ function Login({socket}) {
           <form className="mt-6" action="#" method="POST">
             <div>
               <label className="block text-white">Email Address</label>
-              <input type="email"  name="email" onChange={changeLoginData} id="" placeholder="Enter Email Address" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" autoFocus autoComplete="email" required />
+              <input type="email"  name="email" value={login_data.email} onChange={changeLoginData} id="" placeholder="Enter Email Address" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" autoFocus autoComplete="email" required />
             </div>
 
             <div className="mt-4">
               <label className="block text-white">Password</label>
-              <input type="password" name="password" onChange={changeLoginData}  id="" placeholder="Enter Password" minLength="6" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" required />
+              <input type="password" name="password" value={login_data.password} onChange={changeLoginData}  id="" placeholder="Enter Password" minLength="6" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" required />
             </div>
 
             <div className="text-right mt-2">
@@ -64,7 +64,7 @@ function Login({socket}) {
             </div>
             
             <div class="flex justify-center">
-            <button onClick={(e)=>{e.preventDefault();document.cookie = `username=${login_data.username};path=/`;socket.emit("login",login_data)}}  className="w-40 block bg-teal-600 hover:bg-teal-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6">Log In</button>
+            <button onClick={(e)=>{e.preventDefault();document.cookie = `email=${login_data.email};path=/`;socket.emit("login",login_data)}}  className="w-40 block bg-teal-600 hover:bg-teal-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6">Log In</button>
             </div>
           </form>
 

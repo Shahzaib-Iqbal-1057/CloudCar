@@ -13,6 +13,7 @@ const getCookieValue = (name) => {
 	return null;
   };
 
+
 const OwnerHomePage = ({ socket }) => {
 
 
@@ -53,7 +54,7 @@ const OwnerHomePage = ({ socket }) => {
                   </a>
                 </li>
                 <li>
-                  <a className="hover:text-gray-200" href="#">
+                  <a className="hover:text-gray-200" href="about-us">
                     About Us
                   </a>
                 </li>
@@ -210,7 +211,7 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="list-a-car rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4">List a Car</button>
+        <button className="list-a-car rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href="/newrenterform"}}>List a Car</button>
       </div>
 
       <div
@@ -246,7 +247,7 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4">View Bookings</button>
+        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href='/renterhomepage'}}>Rent a car yourself!</button>
       </div>
 
 
@@ -256,3 +257,4 @@ const OwnerHomePage = ({ socket }) => {
 };
 
 export default OwnerHomePage;
+

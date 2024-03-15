@@ -2,94 +2,21 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 
-const fields = [
-  {
-    label: "Make",
-    type: "text",
-    placeholder: ",e.g. Toyota",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Model",
-    type: "text",
-    placeholder: ",e.g. Corolla Grande",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Year",
-    type: "number",
-    placeholder: ",e.g. 2000",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "City",
-    type: "text",
-    placeholder: ",e.g. Lahore",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Plate Number",
-    type: "text",
-    placeholder: ",e.g. ABC-123",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Rental Price",
-    type: "number",
-    placeholder: ",e.g. 10000 (in PKR)",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Availability From",
-    type: "date",
-    placeholder: "DD/MM/YYYY",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Availability Till",
-    type: "date",
-    placeholder: "DD/MM/YYYY",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Phone",
-    type: "tel",
-    placeholder: "+92 300 1234567",
-    required: true,
-    gridCols: 2,
-  },
-  {
-    label: "Pickup Location",
-    type: "text",
-    placeholder: "123 Main St, City, Country",
-    required: true,
-    gridCols: 2,
-  },
-  {
-    label: "Password",
-    type: "password",
-    placeholder: "Enter your password",
-    required: true,
-    gridCols: 1,
-  },
-  {
-    label: "Confirm Password",
-    type: "password",
-    placeholder: "Confirm your password",
-    required: true,
-    gridCols: 1,
-  },
-];
 
-export default function NewRenterForm() {
+
+const getCookieValue = (name) => {
+	const cookies = document.cookie.split(';');
+	for (const cookie of cookies) {
+		const [cookieName, cookieValue] = cookie.split('=');
+		if(cookieName.trim() === name.trim()) {
+			return cookieValue.trim();
+		}
+	}
+	return null;
+  };
+
+
+export default function NewRenterForm({socket}) {
   const {
     register,
     handleSubmit,
@@ -97,10 +24,180 @@ export default function NewRenterForm() {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // You can perform further actions with the form data here
-  };
+  const [car_details,setCarDetails] = React.useState({
+		make: "",
+		model: "",
+		year: "",
+		city: "",
+		"rental price": "",
+		"pickup location": "",
+		"additional details": "",
+		"availability from": "",
+		"availability till": "",
+		"car documents": [],
+		"car pictures": [],
+		"plate number":"",
+		owner: getCookieValue("username"),
+		ownerDisplayName: "",
+    phone: ""
+
+	})
+
+
+  const fields = [
+    {
+      label: "Make",
+      type: "text",
+      name: "make",
+      value: car_details.make,
+      placeholder: ",e.g. Toyota",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Model",
+      name: "model",
+      value: car_details.model,
+      type: "text",
+      placeholder: ",e.g. Corolla Grande",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Year",
+      name: "year",
+      value: car_details.year,
+      type: "number",
+      placeholder: ",e.g. 2000",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "City",
+      type: "text",
+      name: "city",
+      value: car_details.city,
+      placeholder: ",e.g. Lahore",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Plate Number",
+      type: "text",
+      name: "plate number",
+      value: car_details["plate number"],
+      placeholder: ",e.g. ABC-123",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Rental Price",
+      type: "number",
+      name: "rental price",
+      value: car_details["rental price"],
+      placeholder: ",e.g. 10000 (in PKR)",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Availability From",
+      type: "date",
+      name: "availability from",
+      value: car_details["availability from"],
+      placeholder: "DD/MM/YYYY",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Availability Till",
+      name: "availability till",
+      value: car_details["availability till"],
+      type: "date",
+      placeholder: "DD/MM/YYYY",
+      required: true,
+      gridCols: 1,
+    },
+    {
+      label: "Phone",
+      name: "phone",
+      value: car_details.phone,
+      type: "tel",
+      placeholder: "+92 300 1234567",
+      required: true,
+      gridCols: 2,
+    },
+    {
+      label: "Pickup Location",
+      name: "pickup location",
+      value: car_details["pickup location"],
+      type: "text",
+      placeholder: "123 Main St, City, Country",
+      required: true,
+      gridCols: 2,
+    }
+  ];
+
+  
+	function changeCarDetails(e) {
+		if(e.target.name === "rental price" && isNaN(e.target.value)) {
+			alert("Please enter a valid number")
+			return
+		}
+		setCarDetails({
+			...car_details,
+			[e.target.name] : e.target.value
+		})
+		console.log(car_details)
+	}
+
+	function submitCar(event) {
+    event.preventDefault();
+    if(car_details.make === "" || car_details.model === "" || car_details.year === "" || car_details.city === "" || car_details["plate number"] === "" || car_details["rental price"]=== "" || car_details["pickup location"] === "" || car_details["availability from"]=== "" || car_details["availability till"] === "") {
+			alert("Please fill all the fields")
+			return
+		}
+		socket.emit("carform",car_details)
+		console.log("car detail have been sent!")
+	
+	}
+
+
+	React.useEffect(()=>{
+		socket.on("carform",(status)=>{
+			if(status == "successfull") {
+				alert("Your car has been stored Successfully")
+			}
+			else {
+				alert("Car posting Failed")
+			}
+		})
+		socket.on("get_display_name",(display_name)=>{
+			setCarDetails({
+				...car_details,
+				ownerDisplayName: display_name
+			})
+		})
+		return ()=>{
+			socket.off("carform")
+			socket.off("get_display_name")
+		}
+	},[socket])
+
+	React.useEffect(()=>{
+    if(getCookieValue("email") === null) {
+      window.location.href = "/login"
+    }
+		socket.emit("get_display_name", getCookieValue("email"))
+	},[])
+  
+
+
+
+
+
+
+
+
   return (
     <div>
       <div className="container mx-auto h-screen">
@@ -114,13 +211,13 @@ export default function NewRenterForm() {
         >
           <div className="lg:w-7/12 pb-10 pt-5 w-full p-4 flex flex-wrap justify-center shadow-2xl rounded-md bg-gradient-to-b from-gray-900 via-gray-700 to-black">
             <div className="pb-3">
-              <h1 className="text-4xl font-bold text-white"> CloudCar</h1>
+              <h1 className="text-4xl font-bold text-white cursor-pointer" onClick={()=>{window.location.href='/ownerhomepage'}}> CloudCar</h1>
               <h2 className="text-2xl font-bold text-teal-600 pt-5">
                 Rent a Car Form
               </h2>
             </div>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={submitCar}
               className="flex flex-col justify-start items-center w-full m-auto"
             >
               <div className="grid grid-cols-1 mb-6 md:grid-cols-2 gap-3 w-full">
@@ -135,6 +232,7 @@ export default function NewRenterForm() {
                       {field.label}
                     </label>
                     <input
+                      value={field.value}
                       {...register(field.label.toLowerCase(), {
                         required: field.required,
                       })}
@@ -143,6 +241,7 @@ export default function NewRenterForm() {
                       }`}
                       type={field.type}
                       placeholder={field.placeholder}
+                      onChange={changeCarDetails}
                     />
                     {errors[field.label.toLowerCase()] && (
                       <span>This field is required</span>

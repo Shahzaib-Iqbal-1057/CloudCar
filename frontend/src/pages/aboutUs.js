@@ -31,7 +31,7 @@ function AboutUs() {
               </a>
             </li>
             <li>
-              <a className="hover:text-gray-200" href="about-us">
+              <a className="hover:text-gray-200">
                 About Us
               </a>
             </li>
