@@ -12,7 +12,7 @@ function Login() {
 
         <div className="w-full h-100">
 
-          <h1 className="text-4xl text-center font-bold text-teal-600 mb-4">CloudCar</h1>
+        <a href = "/ "><h1 className="text-4xl text-center font-bold text-teal-600 mb-4">CloudCar</h1></a>
 
           <h1 className="text-xl md:text-2xl leading-tight mt-7 text-center text-white">Log in</h1>
 

@@ -86,8 +86,8 @@ export default function Signup() {
         >
           <div className="lg:w-7/12 pb-10 pt-5 w-full p-4 flex flex-wrap justify-center shadow-2xl rounded-md bg-gradient-to-b from-gray-900 via-gray-700 to-black">
             <div className="pb-3">
-              <h1 className="text-4xl font-bold text-white"> CloudCar</h1>
-              <h2 className="text-2xl font-bold text-teal-600 pt-5">
+              <a href = "/ "><h1 className="text-4xl font-bold text-teal-600">CloudCar</h1></a>
+              <h2 className="text-2xl font-bold text-white pt-5">
                 SignUp Form
               </h2>
             </div>

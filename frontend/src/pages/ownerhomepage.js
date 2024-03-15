@@ -36,7 +36,7 @@ const OwnerHomePage = ({ socket }) => {
           {/* <!-- navbar --> */}
           <nav className="flex justify-between bg-teal-600 text-black w-screen">
             <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-              <a className="text-3xl font-bold font-heading" href="#">
+              <a className="text-3xl font-bold font-heading" href="/ ">
                 {/* <!-- <img className="h-9" src="logo.png" alt="logo"> --> */}
                 CloudCar
               </a>

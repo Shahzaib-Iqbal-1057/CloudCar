@@ -14,7 +14,7 @@ function AboutUs() {
       {/* Section 1 */}
       <nav className="flex justify-between bg-teal-600 text-black w-screen">
         <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-          <a className="text-3xl font-bold font-heading" href="#">
+          <a className="text-3xl font-bold font-heading" href="/ ">
             {" "}
             CloudCar{" "}
           </a>
@@ -40,7 +40,7 @@ function AboutUs() {
 
           {/* <!-- Log In --> */}
           <div className="hidden xl:flex items-center space-x-3 items-center">
-            <a className="hover:text-gray-200" href="login">
+            <a className="hover:gray-200" href="login">
               <svg
                 className="w-6 h-6 mr-2"
                 viewBox="0 0 24 24"
@@ -59,7 +59,7 @@ function AboutUs() {
             <a className="flex items-center hover:text-gray-200" href="#"></a>
 
             {/* <!-- Sign Up   --> */}
-            <a className="flex items-center hover:text-gray-200" href="signup">
+            <a className="flex items-center hover:text-gray-700 transition-colors" href="signup">
               <svg
                 fill="#000000"
                 className="h-6 w-6 hover:text-gray-200"
