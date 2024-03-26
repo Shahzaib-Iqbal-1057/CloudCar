@@ -33,8 +33,12 @@ const eventHanlder = (socket, io) => {
             return;
         }
 
-        if(data_verification_response === "invalid_phone_number"){
-            io.to(socket.id).emit("signup", "invalid_phone_number")
+        if(data_verification_response === "invalid_phone_number_length"){
+            io.to(socket.id).emit("signup", "invalid_phone_number_length")
+            return;
+        }
+        if(data_verification_response === "invalid_phone_number_type"){
+            io.to(socket.id).emit("signup", "invalid_phone_number_type")
             return;
         }
         if(data_verification_response === "invalid_email"){
@@ -50,12 +54,13 @@ const eventHanlder = (socket, io) => {
         //signup logic here(will be using the database here)
 
         //Following is an example of how database will be accessed and used to store the data
+        console.log("about to store user : ", data)
         try {
             const hashedPassword = await bcrypt.hash(data.password, 10);
             const newUser = new User({
                 email : data.email,
                 password: hashedPassword, 
-                phoneNumber: data.phone_number,
+                phone: data.phone,
                 city: data.city,
                 postalCode: data.postal_code,
                 address: data.address,

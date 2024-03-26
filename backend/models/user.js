@@ -12,23 +12,23 @@ const user = new Schema({
     },
     displayName: {
         type: String,
-        required: true
+        required: false
     },
     role: {
         type: String,
         required: true
     },
-    phoneNumber: {
-        type: Number,
+    phone: {
+        type: String,
         required: true
     },
     city: {
         type: String,
-        required: true
+        required: false
     },
     postalCode: {
         type: String,
-        required: true
+        required: false
     },
     address: {
         type: String,

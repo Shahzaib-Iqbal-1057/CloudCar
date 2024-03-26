@@ -28,13 +28,36 @@ export default async function verifyData(data) {
     }
 
     if(!upperCaseTest || !numberTest){
-        return 'weak_password';
+        return "weak_password";
     }
 
-    if (data.phone_number.length !== 10) {
-        return 'invalid_phone_number';    
+    if (data.phone.length !== 10) {
+        return "invalid_phone_number_length";    
+    }
+
+    if (!/^\d+$/.test(data.phone)) {
+        console.log("Phone type incorrect:", data.phone);
+        return "invalid_phone_number_type";
     }
     
+    // let phoneNumber = parseInt(data.phone); // Parse phone number string into an integer
+
+    // if (phoneNumber.toString().length !== 10) {
+    //     console.log("Phone type or length incorrect:", data.phone);
+    //     return "invalid_phone_number_length";
+    // }
+
+    // if (isNaN(phoneNumber))
+    // {
+    //     console.log("Phone number ki type kharab hai", phoneNumber);
+    //     return "invalid_phone_number_type";
+    // }
+
+    // if (!/^\d+$/.test(data.phone)) {
+    //     console.log("Phone format incorrect:", data.phone);
+    //     return "invalid_phone_number_type";
+    // }
+
 
     let emailTest = false;
     for (let i = 0; i < data.email.length; i++) {

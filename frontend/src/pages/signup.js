@@ -68,7 +68,7 @@ export default function Signup({socket}) {
       name: "phone",
       type: "tel",
       value: signup_data.phone,
-      placeholder: "+92 300 1234567",
+      placeholder: "03001234567",
       required: true,
       gridCols: 2,
     },
@@ -131,7 +131,7 @@ export default function Signup({socket}) {
 	function handleSignup(event) {
     event.preventDefault()
     console.log("signup data : ", signup_data)
-		if(signup_data.password != signup_data["confirm password"]) {
+		if(signup_data.password !== signup_data["confirm password"]) {
 			alert("Passwords don't match")
 			return
 		}
@@ -145,22 +145,27 @@ export default function Signup({socket}) {
 	}
 	React.useEffect(()=>{
 		socket.on("signup",(status)=>{
-			if(status == "successfull") {
+      console.log("STATUS: ", status);
+			if(status === "successfull") {
 				alert("Signup Successfull")
-        window.location.href = '/ownerhomepage'
+        window.location.href = '/login'
 			}
 			else {
 				if(status === "username_already_exists") {
 					alert("Email already exists")
 				}
 				if(status === "weak_password") {
-					alert("Password is weak, It should be at least 8 characters, 1 uppercase, and 1 number")
+          console.log("STATUS password ka", status);
+					alert("Password is weak. It should be at least 8 characters including 1 uppercase character, and a number")
 				}
 				if(status === "invalid_email") {
-					alert("Invalid email")
+					alert("Invalid . Your email must contain '@' and a '.' characters.")
 				}
-				if(status === "invalid_phone_number") {
-					alert("Invalid phone number")
+				if(status === "invalid_phone_number_length") {
+					alert("Invalid phone number. Phone number entered must be a 10-digit number.")
+				}
+        if(status === "invalid_phone_number_type") {
+					alert("Invalid phone number. Phone number entered must be numbers only.")
 				}
 			}
 		})

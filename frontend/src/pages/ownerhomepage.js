@@ -3,30 +3,26 @@ import React from "react";
 // import type { ButtonProps } from "@material-tailwind/react";
 
 const getCookieValue = (name) => {
-	const cookies = document.cookie.split(';');
-	for (const cookie of cookies) {
-		const [cookieName, cookieValue] = cookie.split('=');
-		if(cookieName.trim() === name.trim()) {
-			return cookieValue.trim();
-		}
-	}
-	return null;
-  };
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.trim().split('=');
+      if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+      }
+  }
+  return null;
+};
 
 
 const OwnerHomePage = ({ socket }) => {
-
-
-
-
-
-  React.useEffect(()=> {
-    console.log("document cookie : ", document.cookie)
+  
+  React.useEffect(() => {
+    console.log("document cookie : ", document.cookie);
     console.log("cookie value : ", getCookieValue('email'));
-    if(getCookieValue('username') === "" || getCookieValue('username') === null){
-      window.location.href = "/login";
+    if (getCookieValue('email') === "" || getCookieValue('email') === null) {
+        window.location.href = "/login";
     }
-  },[])
+}, []);
 
 
 
