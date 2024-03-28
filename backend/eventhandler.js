@@ -61,13 +61,9 @@ const eventHanlder = (socket, io) => {
                 email : data.email,
                 password: hashedPassword, 
                 phone: data.phone,
-                city: data.city,
-                postalCode: data.postal_code,
                 address: data.address,
                 role: "customer",
-                displayName: data.full_name,
-                frontPictureCNIC: data.front_picture_cnic,
-                backPictureCNIC: data.back_picture_cnic,
+                displayName: data["display name"],
                 //other data
             }); 
             const savedUser = await newUser.save(); 

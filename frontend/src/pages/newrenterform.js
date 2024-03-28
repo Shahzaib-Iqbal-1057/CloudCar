@@ -37,7 +37,7 @@ export default function NewRenterForm({socket}) {
 		"car documents": [],
 		"car pictures": [],
 		"plate number":"",
-		owner: getCookieValue("username"),
+		owner: getCookieValue("email"),
 		ownerDisplayName: "",
     phone: ""
 
@@ -156,6 +156,7 @@ export default function NewRenterForm({socket}) {
 			alert("Please fill all the fields")
 			return
 		}
+    console.log("details : ", car_details)
 		socket.emit("carform",car_details)
 		console.log("car detail have been sent!")
 	

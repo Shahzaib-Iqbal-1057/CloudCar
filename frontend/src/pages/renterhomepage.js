@@ -19,7 +19,7 @@ const getCookieValue = (name) => {
 const RenterHomePage = ({ socket }) => {
 
   React.useEffect(()=> {
-    if(getCookieValue('username') === "" || getCookieValue('username') === null){
+    if(getCookieValue('email') === "" || getCookieValue('email') === null){
       window.location.href = "/login";
     }
   },[])
