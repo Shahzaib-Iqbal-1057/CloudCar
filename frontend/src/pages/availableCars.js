@@ -11,25 +11,6 @@ const getCookieValue = (name) => {
   return null;
 };
 
-const ProductObject = (props) => {
-  console.log("product : ", props.product.ownerDisplayName)
-  return (
-    <div className="bg-cover bg-center bg-no-repeat h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110" style={{ backgroundImage: `url(${props.product.imageUrl})` }}>
-    <div className="absolute inset-0 bg-black bg-opacity-50 p-4 text-white flex flex-col justify-between rounded-md">
-      <div>
-        <h3 className="text-lg font-semibold mb-2">{props.product.make}</h3>
-        <div className='flex flex-col'>
-          <span className="text-green-600 font-semibold">{props.product.model}</span>
-          <span className="text-green-600 font-semibold">Owner : {props.product.ownerDisplayName}</span>
-        </div>
-        {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
-      </div>
-    </div>
-  </div>
-  );
-};
-  
-  
 
 
 const AvailableCars = ({ socket }) => {
@@ -53,7 +34,7 @@ const AvailableCars = ({ socket }) => {
     return (
       <div
         className="bg-cover bg-center bg-no-repeat h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110"
-        style={{ backgroundImage: `url(${props.product.imageUrl})` }}
+        style={{ backgroundImage: `url(${props.product.images[0]})` }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 p-4 text-white flex flex-col justify-between rounded-md">
           <div>

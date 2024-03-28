@@ -1,7 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
-
+import axios from 'axios'
+import { Image } from 'cloudinary-react';
+ 
 
 
 const getCookieValue = (name) => {
@@ -35,11 +37,11 @@ export default function NewRenterForm({socket}) {
 		"availability from": "",
 		"availability till": "",
 		"car documents": [],
-		"car pictures": [],
 		"plate number":"",
 		owner: getCookieValue("email"),
 		ownerDisplayName: "",
-    phone: ""
+    phone: "",
+    images: []
 
 	})
 
@@ -150,18 +152,41 @@ export default function NewRenterForm({socket}) {
 		console.log(car_details)
 	}
 
-	function submitCar(event) {
+	 async function submitCar(event) {
     event.preventDefault();
-    if(car_details.make === "" || car_details.model === "" || car_details.year === "" || car_details.city === "" || car_details["plate number"] === "" || car_details["rental price"]=== "" || car_details["pickup location"] === "" || car_details["availability from"]=== "" || car_details["availability till"] === "") {
+
+    if(car_details.make === "" || car_details.model === "" || car_details.year === "" || car_details.city === "" || car_details["plate number"] === "" || car_details["rental price"]=== "" || car_details["pickup location"] === "" || car_details["availability from"]=== "" || car_details["availability till"] === "" || car_details.images.length === 0 || car_details.phone === "") {
 			alert("Please fill all the fields")
 			return
 		}
-    console.log("details : ", car_details)
-		socket.emit("carform",car_details)
-		console.log("car detail have been sent!")
-	
-	}
+    if(car_details.images.length > 5) {
+      alert("Please upload a maximum of 5 images")
+      return
+    }
+    console.log("details being sent : ", car_details)
 
+   //constructing images and uploading them to cloud
+    let image_urls = []
+
+    for(let i=0;i<car_details.images.length;i++) {
+      const formData = new FormData();
+      formData.append('file', car_details.images[i]);
+      formData.append('upload_preset', 'lgzz6pc4');
+
+      try {
+        const response = await axios.post('https://api.cloudinary.com/v1_1/dgh0rch3f/upload', formData);
+        console.log("response from cloudinary",response)
+        image_urls.push(response.data.secure_url)
+      }
+      catch {
+        console.log("error uploading image")
+      }
+    }
+
+    car_details.images = image_urls
+		socket.emit("carform",car_details)
+
+	}
 
 	React.useEffect(()=>{
 		socket.on("carform",(status)=>{
@@ -190,12 +215,6 @@ export default function NewRenterForm({socket}) {
     }
 		socket.emit("get_display_name", getCookieValue("email"))
 	},[])
-  
-
-
-
-
-
 
 
 
@@ -250,8 +269,23 @@ export default function NewRenterForm({socket}) {
                   </div>
                 ))}
               </div>
+              <div className="flex flex-col gap-2 w-full">
+                <label className="font-semibold text-teal-600">Upload Images (Max 5)</label>
+                <input 
+                  type="file" 
+                  multiple 
+                  accept="image/*" 
+                  className="bg-gray-600 border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 focus:border-red-500"
+                  onChange={(event) => {
+                    const files = Array.from(event.target.files);  
+                    setCarDetails((car_details_previous)=>{
+                      return {...car_details_previous, images: files}
+                    })
+                  }}    
+                />
+              </div>
 
-              <div className="w-full text-left">
+              <div className="w-full text-left mt-5">
                 <button
                   type="submit"
                   className="flex justify-center items-center gap-2 w-full py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 lg:m-0 md:px-6"

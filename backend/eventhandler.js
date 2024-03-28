@@ -112,6 +112,37 @@ const eventHanlder = (socket, io) => {
     socket.on("carform",async (data)=>{
         console.log("car form data",data)
         //car form logic here(will be using the database here)
+
+        //looking if car is already listed from number plate, if yes then update the car details
+        const existingCar = await Car.findOne({ plateNumber: data["plate number"] });
+        if(existingCar) {
+            console.log("car already exists, updating car details")
+            try {
+                const updatedCar = await Car.findOneAndUpdate
+                (
+                    { plateNumber: data["plate number"] },
+                    {
+                        make: data.make,
+                        model: data.model,
+                        variant: data.year,
+                        plateNumber: data["plate number"],
+                        price: data["rental price"],
+                        location: data["pickup location"],
+                        startDate: data["availability from"],
+                        endDate: data["availability till"],
+                        owner: data.owner,
+                        ownerDisplayName: data.ownerDisplayName,
+                        images: data.images
+                    }
+                );
+                }
+            catch(error) {
+                console.log("error updating car",error)
+                io.to(socket.id).emit("carform", "failed")
+            }
+            return 
+        }        
+
         try {
             const newCar = new Car({
                 make: data.make,
@@ -123,9 +154,11 @@ const eventHanlder = (socket, io) => {
                 startDate: data["availability from"],
                 endDate: data["availability till"],
                 owner: data.owner,
-                ownerDisplayName: data.ownerDisplayName
+                ownerDisplayName: data.ownerDisplayName,
+                images: data.images
                 //other data
             }); 
+            console.log("new car : ",newCar)
             const savedCar = await newCar.save(); 
             console.log('Car form submitted:', savedCar);
             io.to(socket.id).emit("carform", "successfull")
