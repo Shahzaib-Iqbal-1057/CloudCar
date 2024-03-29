@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 const getCookieValue = (name) => {
   const cookies = document.cookie.split(";");
@@ -14,20 +15,38 @@ const getCookieValue = (name) => {
 const AvailableCars = ({ socket }) => {
   const [cars, setCars] = React.useState([]);
 
+  const location = useLocation();
+
+  // Extract pathname, search, and hash from the location object
+  const { pathname, search, hash } = location;
+
+  // Example: Extracting query parameters from search
+  const searchParams = new URLSearchParams(search);
+  const searchQuery = searchParams.get("searchQuery");
+
+  
   React.useEffect(() => {
     socket.emit("availablecars", getCookieValue("username"));
   }, []);
 
+  
   React.useEffect(() => {
     socket.on("availablecars", (data) => {
-      setCars(data);
-      console.log("available cars", data);
+      // If there's a search query, filter the cars based on the search query
+      const filteredCars = searchQuery
+        ? data.filter(
+            (car) =>
+              car.make.toLowerCase() ===
+              decodeURIComponent(searchQuery).toLowerCase()
+          )
+        : data;
+      setCars(filteredCars);
+      
     });
     return () => {
       socket.off("availablecars");
     };
-  }, [socket]);
-
+  }, [socket, searchQuery]); // Add searchQuery to the dependency array
   const ProductObject = (props) => {
     return (
       <div className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110">
@@ -46,14 +65,19 @@ const AvailableCars = ({ socket }) => {
           <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
             <div>
               <h3 className="text-lg font-semibold mb-2">
-              <span className="font-semibold underline">Car</span>: <span className="text-gray-300">{props.product.make}</span>
+                <span className="font-semibold underline">Car</span>:{" "}
+                <span className="text-gray-300">{props.product.make}</span>
               </h3>
               <div className="flex flex-col mt-10">
                 <span className="text-black">
-                  <span className="font-semibold underline">Model</span>: <span className="text-gray-300">{props.product.model}</span>
+                  <span className="font-semibold underline">Model</span>:{" "}
+                  <span className="text-gray-300">{props.product.model}</span>
                 </span>
                 <span className="text-black">
-                <span className="font-semibold underline">Owner</span>: <span className="text-gray-300">{props.product.ownerDisplayName}</span>
+                  <span className="font-semibold underline">Owner</span>:{" "}
+                  <span className="text-gray-300">
+                    {props.product.ownerDisplayName}
+                  </span>
                 </span>
               </div>
               {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}

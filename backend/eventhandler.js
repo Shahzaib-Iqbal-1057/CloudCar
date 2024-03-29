@@ -201,6 +201,19 @@ const eventHanlder = (socket, io) => {
             console.log("error getting listed cars",error)
         }
     })
+
+    socket.on("handleSearchCars", async (searchQuery) => {
+        try {
+            
+            const searchResultCars = await Car.find({ make: searchQuery }); // Adjust the query to match the make field
+        
+            // Send the search results and redirection URL back to the frontend
+            io.to(socket.id).emit("searchResultCars", { cars: searchResultCars, redirectUrl: "/availablecars" });
+        } catch (error) {
+            console.log("error getting search result cars", error);
+            io.to(socket.id).emit("searchResultCars", { error: "Failed to fetch search results" });
+        }
+    });
 };
 export default eventHanlder;
 

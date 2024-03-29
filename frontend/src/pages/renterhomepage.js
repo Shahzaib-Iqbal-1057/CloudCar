@@ -2,29 +2,53 @@ import React from "react";
 // import { Button } from "@material-tailwind/react";
 // import type { ButtonProps } from "@material-tailwind/react";
 
-
 const getCookieValue = (name) => {
-	const cookies = document.cookie.split(';');
-	for (const cookie of cookies) {
-		const [cookieName, cookieValue] = cookie.split('=');
-		if(cookieName.trim() === name.trim()) {
-			return cookieValue.trim();
-		}
-	}
-	return null;
-  };
-
-
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split("=");
+    if (cookieName.trim() === name.trim()) {
+      return cookieValue.trim();
+    }
+  }
+  return null;
+};
 
 const RenterHomePage = ({ socket }) => {
-
-  React.useEffect(()=> {
-    if(getCookieValue('email') === "" || getCookieValue('email') === null){
+  React.useEffect(() => {
+    if (getCookieValue("email") === "" || getCookieValue("email") === null) {
       window.location.href = "/login";
     }
-  },[])
-  
+  }, []);
 
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  // Function to handle search button click
+  const handleSearchCars = (e) => {
+    console.log("searchQuery jaa rahi hai");
+    e.preventDefault();
+    // Emit the search query to the backend
+    socket.emit("handleSearchCars", searchQuery);
+  };
+
+  React.useEffect(() => {
+    // Listen for search results from the backend
+    socket.on("searchResultCars", ({ cars, redirectUrl, error }) => {
+      if (error) {
+        console.error("Error fetching search results:", error);
+        // Handle error if needed
+      } else if (cars && redirectUrl) {
+        // Redirect to available cars page with search results
+        window.location.href = `${redirectUrl}?searchQuery=${encodeURIComponent(
+          searchQuery
+        )}`;
+      }
+    });
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      socket.off("searchResults");
+    };
+  }, [socket, searchQuery]);
 
   return (
     <>
@@ -32,7 +56,10 @@ const RenterHomePage = ({ socket }) => {
         <section className="relative mx-auto">
           <nav className="flex justify-between bg-teal-600 text-black w-screen">
             <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-              <a className="text-3xl font-bold font-heading" href="ownerhomepage">
+              <a
+                className="text-3xl font-bold font-heading"
+                href="ownerhomepage"
+              >
                 CloudCar
               </a>
               <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
@@ -194,11 +221,11 @@ const RenterHomePage = ({ socket }) => {
         style={{
           position: "absolute",
           left: "930px",
-          top:"400px",
-          width:"30%"
+          top: "400px",
+          width: "30%",
         }}
       >
-        <form class="max-w-md mx-auto">
+        <form class="max-w-md mx-auto" onSubmit={handleSearchCars}>
           <label
             for="default-search"
             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -229,9 +256,11 @@ const RenterHomePage = ({ socket }) => {
               class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search by Location, Date, or Car Model"
               required
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button
-              onClick={(e) => {e.preventDefault(); window.location.href = "/availablecars"}}
+              //onClick={(e) => {e.preventDefault(); window.location.href = "/availablecars"}}
               class="text-white absolute end-2.5 bottom-2.5 bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-black dark:hover:bg-teal-600 dark:focus:ring-blue-800"
             >
               Search
