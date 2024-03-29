@@ -206,15 +206,23 @@ function Main() {
           </div>
         </div>
 
-        {/* <h2 id="form" className="mt-8 text-xl font-bold text-indigo-700 border-b border-indigo-700 pb-1">Get PDF</h2>
+        <h2 id="form" className="mt-8 text-xl font-bold text-white border-b border-white pt-4 pb-1">Ask Us</h2>
         <form className="mt-4">
           <div className="flex flex-col sm:flex-row">
             <input type="text" placeholder="Your Name" className="w-full sm:w-1/2 px-3 py-2 border border-gray-400 rounded-lg mb-2 sm:mr-2" />
             <input type="email" placeholder="Your Email" className="w-full sm:w-1/2 px-3 py-2 border border-gray-400 rounded-lg mb-2 sm:ml-2" />
           </div>
           <textarea placeholder="Message" className="w-full px-3 py-2 border border-gray-400 rounded-lg mb-2" rows="4"></textarea>
-          <button type="submit" className="w-full bg-pink-500 text-indigo-100 py-2 px-4 font-bold rounded-full text-base hover:bg-pink-600 transition duration-500">Get PDF</button>
-        </form> */}
+          {/* <button type="submit" className="w-full bg-teal-600 text-indigo-100 py-2 px-4 font-bold rounded-full text-base hover:bg-teal-500 transition duration-500">ASK</button> */}
+          <div className="flex justify-center items-center ">
+            <button type="submit" className="w-1/3 bg-teal-600 text-indigo-100 py-2 px-4 font-bold rounded-full text-base hover:bg-teal-500 transition duration-500">
+              ASK
+            </button>
+          </div>
+
+        </form>
+
+
       </div>
     </main>
   );
