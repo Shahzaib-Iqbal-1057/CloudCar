@@ -11,8 +11,6 @@ const getCookieValue = (name) => {
   return null;
 };
 
-
-
 const AvailableCars = ({ socket }) => {
   const [cars, setCars] = React.useState([]);
 
@@ -32,22 +30,34 @@ const AvailableCars = ({ socket }) => {
 
   const ProductObject = (props) => {
     return (
-      <div
-        className="bg-cover bg-center bg-no-repeat h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110"
-        style={{ backgroundImage: `url(${props.product.images[0]})` }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-50 p-4 text-white flex flex-col justify-between rounded-md">
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Car : {props.product.make}</h3>
-            <div className="flex flex-col">
-              <span className="text-green-600 font-semibold">
-                Model : {props.product.model}
-              </span>
-              <span className="text-green-600 font-semibold">
-                Owner : {props.product.ownerDisplayName}
-              </span>
+      <div className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110">
+        {/* right half of the product card */}
+        <div
+          className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
+          style={{ backgroundImage: `url(${props.product.images[0]})` }}
+        ></div>
+
+        {/* left half of the product cards */}
+        <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
+          <div
+            className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
+            style={{ backgroundImage: `url(${props.product.images[0]})` }}
+          ></div>
+          <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">
+              <span className="font-semibold underline">Car</span>: <span className="text-gray-300">{props.product.make}</span>
+              </h3>
+              <div className="flex flex-col mt-10">
+                <span className="text-black">
+                  <span className="font-semibold underline">Model</span>: <span className="text-gray-300">{props.product.model}</span>
+                </span>
+                <span className="text-black">
+                <span className="font-semibold underline">Owner</span>: <span className="text-gray-300">{props.product.ownerDisplayName}</span>
+                </span>
+              </div>
+              {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
             </div>
-            {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
           </div>
         </div>
       </div>
@@ -163,10 +173,14 @@ const AvailableCars = ({ socket }) => {
               </svg>
             </a>
           </nav>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-5 ml-5">
-            {cars.map((product) => (
-            <ProductObject product={product} key={product.id} />
-            ))}
+          <div className="relative w-screen h-screen">
+            <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
+                {cars.map((product) => (
+                  <ProductObject product={product} key={product.id} />
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 

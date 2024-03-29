@@ -41,11 +41,13 @@ const ListedCars = ({socket}) => {
         <div className="flex flex-col bg-grey-100 min-h-screen bg-gradient-to-t from-blue-900">
         <main className="flex-grow container mx-auto mt-8">
         <h2 className="text-2xl text-black font-semibold mb-4 text-white">Cars Listed</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-5 bg-red-500">
             {cars.map((product) => (
             <ProductObject product={product} key={product.id} />
             ))}
         </div>
+
+        
         </main>
         <div className="flex justify-around p-4">
         {/* <button
