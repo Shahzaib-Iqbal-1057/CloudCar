@@ -12,7 +12,11 @@ const getCookieValue = (name) => {
   return null;
 };
 
+
+
 const AvailableCars = ({ socket }) => {
+
+
   const [cars, setCars] = React.useState([]);
 
   const location = useLocation();
@@ -47,9 +51,12 @@ const AvailableCars = ({ socket }) => {
       socket.off("availablecars");
     };
   }, [socket, searchQuery]); // Add searchQuery to the dependency array
+
+
+
   const ProductObject = (props) => {
     return (
-      <div className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110">
+      <div className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer">
         {/* right half of the product card */}
         <div
           className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
@@ -87,6 +94,10 @@ const AvailableCars = ({ socket }) => {
       </div>
     );
   };
+
+
+
+  
 
   return (
     <>
@@ -207,7 +218,6 @@ const AvailableCars = ({ socket }) => {
             </div>
           </div>
         </section>
-
         {/* <div className="black-rectangle flex justify-center absolute w-1250 h-540 left-1/2 bg-black rounded-3xl" ></div> */}
       </div>
     </>
