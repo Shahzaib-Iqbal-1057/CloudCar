@@ -214,6 +214,108 @@ const eventHanlder = (socket, io) => {
             io.to(socket.id).emit("searchResultCars", { error: "Failed to fetch search results" });
         }
     });
+
+
+    //handling event in which a request for car will be recieved, this request will be forwarded to the owner of the car
+    socket.on("requestCar",async (data)=>{
+        console.log("request car data",data)
+        //request car logic here(will be using the database here)
+        //creating custom rental id by extracting the rental ids of existing rentals and adding 1 to the max id
+        const existingRentals = await Rental.find({});
+        let maxRentalId = 0;
+        existingRentals.forEach(rental => {
+            if(parseInt(rental.rentalId) > maxRentalId){
+                maxRentalId = parseInt(rental.rentalId);
+            }
+        });
+        maxRentalId++;
+
+        try {
+            const newRental = new Rental({
+                rentalId: maxRentalId.toString(),
+                status: "pending",
+                car: data.car,
+                owner: data.owner,
+                renter: data.renter,
+                startDate: data.startDate,
+                endDate: data.endDate,
+                ownerImages: data.ownerImages,
+                renterImages: data.renterImages,
+                amount: data.amount
+                //other data
+            }); 
+            const savedRental = await newRental.save(); 
+            console.log('Rental request submitted:', savedRental);
+            io.to(socket.id).emit("requestCar", "successfull")
+        }
+        catch(error) {
+            console.log("error submitting rental request",error)
+            io.to(socket.id).emit("requestCar", "failed")
+        }
+    })
+
+
+
+    //handling event in which a request will be accepted, making the reservation
+    socket.on("acceptRequest",async (data)=>{
+        console.log("accept request data",data)
+        //accept request logic here(will be using the database here)
+        try {
+            const updatedRental = await Rental.findOneAndUpdate
+            (
+                { rentalId: data.rentalId },
+                {
+                    status: "reserved"
+                }
+            );
+            console.log('Rental request accepted:', updatedRental);
+            io.to(socket.id).emit("acceptRequest", "successfull")
+        }
+        catch(error) {
+            console.log("error accepting rental request",error)
+            io.to(socket.id).emit("acceptRequest", "failed")
+        }
+
+        //deleting the car from available cars
+        try {
+            const deletedCar = await Car.findOneAndDelete
+            (
+                { plateNumber: data.car }
+            );
+            console.log('Car deleted from avaiable cars:', deletedCar);
+        }
+        catch(error) {
+            console.log("error deleting car",error)
+        }
+    })
+
+
+    //event in which a message will be sent from one user to the other
+    socket.on("sendMessage",async (data)=>{
+        //code here
+    })
+
+    //event in which user has just logged in and needs to get all the messages from the database if there are any
+    socket.on("getMessages",async (data)=>{
+        //code here
+
+    })
+
+    //event in which user makes a post
+    socket.on("makePost",async (data)=>{
+        //code here
+
+
+    })
+    //event in which a user replies to a post
+    socket.on("replyPost",async (data)=>{
+        //code here
+
+    })
+
+
+
+
 };
 export default eventHanlder;
 

@@ -24,7 +24,7 @@ const car = new Schema({
     },
     ownerDisplayName: {
         type: String,
-        required: true
+        required: false
     },
     startDate:{
         type: String,

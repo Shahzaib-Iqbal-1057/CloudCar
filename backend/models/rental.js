@@ -6,6 +6,10 @@ const rental = new schema({
         type: String,
         required: true,
     },
+    status: {
+        type: String,
+        required: true
+    },
     car: {
         type: String,
         required: true
@@ -50,6 +54,10 @@ const rental = new schema({
         type: [String],
         required: false
     },
+    amount: {
+        type: Number,
+        required: true
+    }
 
 }, {timestamps: true})
 

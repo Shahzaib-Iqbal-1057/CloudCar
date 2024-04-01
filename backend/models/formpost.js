@@ -10,10 +10,27 @@ const post = new schema({
         type: String,
         required: true
     },
-    images: {
-        type: [String],
+    // images: {
+    //     type: [String],
+    //     required: false
+    // }    
+    replies: {
+        type: [{
+            username: {
+                type: String,
+                required: true
+            },
+            text: {
+                type: String,
+                required: true
+            },
+            // images: {
+            //     type: [String],
+            //     required: false
+            // }
+        }],
         required: false
-    }    
+    }
 })
 
 const Post = mongoose.model('Post', post);
