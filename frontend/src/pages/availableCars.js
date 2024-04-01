@@ -20,7 +20,7 @@ const AvailableCars = ({ socket }) => {
   // Extract pathname, search, and hash from the location object
   const { pathname, search, hash } = location;
 
-  // Example: Extracting query parameters from search
+  //Extracting query parameters from search
   const searchParams = new URLSearchParams(search);
   const searchQuery = searchParams.get("searchQuery");
 
