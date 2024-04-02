@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+// import ImageSlider from "./imageSlider";
 
 const getCookieValue = (name) => {
   const cookies = document.cookie.split(";");
@@ -12,103 +13,33 @@ const getCookieValue = (name) => {
   return null;
 };
 
-
-
-const AvailableCars = ({ socket }) => {
-
-
-  const [cars, setCars] = React.useState([]);
+const CarDetails = ({ socket }) => {
+  const [car, setCar] = React.useState([]);
 
   const location = useLocation();
 
   // Extract pathname, search, and hash from the location object
-  const { pathname, search, hash } = location;
+  const { pathname } = location;
 
-  //Extracting query parameters from search
-  const searchParams = new URLSearchParams(search);
-  const searchQuery = searchParams.get("searchQuery");
+  //Extracting carMake from the URL path
+  const carMake = pathname.split("/")[2];
 
-  
   React.useEffect(() => {
     socket.emit("availablecars", getCookieValue("username"));
   }, []);
 
-  
   React.useEffect(() => {
     socket.on("availablecars", (data) => {
       // If there's a search query, filter the cars based on the search query
-      const filteredCars = searchQuery
-        ? data.filter(
-            (car) =>
-              car.make.toLowerCase() ===
-              decodeURIComponent(searchQuery).toLowerCase()
-          )
-        : data;
-      setCars(filteredCars);
-      
+      const selectedCar = data.find(
+        (car) => car.make.toLowerCase() === carMake.toLowerCase()
+      );
+      setCar(selectedCar);
     });
     return () => {
       socket.off("availablecars");
     };
-  }, [socket, searchQuery]); // Add searchQuery to the dependency array
-
-
-
-  const ProductObject = (props) => {
-
-    const handleCardClick = () => {
-      // Construct the URL for the product details page
-      const productUrl = `/cardetails/${props.product.make}`; // Assuming product ID is used for the URL
-  
-      // Navigate to the product details page
-      window.location.href = productUrl;
-    };
-  
-
-    return (
-      <div className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
-      onClick={handleCardClick}>
-        {/* right half of the product card */}
-        <div
-          className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-          style={{ backgroundImage: `url(${props.product.images[0]})` }}
-        ></div>
-
-        {/* left half of the product cards */}
-        <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
-          <div
-            className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-            style={{ backgroundImage: `url(${props.product.images[0]})` }}
-          ></div>
-          <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                <span className="font-semibold underline">Car</span>:{" "}
-                <span className="text-gray-300">{props.product.make}</span>
-              </h3>
-              <div className="flex flex-col mt-10">
-                <span className="text-black">
-                  <span className="font-semibold underline">Model</span>:{" "}
-                  <span className="text-gray-300">{props.product.model}</span>
-                </span>
-                <span className="text-black">
-                  <span className="font-semibold underline">Owner</span>:{" "}
-                  <span className="text-gray-300">
-                    {props.product.ownerDisplayName}
-                  </span>
-                </span>
-              </div>
-              {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-
-
-  
+  }, [socket, carMake]); // Add searchQuery to the dependency array
 
   return (
     <>
@@ -221,11 +152,90 @@ const AvailableCars = ({ socket }) => {
           </nav>
           <div className="relative w-screen h-screen">
             <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
                 {cars.map((product) => (
-                  <a href={`/cardetails/${product.make}`} key={product.id}><ProductObject product={product}/></a>
-                  
+                  <ProductObject product={product} key={product.id} />
                 ))}
+              </div> */}
+
+              <div className="max-w-7xl mx-auto p-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Left Column */}
+                  <div
+                    className="bg-cover bg-center bg-no-repeat w-3/2 h-3/2 mr-5"
+                    style={{
+                      backgroundImage: `url(${car.images})`,
+                    }}
+                  ></div>
+                  {/* <div className="product-imgs -1/h2 w-1/2">
+                    <div className="img-display">
+                      <div className="img-showcase">
+                        <img
+                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_1.jpg"
+                          alt="shoe image"
+                        />
+                        <img
+                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_2.jpg"
+                          alt="shoe image"
+                        />
+                        <img
+                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_3.jpg"
+                          alt="shoe image"
+                        />
+                        <img
+                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg"
+                          alt="shoe image"
+                        />
+                      </div>
+                    </div>
+                  </div> */}
+
+                  {/* {cars.map((product) => (
+                    <ProductObject product={product} key={product.id} />
+                  ))} */}
+
+                  {/* Right Column */}
+                  <div className="product-content text-teal-600">
+                    <h2 className="product-title text-6xl pb-10 pt-10">
+                      {car.make} {car.model}
+                    </h2>
+
+                    <div className="product-detail">
+                      <h2 className=" text-2xl text-white">About this Item:</h2>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Illo eveniet veniam tempora fuga tenetur placeat
+                        sapiente architecto illum soluta consequuntur,
+                        aspernatur quidem at sequi ipsa!
+                      </p>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Consequatur, perferendis eius. Dignissimos, labore
+                        suscipit. Unde.
+                      </p>
+                      <ul>
+                        <li>
+                          Owner: <span>{car.owner}</span>
+                        </li>
+                        <li>
+                          Available: <span>in stock</span>
+                        </li>
+                        <li>
+                          Category: <span>Shoes</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="purchase-info pt-10">
+                      <button class="px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Confirm Booking
+                      </button>
+
+                      <button class="px-4 py-2 ml-5 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Inquire More
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -236,4 +246,4 @@ const AvailableCars = ({ socket }) => {
   );
 };
 
-export default AvailableCars;
+export default CarDetails;
