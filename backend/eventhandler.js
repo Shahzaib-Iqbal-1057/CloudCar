@@ -136,6 +136,8 @@ const eventHanlder = (socket, io) => {
                         price: data["rental price"]
                     }
                 );
+                console.log('Car form updated:', updatedCar);
+                io.to(socket.id).emit("carform", "successfull")
                 }
             catch(error) {
                 console.log("error updating car",error)
@@ -234,17 +236,17 @@ const eventHanlder = (socket, io) => {
         maxRentalId++;
 
         try {
-
+            const car = await Car.findOne({ plateNumber: data.car.plateNumber });
             const newRental = new Rental({
                 rentalId: maxRentalId.toString(),
                 status: "pending",
-                car: data.car,
-                owner: data.car.owner,
+                car: car.plateNumber,
+                owner: car.owner,
                 renter: data.renter,
-                startDate: data.car.startDate,
-                endDate: data.car.endDate,
-                ownerImages: data.car.images,
-                amount: data.car.price
+                startDate: car.startDate,
+                endDate: car.endDate,
+                ownerImages: car.images,
+                amount: car.price
                 //other data
             }); 
             const savedRental = await newRental.save(); 
@@ -258,11 +260,15 @@ const eventHanlder = (socket, io) => {
     })
 
 
-    socket.on("viewCarRequests",async (data)=>{
-        console.log("view car requests data",data)
+    socket.on("viewCarRequests",async (plateNumber)=>{
+        console.log("view car requests data",plateNumber)
         //view car requests logic here(will be using the database here)
+        //extracting car
+
+
         try {
-            const carRequests = await Rental.find({owner: data});
+            const carRequests = await Rental.find({car: plateNumber});
+            console.log("car requests",carRequests)
             //filtering out identical requests
             let uniqueCarRequests = [];
             let uniqueRentalIds = [];
@@ -273,21 +279,13 @@ const eventHanlder = (socket, io) => {
                 }
             }
             ); 
+            console.log("unique car requests",uniqueCarRequests)
             io.to(socket.id).emit("viewCarRequests", uniqueCarRequests)
         }
         catch(error) {
             console.log("error getting car requests",error)
         }
     })
-    
-
-
-
-
-
-
-
-
 
     //handling event in which a request will be accepted, making the reservation
     socket.on("acceptRequest",async (data)=>{
