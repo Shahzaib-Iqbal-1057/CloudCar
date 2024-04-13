@@ -172,6 +172,7 @@ const eventHanlder = (socket, io) => {
 
     socket.on("availablecars",async (data)=>{
         try {
+            console.log("getting available cars : ", data)
             const availableCars = await Car.find({}); 
             io.to(socket.id).emit("availablecars", availableCars)
         }

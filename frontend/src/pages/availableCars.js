@@ -58,12 +58,13 @@ const AvailableCars = ({ socket }) => {
 
     const handleCardClick = () => {
       // Construct the URL for the product details page
-      const productUrl = `/cardetails/${props.product.make}`; // Assuming product ID is used for the URL
+      console.log(props.product)
+      const productUrl = `/cardetails/${props.product.plateNumber}`; // Assuming product ID is used for the URL
   
       // Navigate to the product details page
-      window.location.href = productUrl;
+      // window.location.href = productUrl;
+      console.log("new constructed product url", productUrl)
     };
-  
 
     return (
       <div className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
@@ -223,7 +224,7 @@ const AvailableCars = ({ socket }) => {
             <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
                 {cars.map((product) => (
-                  <a href={`/cardetails/${product.make}`} key={product.id}><ProductObject product={product}/></a>
+                  <a href={`/cardetails/${product.plateNumber}`} key={product.id}><ProductObject product={product}/></a>
                   
                 ))}
               </div>

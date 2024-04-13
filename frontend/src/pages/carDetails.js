@@ -22,8 +22,8 @@ const CarDetails = ({ socket }) => {
   const { pathname } = location;
 
   //Extracting carMake from the URL path
-  const carMake = pathname.split("/")[2];
-
+  const plateNumber = pathname.split("/")[2];
+  console.log("plate number : ",plateNumber);
   React.useEffect(() => {
     socket.emit("availablecars", getCookieValue("username"));
   }, []);
@@ -31,15 +31,16 @@ const CarDetails = ({ socket }) => {
   React.useEffect(() => {
     socket.on("availablecars", (data) => {
       // If there's a search query, filter the cars based on the search query
+      console.log("plate number : ", plateNumber);
       const selectedCar = data.find(
-        (car) => car.make.toLowerCase() === carMake.toLowerCase()
+        (car) => car.plateNumber.toLowerCase() === plateNumber.toLowerCase()
       );
       setCar(selectedCar);
     });
     return () => {
       socket.off("availablecars");
     };
-  }, [socket, carMake]); // Add searchQuery to the dependency array
+  }, [socket, plateNumber]); // Add searchQuery to the dependency array
 
   return (
     <>
