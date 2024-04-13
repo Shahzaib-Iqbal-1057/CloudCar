@@ -132,7 +132,8 @@ const eventHanlder = (socket, io) => {
                         endDate: data["availability till"],
                         owner: data.owner,
                         ownerDisplayName: data.ownerDisplayName,
-                        images: data.images
+                        images: data.images,
+                        price: data["rental price"]
                     }
                 );
                 }
@@ -155,7 +156,8 @@ const eventHanlder = (socket, io) => {
                 endDate: data["availability till"],
                 owner: data.owner,
                 ownerDisplayName: data.ownerDisplayName,
-                images: data.images
+                images: data.images,
+                price: data["rental price"]
                 //other data
             }); 
             console.log("new car : ",newCar)
@@ -232,17 +234,17 @@ const eventHanlder = (socket, io) => {
         maxRentalId++;
 
         try {
+
             const newRental = new Rental({
                 rentalId: maxRentalId.toString(),
                 status: "pending",
                 car: data.car,
-                owner: data.owner,
+                owner: data.car.owner,
                 renter: data.renter,
-                startDate: data.startDate,
-                endDate: data.endDate,
-                ownerImages: data.ownerImages,
-                renterImages: data.renterImages,
-                amount: data.amount
+                startDate: data.car.startDate,
+                endDate: data.car.endDate,
+                ownerImages: data.car.images,
+                amount: data.car.price
                 //other data
             }); 
             const savedRental = await newRental.save(); 
@@ -254,6 +256,36 @@ const eventHanlder = (socket, io) => {
             io.to(socket.id).emit("requestCar", "failed")
         }
     })
+
+
+    socket.on("viewCarRequests",async (data)=>{
+        console.log("view car requests data",data)
+        //view car requests logic here(will be using the database here)
+        try {
+            const carRequests = await Rental.find({owner: data});
+            //filtering out identical requests
+            let uniqueCarRequests = [];
+            let uniqueRentalIds = [];
+            carRequests.forEach(rental => {
+                if(!uniqueRentalIds.includes(rental.rentalId)){
+                    uniqueRentalIds.push(rental.rentalId);
+                    uniqueCarRequests.push(rental);
+                }
+            }
+            ); 
+            io.to(socket.id).emit("viewCarRequests", uniqueCarRequests)
+        }
+        catch(error) {
+            console.log("error getting car requests",error)
+        }
+    })
+    
+
+
+
+
+
+
 
 
 

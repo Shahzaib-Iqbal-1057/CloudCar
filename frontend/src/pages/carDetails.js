@@ -37,10 +37,32 @@ const CarDetails = ({ socket }) => {
       );
       setCar(selectedCar);
     });
+    socket.on("requestCar", (data) => {
+      if (data === "successfull") {
+        alert("Request sent successfully");
+      }
+      else {
+        alert("Request failed");
+      }
+    })
     return () => {
       socket.off("availablecars");
+      socket.off("requestCar")
     };
   }, [socket, plateNumber]); // Add searchQuery to the dependency array
+
+
+
+  function sendBookingRequest() {
+    console.log("sending data : ", car, getCookieValue("email"));
+    socket.emit("requestCar", {
+      car: car,
+      renter: getCookieValue("email"),
+    });
+  }
+
+
+
 
   return (
     <>
@@ -227,7 +249,7 @@ const CarDetails = ({ socket }) => {
                       </ul>
                     </div>
                     <div className="purchase-info pt-10">
-                      <button class="px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                      <button class="px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={sendBookingRequest}>
                         Confirm Booking
                       </button>
 

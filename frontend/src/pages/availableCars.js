@@ -30,7 +30,7 @@ const AvailableCars = ({ socket }) => {
 
   
   React.useEffect(() => {
-    socket.emit("availablecars", getCookieValue("username"));
+    socket.emit("availablecars", getCookieValue("email"));
   }, []);
 
   

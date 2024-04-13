@@ -56,7 +56,7 @@ const rental = new schema({
     },
     amount: {
         type: Number,
-        required: true
+        required: false
     }
 
 }, {timestamps: true})
