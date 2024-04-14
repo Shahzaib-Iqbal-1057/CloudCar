@@ -2,12 +2,16 @@ import Car from './models/car.js';
 import User from './models/user.js';
 import Image from './models/image.js';
 import Post from './models/formpost.js';
+import Posts from './models/posts.js'
 import Rental from './models/rental.js';
+import Likes from './models/likes.js'
 import Chat from './models/chat.js'; //imported the DB models here, will use the models to interact with the database
 import bcrypt from 'bcrypt'; // for hashing the passwords
 import verifyData from './helperFunctions.js';
 
 
+let loginArray = []
+let loggedIn = "Anonymous"
 
 
 
@@ -82,6 +86,7 @@ const eventHanlder = (socket, io) => {
 
         try {
             const { email, password } = data;
+            loginArray.push(email)
             console.log("login data recieved : ", email, password)
             const existingUser = await User.findOne({ email: email });
 
@@ -332,17 +337,215 @@ const eventHanlder = (socket, io) => {
 
     })
 
-    //event in which user makes a post
-    socket.on("makePost",async (data)=>{
-        //code here
 
+     socket.on("posts", async (data) => {
+        if(!data){
+            return
+        }
+        try {
+            let numPosts = 0
+            try {
+                numPosts = await Posts.countDocuments({});
+            } catch (err) {
+                console.error('Error counting documents:', err);
+            }
+            if(loginArray.length != 0){
+                loggedIn = loginArray[loginArray.length - 1]
+                const user = await User.findOne({ email: loggedIn });
+                if (user) {
+                    loggedIn = user.displayName;
+                } else {
+                    loggedIn = "Anonymous"
+                }
+            }
+            else{
+                loggedIn = "Anonymous"
+            }
+            const newPost = new Posts({
+                postId: numPosts,
+                userName: loggedIn,
+                messageContent: data,
+                dateTime: new Date(),
+                likes: 0,
+                replies: [],
+            });
 
-    })
-    //event in which a user replies to a post
-    socket.on("replyPost",async (data)=>{
-        //code here
+            const savedPost = await newPost.save();
+            io.to(socket.id).emit("posts", "success");
+        } catch (error) {
+            console.log("error submitting post", error);
+            io.to(socket.id).emit("posts", "failed");
+        } 
+        console.log(data)
+    });
 
-    })
+    socket.on("posts2", async (data, postID) => {
+        if(!data){
+            return;
+        }
+        try {
+            let numPosts = 0
+            try {
+                numPosts = await Posts.countDocuments({});
+            } catch (err) {
+                console.error('Error counting documents:', err);
+            }
+
+            if(loginArray.length != 0){
+                loggedIn = loginArray[loginArray.length - 1]
+                const user = await User.findOne({ email: loggedIn });
+                if (user) {
+                    loggedIn = user.displayName;
+                } else {
+                    loggedIn = "Anonymous"
+                }
+            }
+            else{
+                loggedIn = "Anonymous"
+            }
+
+            const newPost = new Posts({
+                postId: numPosts,
+                userName: loggedIn,
+                messageContent: data,
+                dateTime: new Date(),
+                likes: 0,
+                replies: [],
+            });
+
+            const savedPost = await newPost.save();
+            
+            const post = await Posts.findOne({ postId: postID });
+            post.replies.push(numPosts);
+            await post.save();
+            io.to(socket.id).emit("posts2", "success");
+        } catch (error) {
+            console.log("error submitting post", error);
+            io.to(socket.id).emit("posts2", "failed");
+        } 
+        console.log(data)
+    });
+
+    socket.on("like", async (postId) => {
+        console.log(postId)
+        try {
+            if(loginArray.length === 0){
+                socket.emit("like", "You are not logged in.");
+                return
+            }
+            let user = await Likes.findOne({ username: loginArray[loginArray.length - 1]});
+            
+            if (!user) {
+              user = new Likes({ username: loginArray[loginArray.length - 1], likedPosts: [postId] });
+              await user.save();
+              const post = await Posts.findOne({ postId });
+
+                if (!post) {
+                throw new Error('Post not found');
+                }
+                post.likes += 1;
+                await post.save();
+
+            } else {
+                if (!user.likedPosts.includes(postId)) {
+                    user.likedPosts.push(postId);
+                    await user.save();
+                    const post = await Posts.findOne({ postId });
+
+                    if (!post) {
+                    throw new Error('Post not found');
+                    }
+                    post.likes += 1;
+
+                    await post.save();
+                    console.log("kkk")
+                  } else {
+                    console.log("LLLL")
+                    return;
+                  }
+            }
+            
+        } catch (error) {
+            console.error('Error liking post:', error);
+            throw error;
+          }
+        
+      });
+    
+      socket.on("reply", async (postId, replyContent) => {
+        try {
+          await Posts.findByIdAndUpdate(postId, {
+            $push: { replies: { content: replyContent, username: socket.username, dateTime: new Date(), likes: 0 } }
+          });
+          socket.emit("reply", "success");
+        } catch (error) {
+          console.error("Error adding reply:", error);
+          socket.emit("reply", "error");
+        }
+      });
+      
+      socket.on("viewReplies", async (postID) => {
+        try {
+            let arr = [];
+            let post = await Posts.findOne({ postId: postID });
+            arr = post.replies
+
+            let allPosts = await Posts.find();
+            let filteredPosts = []
+            for(let i = 0; i < allPosts.length; i++){
+                let check = false
+                for(let j = 0; j < arr.length; j++){
+                    if(allPosts[i].postId.toString() === arr[j].toString()){
+                        check = true
+                    }
+                }
+                if(check){
+                    filteredPosts.push(allPosts[i])
+                }
+                
+            }
+            if(filteredPosts.length === 0){
+                socket.emit("viewReplies", "Noreplies");
+            }
+            
+          socket.emit("viewReplies", filteredPosts);
+
+        } catch (error) {
+          console.error("Error retrieving posts:", error);
+          socket.emit("viewReplies", "Error retrieving posts");
+        }
+      });
+
+      socket.on("allposts", async () => {
+        try {
+            let arr = [];
+            let posts = await Posts.find();
+            posts.forEach(post => {
+            post.replies.forEach(reply => {
+                arr.push(reply);
+            });
+            });
+
+            let allPosts = await Posts.find();
+            let filteredPosts = []
+            for(let i = 0; i < allPosts.length; i++){
+                let check = false
+                for(let j = 0; j < arr.length; j++){
+                    if(allPosts[i].postId.toString() === arr[j].toString()){
+                        check = true
+                    }
+                }
+                if(!check){
+                    filteredPosts.push(allPosts[i])
+                }
+                
+            }
+          socket.emit("allposts", filteredPosts);
+        } catch (error) {
+          console.error("Error retrieving posts:", error);
+          socket.emit("posts_error", "Error retrieving posts");
+        }
+      });
 
 
 
