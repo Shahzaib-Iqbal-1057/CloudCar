@@ -103,7 +103,8 @@ function Main() {
     <main className="bg-gradient-to-b from-gray-900 via-gray-700 to-black mt-0 w-full flex flex-col items-center pb-16">
       <div className="max-w-4xl mx-4 mt-10">
         <h2 id="how-it-works" className="text-xl font-bold text-white border-b border-white pb-1">How It Works</h2>
-        <p className="mt-4 text-white text-md">Tailwind is designed for rapid development of modern applications. At its core, it is a robust mobile-first design system built with developer experience in mind. After using Tailwind CSS, you will find it difficult to go back to use anything else. Learn all about it in this all-inclusive course.</p>
+        <p className="mt-4 text-white text-md">If you are here to earn money just upload the car details you want to rent and wait for someone to request your car. Provide the keys and it's done. If you are here to rent a car just choose the dates and select a car and it's done. You can see step wise details too!</p>
+        
         <h2 id="advantages" className="mt-8 text-xl font-bold text-white border-b border-white pb-1">Renter</h2>
         
         <div className="flex flex-col sm:flex-row sm:-m-4">
@@ -119,7 +120,7 @@ function Main() {
               </div>
                 
               <div className="font-bold mt-4">Open the website</div>
-              <div className="mt-4 text-gray-600 text-sm tracking-wide">Tailwind's advanced class extraction will leave your project free of custom CSS.</div>
+              <div className="mt-4 text-gray-600 text-sm tracking-wide">Land onto the CloudCar website and login. If you are a new user you can register easily.</div>
             </div>
           </div>
 
@@ -134,7 +135,7 @@ function Main() {
               </div>
               
               <div className="font-bold mt-4">Search for the Car</div>
-              <div className="mt-4 text-gray-600 text-sm tracking-wide">Tailwind is designed with your happiness in mind. The ease of performing changes is refreshing.</div>
+              <div className="mt-4 text-gray-600 text-sm tracking-wide">Search to choose a car among many of the listed cars.</div>
             </div>
           </div>
 
@@ -148,7 +149,7 @@ function Main() {
                 
               </div>
               <div className="font-bold mt-4">Book the Car</div>
-              <div className="mt-4 text-gray-600 text-sm tracking-wide">Tailwind's design is cutting-edge, providing a sleek look to your applications.</div>
+              <div className="mt-4 text-gray-600 text-sm tracking-wide">Once chosen, book the car by entering some details for specific dates.</div>
             </div>
           </div>
 
@@ -170,7 +171,7 @@ function Main() {
               </div>
               
               <div className="font-bold mt-4">Open Website</div>
-              <div className="mt-4 text-gray-600 text-sm tracking-wide">Tailwind's advanced class extraction will leave your project free of custom CSS.</div>
+              <div className="mt-4 text-gray-600 text-sm tracking-wide">Land onto the CloudCar website and login. If you are a new user you can register easily.</div>
             </div>
           </div>
         
@@ -186,7 +187,7 @@ function Main() {
               </div>
               
               <div className="font-bold mt-4">Upload Details</div>
-              <div className="mt-4 text-gray-600 text-sm tracking-wide">Tailwind is designed with your happiness in mind. The ease of performing changes is refreshing.</div>
+              <div className="mt-4 text-gray-600 text-sm tracking-wide">Upload the details of the car along with its pictures to make it available for rent.</div>
             </div>
           </div>
 
@@ -201,7 +202,7 @@ function Main() {
                 
                 </div>
               <div className="font-bold mt-4">Earn</div>
-              <div className="mt-4 text-gray-600 text-sm tracking-wide">Tailwind's design is cutting-edge, providing a sleek look to your applications.</div>
+              <div className="mt-4 text-gray-600 text-sm tracking-wide">Once booked by a renter, the renter will pay you for the car.</div>
             </div>
           </div>
         </div>
