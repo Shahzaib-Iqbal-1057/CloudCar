@@ -78,6 +78,13 @@ const RenterHomePage = ({ socket }) => {
                     About Us
                   </a>
                 </li>
+
+                <li>
+                  <a className="hover:text-gray-200" href="posts">
+                    Discussion Forum
+                  </a>
+                </li>
+
                 {/* <li><a className="hover:text-gray-200" href="#">Contact Us</a></li> */}
               </ul>
               {/* <!-- Header Icons --> */}

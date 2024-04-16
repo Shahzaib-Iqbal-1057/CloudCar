@@ -60,7 +60,7 @@ const OwnerHomePage = ({ socket }) => {
 
                 <li>
                   <a className="hover:text-gray-200" href="posts">
-                    Disucssion Forum
+                    Discussion Forum
                   </a>
                 </li>
 

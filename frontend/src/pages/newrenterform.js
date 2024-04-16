@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import axios from 'axios'
 import { Image } from 'cloudinary-react';
+import { HiOutlineArrowCircleLeft } from 'react-icons/hi';
  
 
 
@@ -230,12 +231,15 @@ export default function NewRenterForm({socket}) {
           }}
         >
           <div className="lg:w-7/12 pb-10 pt-5 w-full p-4 flex flex-wrap justify-center shadow-2xl rounded-md bg-gradient-to-b from-gray-900 via-gray-700 to-black">
+            
             <div className="pb-3">
               <h1 className="text-4xl font-bold text-white cursor-pointer" onClick={()=>{window.location.href='/ownerhomepage'}}> CloudCar</h1>
-              <h2 className="text-2xl font-bold text-teal-600 pt-5">
-                Rent a Car Form
-              </h2>
+              <h2 className="text-2xl font-bold text-teal-600 pt-5">Rent a Car Form</h2>
             </div>
+          
+       
+
+
             <form
               onSubmit={submitCar}
               className="flex flex-col justify-start items-center w-full m-auto"
@@ -285,16 +289,49 @@ export default function NewRenterForm({socket}) {
                 />
               </div>
 
-              <div className="w-full text-left mt-5">
+              {/* <div className="w-full text-left mt-5">
+                
+              <button
+                  type="submit"
+                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 lg:m-0 md:px-6"
+                  title="Confirm Order">
+                    
+                  <span>Go Back</span>
+                  <HiOutlineArrowCircleRight size={20} />
+                </button>
+
                 <button
                   type="submit"
-                  className="flex justify-center items-center gap-2 w-full py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 lg:m-0 md:px-6"
-                  title="Confirm Order"
-                >
+                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 lg:m-0 md:px-6"
+                  title="Confirm Order">
+
+                  <span>Register</span>
+                  <HiOutlineArrowCircleRight size={20} />
+                </button>
+              
+              
+              
+              </div> */}
+
+              <div className="w-full text-left mt-5 flex justify-between">
+                <button
+                  type="submit"
+                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
+                  title="Go Back">
+                  <HiOutlineArrowCircleLeft size={20} />
+                  <span>Go Back</span>
+                </button>
+
+                <button
+                  type="submit"
+                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
+                  title="Register">
                   <span>Register</span>
                   <HiOutlineArrowCircleRight size={20} />
                 </button>
               </div>
+
+
             </form>
           </div>
         </div>
