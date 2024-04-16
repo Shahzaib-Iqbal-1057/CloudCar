@@ -71,24 +71,24 @@ const CarDetails = ({ socket }) => {
           {/* <!-- navbar --> */}
           <nav className="flex justify-between bg-teal-600 text-black w-screen">
             <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-              <a className="text-3xl font-bold font-heading" href="#">
+              <a className="text-3xl font-bold font-heading" href="/">
                 {/* <!-- <img className="h-9" src="logo.png" alt="logo"> --> */}
                 CloudCar
               </a>
               {/* <!-- Nav Links --> */}
               <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
                 <li>
-                  <a className="hover:text-gray-200" href="#">
+                  <a className="hover:text-gray-200" href="/how-it-works">
                     How it Works
                   </a>
                 </li>
                 <li>
-                  <a className="hover:text-gray-200" href="#">
+                  <a className="hover:text-gray-200" href="/locations">
                     Locations
                   </a>
                 </li>
                 <li>
-                  <a className="hover:text-gray-200" href="#">
+                  <a className="hover:text-gray-200" href="/about-us">
                     About Us
                   </a>
                 </li>

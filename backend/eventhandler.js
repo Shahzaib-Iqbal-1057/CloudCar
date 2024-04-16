@@ -326,6 +326,50 @@ const eventHanlder = (socket, io) => {
     })
 
 
+
+    
+
+    socket.on("viewBookings", async (data) => {
+        try {
+            const { email } = data; // Assuming you're sending the logged-in user info from the frontend
+    
+            // Fetch rentals where status is 'reserved' and renter is the logged-in user
+            const bookings = await Rental.find({ status: 'reserved', renter: email });
+    
+            // Send the bookings data to the frontend
+            socket.emit("bookingsData", { bookings: bookings, redirectUrl: "/view-bookings" });
+            
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching bookings:", error);
+            // Send error message to frontend if needed
+            socket.emit("bookingError", { error: "Failed to fetch bookings" });
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //event in which a message will be sent from one user to the other
     socket.on("sendMessage",async (data)=>{
         //code here

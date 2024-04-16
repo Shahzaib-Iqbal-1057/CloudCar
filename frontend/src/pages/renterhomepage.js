@@ -254,7 +254,7 @@ const RenterHomePage = ({ socket }) => {
               type="search"
               id="renter-search"
               class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search by Location, Date, or Car Model"
+              placeholder="Search by Car Model"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -266,6 +266,26 @@ const RenterHomePage = ({ socket }) => {
             </button>
           </div>
         </form>
+
+        
+      <div
+        className="view-bookings-button relative py-20"
+        style={{
+          position: "relative",
+          width: "300px",
+          height: "47px",
+          left: "149px",
+          top: "95%",
+          fontFamily: "Urbanist",
+          fontStyle: "normal",
+          fontSize: "27px",
+          lineHeight: "35px",
+          
+        }}
+      >
+        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href='/view-bookings'}}>View Bookings!</button>
+      </div>
+
       </div>
     </>
   );

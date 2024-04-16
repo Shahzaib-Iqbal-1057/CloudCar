@@ -1,117 +1,112 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 
 const getCookieValue = (name) => {
-  const cookies = document.cookie.split(";");
-  for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split("=");
-    if (cookieName.trim() === name.trim()) {
-      return cookieValue.trim();
+    const cookies = document.cookie.split(";");
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split("=");
+      if (cookieName.trim() === name.trim()) {
+        return cookieValue.trim();
+      }
     }
-  }
-  return null;
-};
-
-
-
-const AvailableCars = ({ socket }) => {
-
-
-  const [cars, setCars] = React.useState([]);
-
-  const location = useLocation();
-
-  // Extract pathname, search, and hash from the location object
-  const { pathname, search, hash } = location;
-
-  //Extracting query parameters from search
-  const searchParams = new URLSearchParams(search);
-  const searchQuery = searchParams.get("searchQuery");
-
-  
-  React.useEffect(() => {
-    socket.emit("availablecars", getCookieValue("email"));
-  }, []);
-
-  
-  React.useEffect(() => {
-    socket.on("availablecars", (data) => {
-      // If there's a search query, filter the cars based on the search query
-      const filteredCars = searchQuery
-        ? data.filter(
-            (car) =>
-              car.make.toLowerCase() ===
-              decodeURIComponent(searchQuery).toLowerCase()
-          )
-        : data;
-      setCars(filteredCars);
-      
-    });
-    return () => {
-      socket.off("availablecars");
-    };
-  }, [socket, searchQuery]); // Add searchQuery to the dependency array
-
-
-
-  const ProductObject = (props) => {
-
-    const handleCardClick = () => {
-      // Construct the URL for the product details page
-      console.log(props.product)
-      const productUrl = `/cardetails/${props.product.plateNumber}`; // Assuming product ID is used for the URL
-  
-      // Navigate to the product details page
-      // window.location.href = productUrl;
-      //console.log("new constructed product url", productUrl)
-    };
-
-    return (
-      <div className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
-      onClick={handleCardClick}>
-        {/* right half of the product card */}
-        <div
-          className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-          style={{ backgroundImage: `url(${props.product.images[0]})` }}
-        ></div>
-
-        {/* left half of the product cards */}
-        <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
-          <div
-            className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-            style={{ backgroundImage: `url(${props.product.images[0]})` }}
-          ></div>
-          <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                <span className="font-semibold underline">Car</span>:{" "}
-                <span className="text-gray-300">{props.product.make}</span>
-              </h3>
-              <div className="flex flex-col mt-10">
-                <span className="text-black">
-                  <span className="font-semibold underline">Model</span>:{" "}
-                  <span className="text-gray-300">{props.product.model}</span>
-                </span>
-                <span className="text-black">
-                  <span className="font-semibold underline">Owner</span>:{" "}
-                  <span className="text-gray-300">
-                    {props.product.ownerDisplayName}
-                  </span>
-                </span>
-              </div>
-              {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   };
 
 
+const ViewBookingsPage = ({socket}) => {
+  const [bookings, setBookings] = React.useState([]);
+
+  React.useEffect(() => {
+    if (getCookieValue("email") === "" || getCookieValue("email") === null) {
+        window.location.href = "/login";
+    }
+    
+
+    socket.emit("viewBookings", { loggedInUser: getCookieValue("email") }); // Replace "username" with the actual logged-in user
+    console.log("socket event sent")
+    return () => {
+      socket.off("ViewBookingsPage");
+    };
+  }, []);
 
   
+  
+  
+  React.useEffect(()=> {
+    socket.on("bookingsData", (data) => {
+        console.log("data recieved from backend : ", data)
+        setBookings(data.bookings);
+    });  
+    
+    socket.on("bookingError", (error) => {
+        console.error("Error fetching bookings:", error);
+        // Handle error display or logging
+      });
+
+  },[socket])
+
+
+
+
+
+
+
+  const ProductObject = (props) =>{
+
+  const handleCardClick = (plateNumber) => {
+    // Construct the URL for the product details page
+    const productUrl = `/cardetails/${plateNumber}`; // Assuming product ID is used for the URL
+    // Navigate to the product details page
+    // window.location.href = productUrl;
+    console.log("new constructed product url", productUrl);
+  };
 
   return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+
+      {bookings.map((booking) => (
+        <div
+          key={booking.rentalId}
+          className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+          onClick={() => handleCardClick(booking.car)}
+        >
+          {/* right half of the product card */}
+          <div
+            className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
+            style={{ backgroundImage: `url(${booking.ownerImages[0]})` }}
+          ></div>
+
+          {/* left half of the product cards */}
+          <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
+            <div
+              className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
+              style={{ backgroundImage: `url(${booking.renterImages[0]})` }}
+            ></div>
+            <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">
+                  <span className="font-semibold underline">Car</span>:{" "}
+                  <span className="text-gray-300">{booking.car}</span>
+                </h3>
+                <div className="flex flex-col mt-10">
+                  <span className="text-black">
+                    <span className="font-semibold underline">Model</span>:{" "}
+                    <span className="text-gray-300">{booking.model}</span>
+                  </span>
+                  <span className="text-black">
+                    <span className="font-semibold underline">Owner</span>:{" "}
+                    <span className="text-gray-300">{booking.owner}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+return (
     <>
       <div className="flex flex-wrap  h-screen">
         <section className="relative mx-auto">
@@ -220,10 +215,13 @@ const AvailableCars = ({ socket }) => {
               </svg>
             </a>
           </nav>
+          
           <div className="relative w-screen h-screen">
-            <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black">
+          
+            <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black flex flex-col items-center">
+            <h1 className="px-5 py-5 text-4xl font-bold text-teal-600">My Bookings</h1>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
-                {cars.map((product) => (
+                {bookings.map((product) => (
                   <a href={`/cardetails/${product.plateNumber}`} key={product.id}><ProductObject product={product}/></a>
                   
                 ))}
@@ -235,6 +233,7 @@ const AvailableCars = ({ socket }) => {
       </div>
     </>
   );
+
 };
 
-export default AvailableCars;
+export default ViewBookingsPage;

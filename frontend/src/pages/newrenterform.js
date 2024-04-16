@@ -256,7 +256,7 @@ export default function NewRenterForm({socket}) {
                       {...register(field.label.toLowerCase(), {
                         required: field.required,
                       })}
-                      className={`bg-gray-600 border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 md:py-3 md:px-4 md:mb-0 focus:border-red-500 ${
+                      className={`bg-gray-600 text-white border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 md:py-3 md:px-4 md:mb-0 focus:border-red-500 ${
                         field.gridCols === 2 ? "md:w-full" : ""
                       }`}
                       type={field.type}

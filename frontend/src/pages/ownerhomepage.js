@@ -229,7 +229,7 @@ const OwnerHomePage = ({ socket }) => {
       </div>
 
       <div
-        className="view-bookings-button absolute"
+        className="rent-a-car-yourself-button absolute"
         style={{
           position: "absolute",
           width: "300px",
@@ -243,7 +243,7 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href='/renterhomepage'}}>Rent a car yourself!</button>
+        <button className="rent-a-car-yourself rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href='/renterhomepage'}}>Rent a car yourself!</button>
       </div>
 
 

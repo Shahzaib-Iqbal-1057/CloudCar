@@ -18,6 +18,7 @@ import NewRenterForm from './pages/newrenterform.js';
 import ProductFormPage from './pages/ownerform.js';
 import CarDetails from './pages/carDetails.js';
 import AddPost from './pages/posts.js';
+import ViewBookingsPage from './pages/viewbookings.js';
 const socket = io('http://localhost:3001',{ transports: ["websocket"] });
 
 
@@ -47,6 +48,7 @@ function App() {
           <Route path = '/productform' element = {<ProductFormPage socket = {socket}/>}/>
           <Route path = '/cardetails/:carmake' element = {<CarDetails socket = {socket}/>}/>
           <Route path='/posts' element = {<AddPost socket = {socket}/>}/>  
+          <Route path='/view-bookings' element = {<ViewBookingsPage socket = {socket}/>}/> 
         </Routes>
       </Router>
     </div>
