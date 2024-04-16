@@ -36,9 +36,5 @@ io.on("connection",(socket)=>{
     
     eventHanlder(socket,io)
 
-    socket.on("disconnect", () => {
-        console.log("Socket disconnected:", socket.id);
-    });
-
 })
 

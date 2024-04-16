@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { io } from "socket.io-client";
 
-function AddPost(socket) {
+
+function AddPost({socket}) {
 
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
@@ -13,10 +13,7 @@ function AddPost(socket) {
   const [selectedPostId2, setSelectedPostId2] = useState("");
 
 
-  socket = io('http://localhost:3001',{ transports: ["websocket"] });
-  const allpostsfunction = () => {
-    socket.emit("allposts")
-  }
+ 
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,25 +60,30 @@ function AddPost(socket) {
   };
 
   
-    socket.on("viewReplies",(data)=>{
-        if(data === "Noreplies"){
-            window.location.href = '/posts'
-            setReplies([])
-        }
-        else{
-            setReplies(data);
-        }
-        
-    });
 
   useEffect(() => {
     socket.on("allposts",(data)=>{
         setPosts(data);
     });
+    socket.on("viewReplies",(data)=>{
+      if(data === "Noreplies"){
+          window.location.href = '/posts'
+          setReplies([])
+      }
+      else{
+          setReplies(data);
+      }
+      
+  });
     return ()=>{
         socket.off("allposts")
+        socket.off("viewReplies")
     }
 },[socket]);
+
+useEffect(()=>{
+  socket.emit("allposts")
+},[])
 
 
 const handleReply = (postId) => {
@@ -102,7 +104,7 @@ const handleReply = (postId) => {
     }
   };
 
-allpostsfunction()
+
 
 
   return (

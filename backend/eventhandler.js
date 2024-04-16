@@ -10,9 +10,10 @@ import bcrypt from 'bcrypt'; // for hashing the passwords
 import verifyData from './helperFunctions.js';
 
 
+
 let loginArray = []
 let loggedIn = "Anonymous"
-
+let emailToSocketId = {}; //mapping email to socket id, will be used to send messages to the correct user
 
 
 const eventHanlder = (socket, io) => {
@@ -100,6 +101,7 @@ const eventHanlder = (socket, io) => {
                 if (passwordMatch) {
                     console.log('Store Login successful.');
                     io.to(socket.id).emit("login", "successfull")
+                    emailToSocketId[email] = socket.id;
 
                 } else {
                   console.log('Incorrect password. Login failed.');
@@ -176,7 +178,6 @@ const eventHanlder = (socket, io) => {
             console.log("error submitting car form",error)
             io.to(socket.id).emit("carform", "failed")
         }
-    
     })
 
     socket.on("availablecars",async (data)=>{
@@ -350,35 +351,58 @@ const eventHanlder = (socket, io) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //event in which a message will be sent from one user to the other
     socket.on("sendMessage",async (data)=>{
         //code here
+        console.log("sending message from ", data.sender, " to ", data.receiver)
+        console.log("message : ", data.message)
+        //sending the message to the receiver
+        io.to(emailToSocketId[data.receiver]).emit("receiveMessage", data.message)
+
+        try {
+            let chat;
+            const existingChat = await Chat.findOne({ user1: data.sender, user2: data.receiver });
+            if(existingChat){
+                chat = existingChat;
+            }
+            else {
+                const newChat = new Chat({
+                    chatId: data.sender + data.receiver,
+                    user1: data.sender,
+                    user2: data.receiver,
+                    messages: []
+                }); 
+                chat = await newChat.save(); 
+            }
+            chat.messages.push({sender: data.sender, message: data.message});
+            const savedChat = await chat.save();
+            console.log('Message saved:', savedChat);
+        }
+        catch(error) {
+            console.log("error saving message",error)
+        }
     })
 
     //event in which user has just logged in and needs to get all the messages from the database if there are any
     socket.on("getMessages",async (data)=>{
         //code here
-
+        console.log("getting messages for ", data.user)
+        //getting the messages from the database
+        try {
+            const chats = await Chat.find({ $or: [ { user1: data.user }, { user2: data.user } ] });
+            console.log("chats",chats)
+            let messages = [];
+            chats.forEach(chat => {
+                chat.messages.forEach(message => {
+                    messages.push({sender: message.sender, message: message.message})
+                });
+            });
+            console.log("messages",messages)
+            io.to(socket.id).emit("getMessages", messages)
+        }
+        catch(error) {
+            console.log("error getting messages",error)
+        }
     })
 
 
@@ -590,6 +614,16 @@ const eventHanlder = (socket, io) => {
           socket.emit("posts_error", "Error retrieving posts");
         }
       });
+
+
+    socket.on("disconnect", () => {
+        console.log("Socket disconnected:", socket.id);
+        // Remove the user from the emailToSocketId mapping
+        const email = Object.keys(emailToSocketId).find((key) => emailToSocketId[key] === socket.id);
+        if (email) {
+            delete emailToSocketId[email];
+        }
+    });
 
 
 
