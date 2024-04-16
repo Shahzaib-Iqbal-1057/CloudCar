@@ -94,7 +94,7 @@ const LandingPage = () => {
 
             {/* <!-- Responsive navbar --> */}
             
-            {/* <a className="xl:hidden flex mr-6 items-center" href="#">
+             <a className="xl:hidden flex mr-6 items-center" href="#">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 hover:text-gray-200"
@@ -129,8 +129,9 @@ const LandingPage = () => {
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
-            </a> */}
+            </a> 
           </nav>
+      
       {/* <nav className='navbar'>
         <div className='logo'>CloudCar</div>
         <div className='navLinks'>
@@ -143,6 +144,7 @@ const LandingPage = () => {
           <button onClick={handleSignup} className='signupBtn'>Sign up</button>
         </div>
       </nav> */}
+
       <div className='hero'>
         <h1>
           <span className="highlighted-text">Rent</span> Cars Near You
