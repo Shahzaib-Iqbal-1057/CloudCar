@@ -39,21 +39,32 @@ const OwnerHomePage = ({ socket }) => {
               </a>
               {/* <!-- Nav Links --> */}
               <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
+                
                 <li>
-                  <a className="hover:text-gray-200" href="#">
+                  <a className="hover:text-gray-200" href="how-it-works">
                     How it Works
                   </a>
                 </li>
+                
                 <li>
-                  <a className="hover:text-gray-200" href="#">
+                  <a className="hover:text-gray-200" href="locations">
                     Locations
                   </a>
                 </li>
+                
                 <li>
                   <a className="hover:text-gray-200" href="about-us">
                     About Us
                   </a>
                 </li>
+
+                <li>
+                  <a className="hover:text-gray-200" href="posts">
+                    Disucssion Forum
+                  </a>
+                </li>
+
+
                 {/* <li><a className="hover:text-gray-200" href="#">Contact Us</a></li> */}
               </ul>
               {/* <!-- Header Icons --> */}

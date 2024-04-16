@@ -22,6 +22,7 @@ import ViewBookingsPage from './pages/viewbookings.js';
 const socket = io('http://localhost:3001',{ transports: ["websocket"] });
 
 
+
 function App() {
 
   React.useEffect(()=>{
