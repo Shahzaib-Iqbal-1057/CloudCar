@@ -13,6 +13,7 @@ export default async function verifyData(data) {
         console.error(error);
         return 'could not fetch data'; 
     }
+    
     if (data.password.length < 8) {
       return 'weak_password';
     }

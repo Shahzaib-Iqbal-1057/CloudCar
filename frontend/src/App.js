@@ -21,6 +21,7 @@ import AddPost from './pages/posts.js';
 const socket = io('http://localhost:3001',{ transports: ["websocket"] });
 
 
+
 function App() {
 
   React.useEffect(()=>{
