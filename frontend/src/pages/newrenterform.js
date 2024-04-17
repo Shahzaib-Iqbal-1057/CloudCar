@@ -197,6 +197,9 @@ export default function NewRenterForm({socket}) {
       });
 
       }
+      else{
+        setError("")
+      }
 	
 		if(car_details.year.length != 4 || isNaN(parseInt(car_details.year)) || parseInt(car_details.year) > 2024 || parseInt(car_details.year) < 1300) {
 			setErrorSubmit("")
@@ -207,9 +210,12 @@ export default function NewRenterForm({socket}) {
         year: ""
       });
 		}
+    else{
+      setErrorYear("")
+    }
 
 		if (from < today || till < today) {
-  
+
 			setErrorSubmit("")
 			check = false
 			setError("Selected dates cannot be less than today's date");
@@ -220,6 +226,9 @@ export default function NewRenterForm({socket}) {
 			});
 	
 		}
+    else{
+      setError("")
+    }
 
 		
 
@@ -239,6 +248,9 @@ export default function NewRenterForm({socket}) {
           city: ""
         });
 			} 
+      else{
+        setErrorCity("")
+      }
 		}
 		if(car_details.phone.length != 11 || isNaN(parseInt(car_details.phone))) {
       setCarDetails({
@@ -248,11 +260,18 @@ export default function NewRenterForm({socket}) {
       setErrorPhone("Invalid Phone Number Format")
       check = false
     }
+    else{
+      setErrorPhone("")
+    }
 
     if(car_details.images.length > 5) {
       setErrorImages("Please upload a maximum of 5 images.")
       setErrorSubmit("Please upload a maximum of 5 images.")
       check = false
+    }
+    else{
+      setErrorImages("")
+      setErrorSubmit("")
     }
 
     if(car_details.images.length < 3){
@@ -260,6 +279,11 @@ export default function NewRenterForm({socket}) {
       setErrorSubmit("Please upload atleast 3 images.")
       check = false
     }
+    else{
+      setErrorImages("")
+      setErrorSubmit("")
+    }
+
 
     if(!check){
       return
