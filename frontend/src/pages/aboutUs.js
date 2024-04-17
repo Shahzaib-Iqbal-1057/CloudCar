@@ -9,6 +9,10 @@ function AboutUs() {
     window.location.href = "/signup";
   };
 
+  // if(getCookieValue("email") === null) {
+  //   window.location.href = "/login"
+  // }
+
   return (
     <>
       {/* Section 1 */}
