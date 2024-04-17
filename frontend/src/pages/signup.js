@@ -176,7 +176,7 @@ export default function Signup({socket}) {
 
 
   const handleGoBack = () => {
-    window.location.href = '/ownerhomepage';
+    window.location.href = '/';
   };
 
   return (

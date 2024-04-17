@@ -44,7 +44,7 @@ function Login({socket}) {
 
         <div className="w-full h-100">
 
-          <h1 className="text-4xl text-center font-bold text-teal-600 mb-4">CloudCar</h1>
+          <h1 className="text-4xl text-center font-bold text-teal-600 mb-4"><a href='/'>CloudCar</a></h1>
 
           <h1 className="text-xl md:text-2xl leading-tight mt-7 text-center text-white">Log in</h1>
 
