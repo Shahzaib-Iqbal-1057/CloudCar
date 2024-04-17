@@ -300,7 +300,7 @@ const eventHanlder = (socket, io) => {
         try {
             const updatedRental = await Rental.findOneAndUpdate
             (
-                { rentalId: data.rentalId },
+                { rentalId: data.rentalId},
                 {
                     status: "reserved"
                 }

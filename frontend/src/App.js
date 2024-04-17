@@ -20,6 +20,7 @@ import CarDetails from './pages/carDetails.js';
 import AddPost from './pages/posts.js';
 import ViewBookingsPage from './pages/viewbookings.js';
 import ForgotPassword from './pages/forgotpassword.js';
+import ViewCarRequests from './pages/viewRequests.js';
 const socket = io('http://localhost:3001',{ transports: ["websocket"] });
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           <Route path='/posts' element = {<AddPost socket = {socket}/>}/>  
           <Route path='/view-bookings' element = {<ViewBookingsPage socket = {socket}/>}/>
           <Route path='/forgotpassword' element =  {<ForgotPassword socket = {socket}/>}/>
+          <Route path='/viewCarRequests' element = {<ViewCarRequests socket = {socket}/>}/> 
         </Routes>
       </Router>
     </div>
