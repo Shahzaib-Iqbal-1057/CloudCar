@@ -1,20 +1,83 @@
-/* .message-input-container {
-   
-    border: 1px solid #36454F;
-    display: flex;
-    width: 100%;
-    border-radius: 10px;
-    padding: 10px;
-    height: fit-content;
-    margin-top: 8px;
-    background: transparent;
-    color: rgb(11, 10, 10);
-  }
-  
-  .message-input-container:focus {
-    outline: none;
-  }
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('../../public/carimage.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
 
-  .phone-container {
-    background: transparent;  
-  } */
+.login-form-container {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 40px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-title {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.login-subtitle {
+  color: #dddddd;
+  margin-bottom: 20px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  outline: none;
+}
+
+.login-checkbox {
+  color: white;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.login-checkbox input {
+  margin-right: 10px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 20px;
+  border: none;
+  background:  rgb(57, 168, 161);
+  
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.login-button:hover {
+  background: #06beb6;
+}
+
+.login-links {
+  color: white;
+}
+
+.login-link {
+  color:  rgb(57, 168, 161);
+  text-decoration: none;
+  display: block;
+  margin-top: 10px;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+.h1 {
+  font-size: large;
+}

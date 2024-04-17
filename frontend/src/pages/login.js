@@ -1,81 +1,96 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
+import styles from '../styles/login.css'; 
 
-function Login({socket}) {
+function Login({ socket }) {
+  const [loginData, setLoginData] = React.useState({
+    email: "",
+    password: ""
+  });
 
-  const [login_data,setloginData] = React.useState({
-		email : "",
-		password : ""
-	})
+  function changeLoginData(e) {
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value
+    });
+  }
 
-	function changeLoginData(e) {
-		setloginData({
-			...login_data,
-			[e.target.name] : e.target.value
-		})
-		console.log(login_data)
-	}
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Emit the login event with loginData
+    socket.emit("login", loginData);
+  
+    // Remove console.log before production
+    console.log(loginData);
+  }
 
-	React.useEffect(()=>{
-		socket.on("login",(status)=>{
-			if (status=== "successfull") {
-				alert("login successfull")
-				window.location.href = '/ownerhomepage'
-			}
-			else {
-				alert("incorrect username or password")
-			}
-		})
-		return ()=>{
-			socket.off("login")
-		}
-	},[socket])
-
-
-
+  React.useEffect(() => {
+    socket.on("login", (status) => {
+      if (status === "successfull") {
+        alert("login successfull");
+        window.location.href = '/ownerhomepage';
+      } else {
+        alert("incorrect username or password");
+      }
+    });
+    return () => {
+      socket.off("login");
+    };
+  }, [socket]);
 
   return (
-    <section className="flex flex-col md:flex-row h-screen items-center">
-
-      <div className="bg-blue-600 hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
-        <img src="https://images.unsplash.com/photo-1517026575980-3e1e2dedeab4?blend=000000&blend-alpha=10&blend-mode=normal&blend-w=1&crop=faces%2Cedges&h=630&mark=https%3A%2F%2Fimages.unsplash.com%2Fopengraph%2Flogo.png&mark-align=top%2Cleft&mark-pad=50&mark-w=64&w=1200&auto=format&fit=crop&q=60&ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzA4ODA5NjgwfA&ixlib=rb-4.0.3" alt="" className="w-full h-full object-cover" />
+    <>
+    <Helmet>
+      <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+      />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet"
+      />
+    </Helmet>
+    <div className="login-container">
+      <div className="login-form-container">
+        <h1 className="login-title">CloudCar</h1>
+        <h2 className="login-subtitle">Log in</h2>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            value={loginData.email}
+            onChange={changeLoginData}
+            placeholder="Email"
+            className="login-input"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            value={loginData.password}
+            onChange={changeLoginData}
+            placeholder="Password"
+            className="login-input"
+            required
+          />
+          <div className="login-checkbox">
+            <input type="checkbox" id="stay-logged-in" />
+            <label htmlFor="stay-logged-in">Stay logged in</label>
+          </div>
+          <button type="submit" className="login-button">Login</button>
+          <div className="login-links">
+            <a href="#" className="login-link">Forgot my password</a>
+            <a href="/signup" className="login-link">Don't have an account? Sign up</a>
+          </div>
+        </form>
       </div>
-
-      <div className="bg-gradient-to-b from-gray-900 via-gray-700 to-black w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
-
-        <div className="w-full h-100">
-
-          <h1 className="text-4xl text-center font-bold text-teal-600 mb-4">CloudCar</h1>
-
-          <h1 className="text-xl md:text-2xl leading-tight mt-7 text-center text-white">Log in</h1>
-
-          <form className="mt-6" action="#" method="POST">
-            <div>
-              <label className="block text-black">Email Address</label>
-              <input type="email"  name="email" value={login_data.email} onChange={changeLoginData} id="" placeholder="Enter Email Address" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" autoFocus autoComplete="email" required />
-            </div>
-
-            <div className="mt-4">
-              <label className="block text-black">Password</label>
-              <input type="password" name="password" value={login_data.password} onChange={changeLoginData}  id="" placeholder="Enter Password" minLength="6" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" required />
-            </div>
-
-            <div className="text-right mt-2">
-              <a href="forgotpassword" className="text-sm font-semibold text-white hover:text-teal-600 focus:text-blue-700">Forgot Password?</a>
-            </div>
-            
-            <div class="flex justify-center">
-            <button onClick={(e)=>{e.preventDefault();document.cookie = `email=${login_data.email};path=/`;socket.emit("login",login_data)}}  className="w-40 block bg-teal-600 hover:bg-teal-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6">Log In</button>
-            </div>
-          </form>
-
-          <hr className="my-6 border-gray-300 w-full" />
-
-          <p className="mt-8 text-white text-center">Don't have an account? <a href="signup" className="text-teal-600 hover:text-teal-400 font-semibold">Sign up</a></p>
-
-        </div>
-      </div>
-
-    </section>
+    </div>
+    </>
   );
 }
 

@@ -4,6 +4,7 @@ import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { HiOutlineArrowCircleLeft } from 'react-icons/hi';
 
 
+
 export default function Signup({socket}) {
   const {
     register,
