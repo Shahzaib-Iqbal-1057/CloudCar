@@ -313,6 +313,36 @@ const eventHanlder = (socket, io) => {
         }
     })
 
+
+
+
+
+    socket.on("viewBookings", async (data) => {
+        try {
+            //console.log("data in viewbookings: ", data);
+            const email = data.loggedInUser; // Assuming you're sending the logged-in user info from the frontend
+            //console.log("email: ", email);
+            // Fetch rentals where status is 'reserved' and renter is the logged-in user
+            const bookings = await Rental.find({ status: 'reserved', renter: email });
+            console.log("Bookings: ",bookings);
+            
+            const cars = bookings.map(booking => booking.car);
+            console.log("Cars: ", cars);
+        
+            // Fetch the details of each car based on its plate number
+            //const requiredCars = await Car.find({ plateNumber: { $in: cars } });
+            //console.log("Required Cars: ", requiredCars);
+            // Send the bookings data to the frontend
+            socket.emit("bookingsData", { bookings: bookings, redirectUrl: "/view-bookings" });
+            
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching bookings:", error);
+            // Send error message to frontend if needed
+            socket.emit("bookingError", { error: "Failed to fetch bookings" });
+        }
+    });
+
     //handling event in which a request will be accepted, making the reservation
     socket.on("acceptRequest",async (data)=>{
         console.log("accept request data",data.rentalId)
@@ -359,23 +389,6 @@ const eventHanlder = (socket, io) => {
 
     
 
-    socket.on("viewBookings", async (data) => {
-        try {
-            const { email } = data; // Assuming you're sending the logged-in user info from the frontend
-    
-            // Fetch rentals where status is 'reserved' and renter is the logged-in user
-            const bookings = await Rental.find({ status: 'reserved', renter: email });
-    
-            // Send the bookings data to the frontend
-            socket.emit("bookingsData", { bookings: bookings, redirectUrl: "/view-bookings" });
-            
-        } catch (error) {
-            // Handle errors
-            console.error("Error fetching bookings:", error);
-            // Send error message to frontend if needed
-            socket.emit("bookingError", { error: "Failed to fetch bookings" });
-        }
-    });
 
 
 

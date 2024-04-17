@@ -60,15 +60,15 @@ const rental = new schema({
     },
     make: {
         type: String,
-        required: False,
+        required: false,
     },
     model: {
         type: String,
-        required: False
+        required: false
     },
     variant: {
         type: String,
-        required: False
+        required: false
     },
 
 }, {timestamps: true})

@@ -1,112 +1,156 @@
 import React from "react";
 
 const getCookieValue = (name) => {
-    const cookies = document.cookie.split(";");
-    for (const cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.split("=");
-      if (cookieName.trim() === name.trim()) {
-        return cookieValue.trim();
-      }
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split("=");
+    if (cookieName.trim() === name.trim()) {
+      return cookieValue.trim();
     }
-    return null;
-  };
+  }
+  return null;
+};
 
-
-const ViewBookingsPage = ({socket}) => {
+const ViewBookingsPage = ({ socket }) => {
   const [bookings, setBookings] = React.useState([]);
 
   React.useEffect(() => {
     if (getCookieValue("email") === "" || getCookieValue("email") === null) {
-        window.location.href = "/login";
+      window.location.href = "/login";
     }
-    
 
     socket.emit("viewBookings", { loggedInUser: getCookieValue("email") }); // Replace "username" with the actual logged-in user
-    console.log("socket event sent")
+    console.log("socket event sent");
     return () => {
       socket.off("ViewBookingsPage");
     };
   }, []);
 
-  
-  
-  
-  React.useEffect(()=> {
+  React.useEffect(() => {
     socket.on("bookingsData", (data) => {
-        console.log("data recieved from backend : ", data)
-        setBookings(data.bookings);
-    });  
-    
+      console.log("data recieved from backend : ", data.bookings);
+      setBookings(data.bookings);
+    });
+
     socket.on("bookingError", (error) => {
-        console.error("Error fetching bookings:", error);
-        // Handle error display or logging
-      });
-
-  },[socket])
-
+      console.error("Error fetching bookings:", error);
+      // Handle error display or logging
+    });
+  }, [socket]);
 
 
 
+  
 
+  // const ProductObject = (props) =>{
 
+  // const handleCardClick = (plateNumber) => {
+  //   // Construct the URL for the product details page
+  //   const productUrl = `/cardetails/${plateNumber}`; // Assuming product ID is used for the URL
+  //   // Navigate to the product details page
+  //   // window.location.href = productUrl;
+  //   console.log("new constructed product url", productUrl);
+  // };
 
-  const ProductObject = (props) =>{
+  const ProductObject = ({ booking }) => {
+    console.log("IDHR Hun", booking);
+    const handleCardClick = (plateNumber) => {
+      
+      // // Construct the URL for the product details page
+      // const productUrl = `/cardetails/${plateNumber}`; // Assuming product ID is used for the URL
+      // // Navigate to the product details page
+      
+      // // window.location.href = productUrl;
+      // console.log("new constructed product url", productUrl);
+      
+    };
 
-  const handleCardClick = (plateNumber) => {
-    // Construct the URL for the product details page
-    const productUrl = `/cardetails/${plateNumber}`; // Assuming product ID is used for the URL
-    // Navigate to the product details page
-    // window.location.href = productUrl;
-    console.log("new constructed product url", productUrl);
-  };
+    //   return (
+    //     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+    //       {bookings.map((booking) => (
+    //         <div
+    //           key={booking.rentalId}
+    //           className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+    //           onClick={() => handleCardClick(booking.car)}
+    //         >
+    //           {/* right half of the product card */}
+    //           <div
+    //             className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
+    //             style={{ backgroundImage: `url(${booking.ownerImages[0]})` }}
+    //           ></div>
 
-      {bookings.map((booking) => (
-        <div
-          key={booking.rentalId}
-          className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
-          onClick={() => handleCardClick(booking.car)}
-        >
-          {/* right half of the product card */}
-          <div
-            className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-            style={{ backgroundImage: `url(${booking.ownerImages[0]})` }}
-          ></div>
+    //           {/* left half of the product cards */}
+    //           <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
+    //             <div
+    //               className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
+    //               style={{ backgroundImage: `url(${booking.renterImages[0]})` }}
+    //             ></div>
+    //             <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
+    //               <div>
+    //                 <h3 className="text-lg font-semibold mb-2">
+    //                   <span className="font-semibold underline">Car</span>:{" "}
+    //                   <span className="text-gray-300">{booking.car}</span>
+    //                 </h3>
+    //                 <div className="flex flex-col mt-10">
+    //                   <span className="text-black">
+    //                     <span className="font-semibold underline">Model</span>:{" "}
+    //                     <span className="text-gray-300">{booking.model}</span>
+    //                   </span>
+    //                   <span className="text-black">
+    //                     <span className="font-semibold underline">Owner</span>:{" "}
+    //                     <span className="text-gray-300">{booking.owner}</span>
+    //                   </span>
+    //                 </div>
+    //               </div>
+    //             </div>
+    //           </div>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   );
+    // };
 
-          {/* left half of the product cards */}
-          <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
-            <div
-              className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-              style={{ backgroundImage: `url(${booking.renterImages[0]})` }}
-            ></div>
-            <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  <span className="font-semibold underline">Car</span>:{" "}
-                  <span className="text-gray-300">{booking.car}</span>
-                </h3>
-                <div className="flex flex-col mt-10">
-                  <span className="text-black">
-                    <span className="font-semibold underline">Model</span>:{" "}
-                    <span className="text-gray-300">{booking.model}</span>
+    return (
+      <div
+        className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+        onClick={() => handleCardClick(bookings.car)}
+      >
+
+        {console.log("bookings.car: ", bookings.car)};
+        {/* right half of the product card */}
+        <div className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0" style={{ backgroundImage: bookings.ownerImages ? `url(${bookings.product.ownerImages[0]})` : '' }}></div>
+
+        {/* left half of the product cards */}
+        <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
+        <div className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0" style={{ backgroundImage: bookings.renterImages ? `url(${bookings.renterImages[0]})` : '' }}></div>
+          <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">
+                <span className="font-semibold underline">Car</span>:{" "}
+                <span className="text-gray-300">{bookings.car}</span>
+              </h3>
+              <div className="flex flex-col mt-10">
+                <span className="text-black">
+                  <span className="font-semibold underline">Model</span>:{" "}
+                  <span className="text-gray-300">
+                    {console.log("Bookings make: ", bookings.make)}
+                    {bookings.make} {bookings.model}
                   </span>
-                  <span className="text-black">
-                    <span className="font-semibold underline">Owner</span>:{" "}
-                    <span className="text-gray-300">{booking.owner}</span>
-                  </span>
-                </div>
+                </span>
+                <span className="text-black">
+                  <span className="font-semibold underline">Owner</span>:{" "}
+                  <span className="text-gray-300">{bookings.owner}</span>
+                </span>
               </div>
             </div>
           </div>
         </div>
-      ))}
-    </div>
-  );
-};
-
-return (
+      </div>
+    );
+  };
+ 
+  return (
     <>
       <div className="flex flex-wrap  h-screen">
         <section className="relative mx-auto">
@@ -215,16 +259,16 @@ return (
               </svg>
             </a>
           </nav>
-          
+
           <div className="relative w-screen h-screen">
-          
             <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black flex flex-col items-center">
-            <h1 className="px-5 py-5 text-4xl font-bold text-teal-600">My Bookings</h1>
+              <h1 className="px-5 py-5 text-4xl font-bold text-teal-600">
+                My Bookings
+              </h1>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
-                {bookings.map((product) => (
-                  <a href={`/cardetails/${product.plateNumber}`} key={product.id}><ProductObject product={product}/></a>
-                  
-                ))}
+                {bookings.map((booking)=>{
+                  <ProductObject booking={booking}/>
+                })}
               </div>
             </div>
           </div>
@@ -233,7 +277,6 @@ return (
       </div>
     </>
   );
-
 };
 
 export default ViewBookingsPage;
