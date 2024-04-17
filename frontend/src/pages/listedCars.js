@@ -43,7 +43,8 @@ const getCookieValue = (name) => {
     const ProductObject = (props) => {
   
       const handleCardClick = () => {
-        socket.emit("viewCarRequests", props.product.plateNumber);
+        // socket.emit("viewCarRequests", props.product.plateNumber);
+        window.location.href = `/viewCarRequests?plateNumber=${props.product.plateNumber}`
       };
   
       return (

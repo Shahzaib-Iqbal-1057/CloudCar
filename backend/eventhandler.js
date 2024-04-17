@@ -287,6 +287,11 @@ const eventHanlder = (socket, io) => {
                 }
             }
             ); 
+            //inside all car requests, we have to send the renter display name
+            for(let i = 0; i < uniqueCarRequests.length; i++){
+                const renter = await User.findOne({ email: uniqueCarRequests[i].renter });
+                uniqueCarRequests[i].renter = renter.displayName;
+            }
             console.log("unique car requests",uniqueCarRequests)
             io.to(socket.id).emit("viewCarRequests", uniqueCarRequests)
         }
@@ -297,12 +302,12 @@ const eventHanlder = (socket, io) => {
 
     //handling event in which a request will be accepted, making the reservation
     socket.on("acceptRequest",async (data)=>{
-        console.log("accept request data",data)
+        console.log("accept request data",data.rentalId)
         //accept request logic here(will be using the database here)
         try {
             const updatedRental = await Rental.findOneAndUpdate
             (
-                { rentalId: data.rentalId },
+                { rentalId: data.rentalId},
                 {
                     status: "reserved"
                 }

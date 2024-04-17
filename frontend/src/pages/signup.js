@@ -142,7 +142,6 @@ export default function Signup({socket}) {
 		}
 		document.cookie = `display_name=${signup_data["display name"]};path=/`
 		socket.emit("signup",signup_data)
-		console.log("sent signup data : ", signup_data)
 	}
 	React.useEffect(()=>{
 		socket.on("signup",(status)=>{
@@ -256,6 +255,18 @@ export default function Signup({socket}) {
                 <HiOutlineArrowCircleRight size={20} />
               </button>
             </div>
+
+
+                <button
+                  type="submit"
+                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
+                  title="Register"
+                  onClick={handleSignup}
+                  >
+                  <span>Register</span>
+                  <HiOutlineArrowCircleRight size={20} />
+                </button>
+
 
 
             </form>
