@@ -315,11 +315,13 @@ function AddPost({ socket }) {
               {showReplyBox && selectedPostId === post.postId && (
                 <div>
                   <textarea
+                    rows="3"
+                    className="block p-2.5 w-1/5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
                     placeholder="Write your reply..."
                   />
-                  <button onClick={handleSendReply}>Send Reply</button>
+                  <button onClick={handleSendReply} className="rounded-lg text-black mt-2 px-3 py-1 bg-yellow-500 hover:bg-yellow-600 duration-300">Send Reply</button>
                   <div style={{ marginBottom: "2em" }}></div>
                   <div style={{ marginBottom: "2em" }}></div>
                 </div>
