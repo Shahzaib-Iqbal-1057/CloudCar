@@ -194,6 +194,7 @@ const CarDetails = ({ socket }) => {
                       <h2 className=" text-2xl text-white underline font-semibold">About this Item:</h2>
                       
                       <p className="text-xl mt-10 mb-10">
+                        {console.log(car.description)}
                         {car.description}
                       </p>
                       
