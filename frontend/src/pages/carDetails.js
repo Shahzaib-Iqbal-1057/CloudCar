@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-// import ImageSlider from "./imageSlider";
+
 
 const getCookieValue = (name) => {
   const cookies = document.cookie.split(";");
@@ -72,7 +72,6 @@ const CarDetails = ({ socket }) => {
           <nav className="flex justify-between bg-teal-600 text-black w-screen">
             <div className="px-5 xl:px-12 py-6 flex w-full items-center">
               <a className="text-3xl font-bold font-heading" href="/">
-                {/* <!-- <img className="h-9" src="logo.png" alt="logo"> --> */}
                 CloudCar
               </a>
               {/* <!-- Nav Links --> */}
@@ -92,7 +91,6 @@ const CarDetails = ({ socket }) => {
                     About Us
                   </a>
                 </li>
-                {/* <li><a className="hover:text-gray-200" href="#">Contact Us</a></li> */}
               </ul>
               {/* <!-- Header Icons --> */}
               <div className="hidden xl:flex items-center space-x-5 items-center">
@@ -175,11 +173,6 @@ const CarDetails = ({ socket }) => {
           </nav>
           <div className="relative w-screen h-screen">
             <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black">
-              {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
-                {cars.map((product) => (
-                  <ProductObject product={product} key={product.id} />
-                ))}
-              </div> */}
 
               <div className="max-w-7xl mx-auto p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -190,33 +183,7 @@ const CarDetails = ({ socket }) => {
                       backgroundImage: `url(${car.images})`,
                     }}
                   ></div>
-                  {/* <div className="product-imgs -1/h2 w-1/2">
-                    <div className="img-display">
-                      <div className="img-showcase">
-                        <img
-                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_1.jpg"
-                          alt="shoe image"
-                        />
-                        <img
-                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_2.jpg"
-                          alt="shoe image"
-                        />
-                        <img
-                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_3.jpg"
-                          alt="shoe image"
-                        />
-                        <img
-                          src="https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg"
-                          alt="shoe image"
-                        />
-                      </div>
-                    </div>
-                  </div> */}
-
-                  {/* {cars.map((product) => (
-                    <ProductObject product={product} key={product.id} />
-                  ))} */}
-
+              
                   {/* Right Column */}
                   <div className="product-content text-teal-600">
                     <h2 className="product-title text-6xl pb-10 pt-10">
@@ -224,30 +191,28 @@ const CarDetails = ({ socket }) => {
                     </h2>
 
                     <div className="product-detail">
-                      <h2 className=" text-2xl text-white">About this Item:</h2>
+                      <h2 className=" text-2xl text-white underline font-semibold">About this Item:</h2>
                       
-                      <p>
-                        {console.log(car.description)}
+                      <p className="text-xl mt-10 mb-10">
+                        {car.description}
                       </p>
                       
                       <ul>
                         <li>
-                          Owner: <span>{car.owner}</span>
+                        <span className="font-semibold underline">Owner:</span> <span className="ml-5">{car.owner}</span>
                         </li>
+                        
                         <li>
-                          Available: <span>in stock</span>
-                        </li>
-                        <li>
-                          Category: <span>Shoes</span>
+                          <span className="font-semibold underline">Price:</span> <span className="ml-5">Rs.{car.price}</span>
                         </li>
                       </ul>
                     </div>
                     <div className="purchase-info pt-10">
-                      <button class="px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={sendBookingRequest}>
+                      <button class="px-4 py-2 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-white hover:text-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={sendBookingRequest}>
                         Confirm Booking
                       </button>
 
-                      <button class="px-4 py-2 ml-5 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                      <button class="px-4 py-2 ml-5 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-white hover:text-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         Inquire More
                       </button>
                     </div>

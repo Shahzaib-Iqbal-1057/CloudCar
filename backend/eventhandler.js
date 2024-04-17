@@ -140,7 +140,8 @@ const eventHanlder = (socket, io) => {
                         owner: data.owner,
                         ownerDisplayName: data.ownerDisplayName,
                         images: data.images,
-                        price: data["rental price"]
+                        price: data["rental price"],
+                        description: data.description
                     }
                 );
                 console.log('Car form updated:', updatedCar);
@@ -166,7 +167,8 @@ const eventHanlder = (socket, io) => {
                 owner: data.owner,
                 ownerDisplayName: data.ownerDisplayName,
                 images: data.images,
-                price: data["rental price"]
+                price: data["rental price"],
+                description: data.description
                 //other data
             }); 
             console.log("new car : ",newCar)
