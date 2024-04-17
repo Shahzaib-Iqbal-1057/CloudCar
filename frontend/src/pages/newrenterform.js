@@ -1,22 +1,25 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
-import axios from "axios";
-import { Image } from "cloudinary-react";
-import { HiOutlineArrowCircleLeft } from "react-icons/hi";
+import axios from 'axios'
+import { Image } from 'cloudinary-react';
+import { HiOutlineArrowCircleLeft } from 'react-icons/hi';
+ 
+
 
 const getCookieValue = (name) => {
-  const cookies = document.cookie.split(";");
-  for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split("=");
-    if (cookieName.trim() === name.trim()) {
-      return cookieValue.trim();
-    }
-  }
-  return null;
-};
+	const cookies = document.cookie.split(';');
+	for (const cookie of cookies) {
+		const [cookieName, cookieValue] = cookie.split('=');
+		if(cookieName.trim() === name.trim()) {
+			return cookieValue.trim();
+		}
+	}
+	return null;
+  };
 
-export default function NewRenterForm({ socket }) {
+
+export default function NewRenterForm({socket}) {
   const {
     register,
     handleSubmit,
@@ -24,24 +27,25 @@ export default function NewRenterForm({ socket }) {
     watch,
   } = useForm();
 
-  const [car_details, setCarDetails] = React.useState({
-    make: "",
-    model: "",
-    year: "",
-    city: "",
-    "rental price": "",
-    "pickup location": "",
-    "additional details": "",
-    "availability from": "",
-    "availability till": "",
-    "car documents": [],
-    "plate number": "",
-    owner: getCookieValue("email"),
-    ownerDisplayName: "",
+  const [car_details,setCarDetails] = React.useState({
+		make: "",
+		model: "",
+		year: "",
+		city: "",
+		"rental price": "",
+		"pickup location": "",
+		"additional details": "",
+		"availability from": "",
+		"availability till": "",
+		"car documents": [],
+		"plate number":"",
+		owner: getCookieValue("email"),
+		ownerDisplayName: "",
     phone: "",
-    images: [],
-    description: "",
-  });
+    images: []
+
+	})
+
 
   const fields = [
     {
@@ -133,107 +137,91 @@ export default function NewRenterForm({ socket }) {
       placeholder: "123 Main St, City, Country",
       required: true,
       gridCols: 2,
-    },
-    {
-      label: "Car Description",
-      name: "car description",
-      // value: car_details.description,
-      type: "text",
-      placeholder:
-        "Write the description of the car here. Provide details about its features too.",
-      required: true,
-      gridCols: 2,
-    },
+    }
   ];
 
-  function changeCarDetails(e) {
-    if (e.target.name === "rental price" && isNaN(e.target.value)) {
-      alert("Please enter a valid number");
-      return;
-    }
-    setCarDetails({
-      ...car_details,
-      [e.target.name]: e.target.value,
-    });
-    console.log("Car Details: ",car_details);
-  }
+  
+	function changeCarDetails(e) {
+		if(e.target.name === "rental price" && isNaN(e.target.value)) {
+			alert("Please enter a valid number")
+			return
+		}
+		setCarDetails({
+			...car_details,
+			[e.target.name] : e.target.value
+		})
+		console.log(car_details)
+	}
 
-  async function submitCar(event) {
+	 async function submitCar(event) {
     event.preventDefault();
 
-    if (
-      car_details.make === "" ||
-      car_details.model === "" ||
-      car_details.year === "" ||
-      car_details.city === "" ||
-      car_details["plate number"] === "" ||
-      car_details["rental price"] === "" ||
-      car_details["pickup location"] === "" ||
-      car_details["availability from"] === "" ||
-      car_details["availability till"] === "" ||
-      car_details.images.length === 0 ||
-      car_details.phone === "" ||
-      car_details.description === ""
-    ) {
-      alert("Please fill all the fields");
-      return;
+    if(car_details.make === "" || car_details.model === "" || car_details.year === "" || car_details.city === "" || car_details["plate number"] === "" || car_details["rental price"]=== "" || car_details["pickup location"] === "" || car_details["availability from"]=== "" || car_details["availability till"] === "" || car_details.images.length === 0 || car_details.phone === "") {
+			alert("Please fill all the fields")
+			return
+		}
+    if(car_details.images.length > 5) {
+      alert("Please upload a maximum of 5 images")
+      return
     }
-    if (car_details.images.length > 5) {
-      alert("Please upload a maximum of 5 images");
-      return;
-    }
-    console.log("details being sent : ", car_details);
+    console.log("details being sent : ", car_details)
 
-    //constructing images and uploading them to cloud
-    let image_urls = [];
+   //constructing images and uploading them to cloud
+    let image_urls = []
 
-    for (let i = 0; i < car_details.images.length; i++) {
+    for(let i=0;i<car_details.images.length;i++) {
       const formData = new FormData();
-      formData.append("file", car_details.images[i]);
-      formData.append("upload_preset", "lgzz6pc4");
+      formData.append('file', car_details.images[i]);
+      formData.append('upload_preset', 'lgzz6pc4');
 
       try {
-        const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/dgh0rch3f/upload",
-          formData
-        );
-        console.log("response from cloudinary", response);
-        image_urls.push(response.data.secure_url);
-      } catch {
-        console.log("error uploading image");
+        const response = await axios.post('https://api.cloudinary.com/v1_1/dgh0rch3f/upload', formData);
+        console.log("response from cloudinary",response)
+        image_urls.push(response.data.secure_url)
+      }
+      catch {
+        console.log("error uploading image")
       }
     }
 
-    car_details.images = image_urls;
-    socket.emit("carform", car_details);
-  }
+    car_details.images = image_urls
+		socket.emit("carform",car_details)
 
-  React.useEffect(() => {
-    socket.on("carform", (status) => {
-      if (status == "successfull") {
-        alert("Your car has been stored Successfully");
-      } else {
-        alert("Car posting Failed");
-      }
-    });
-    socket.on("get_display_name", (display_name) => {
-      setCarDetails({
-        ...car_details,
-        ownerDisplayName: display_name,
-      });
-    });
-    return () => {
-      socket.off("carform");
-      socket.off("get_display_name");
-    };
-  }, [socket]);
+	}
 
-  React.useEffect(() => {
-    if (getCookieValue("email") === null) {
-      window.location.href = "/login";
+	React.useEffect(()=>{
+		socket.on("carform",(status)=>{
+			if(status == "successfull") {
+				alert("Your car has been stored Successfully")
+			}
+			else {
+				alert("Car posting Failed")
+			}
+		})
+		socket.on("get_display_name",(display_name)=>{
+			setCarDetails({
+				...car_details,
+				ownerDisplayName: display_name
+			})
+		})
+		return ()=>{
+			socket.off("carform")
+			socket.off("get_display_name")
+		}
+	},[socket])
+
+	React.useEffect(()=>{
+    if(getCookieValue("email") === null) {
+      window.location.href = "/login"
     }
-    socket.emit("get_display_name", getCookieValue("email"));
-  }, []);
+		socket.emit("get_display_name", getCookieValue("email"))
+	},[])
+
+
+  const handleGoBack = () => {
+    window.location.href = '/ownerhomepage';
+  };
+
 
   return (
     <div>
@@ -247,27 +235,21 @@ export default function NewRenterForm({ socket }) {
           }}
         >
           <div className="lg:w-7/12 pb-10 pt-5 w-full p-4 flex flex-wrap justify-center shadow-2xl rounded-md bg-gradient-to-b from-gray-900 via-gray-700 to-black">
+            
             <div className="pb-3">
-              <h1
-                className="text-4xl font-bold text-white cursor-pointer"
-                onClick={() => {
-                  window.location.href = "/ownerhomepage";
-                }}
-              >
-                {" "}
-                CloudCar
-              </h1>
-              <h2 className="text-2xl font-bold text-teal-600 pt-5">
-                Rent a Car Form
-              </h2>
+              <h1 className="text-4xl font-bold text-white cursor-pointer" onClick={()=>{window.location.href='/ownerhomepage'}}> CloudCar</h1>
+              <h2 className="text-2xl font-bold text-teal-600 pt-5">Rent a Car Form</h2>
             </div>
+          
+       
+
 
             <form
               onSubmit={submitCar}
               className="flex flex-col justify-start items-center w-full m-auto"
             >
               <div className="grid grid-cols-1 mb-6 md:grid-cols-2 gap-3 w-full">
-                {/* {fields.map((field, index) => (
+                {fields.map((field, index) => (
                   <div
                     key={index}
                     className={`text-left flex flex-col gap-2 w-full ${
@@ -277,25 +259,6 @@ export default function NewRenterForm({ socket }) {
                     <label className="font-semibold text-teal-600">
                       {field.label}
                     </label>
-
-                    <input
-                      value={car_details.description}
-                      {...register("car description", {
-                        required: true,
-                      })}
-                      className={`bg-gray-600 text-white border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 md:py-3 md:px-4 md:mb-0 focus:border-red-500 ${
-                        field.gridCols === 2 ? "md:w-full" : ""
-                      }`}
-                      type={field.type}
-                      placeholder={field.placeholder}
-                      onChange={(e) =>
-                        setCarDetails({
-                          ...car_details,
-                          description: e.target.value,
-                        })
-                      }
-                    />
-
                     <input
                       value={field.value}
                       {...register(field.label.toLowerCase(), {
@@ -308,56 +271,6 @@ export default function NewRenterForm({ socket }) {
                       placeholder={field.placeholder}
                       onChange={changeCarDetails}
                     />
-
-                    {errors[field.label.toLowerCase()] && (
-                      <span>This field is required</span>
-                    )}
-                  </div>
-                ))} */}
-
-                {fields.map((field, index) => (
-                  <div
-                    key={index}
-                    className={`text-left flex flex-col gap-2 w-full ${
-                      field.gridCols === 2 ? "md:col-span-2" : ""
-                    }`}
-                  >
-                    <label className="font-semibold text-teal-600">
-                      {field.label}
-                    </label>
-                    {field.name === "car description" ? (
-                      <input
-                        value={car_details.description}
-                        {...register("car description", {
-                          required: field.required,
-                        })}
-                        className={`bg-gray-600 text-white border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 md:py-3 md:px-4 md:mb-0 focus:border-red-500 ${
-                          field.gridCols === 2 ? "md:w-full" : ""
-                        }`}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        onChange={(e) =>
-                          setCarDetails({
-                            ...car_details,
-                            description: e.target.value,
-                          })
-                        }
-                      />
-                    ) : (
-                      // For other fields, render input according to the existing logic
-                      <input
-                        value={field.value}
-                        {...register(field.label.toLowerCase(), {
-                          required: field.required,
-                        })}
-                        className={`bg-gray-600 text-white border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 md:py-3 md:px-4 md:mb-0 focus:border-red-500 ${
-                          field.gridCols === 2 ? "md:w-full" : ""
-                        }`}
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        onChange={changeCarDetails}
-                      />
-                    )}
                     {errors[field.label.toLowerCase()] && (
                       <span>This field is required</span>
                     )}
@@ -365,20 +278,18 @@ export default function NewRenterForm({ socket }) {
                 ))}
               </div>
               <div className="flex flex-col gap-2 w-full">
-                <label className="font-semibold text-teal-600">
-                  Upload Images (Max 5)
-                </label>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
+                <label className="font-semibold text-teal-600">Upload Images (Max 5)</label>
+                <input 
+                  type="file" 
+                  multiple 
+                  accept="image/*" 
                   className="bg-gray-600 border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 focus:border-red-500"
                   onChange={(event) => {
-                    const files = Array.from(event.target.files);
-                    setCarDetails((car_details_previous) => {
-                      return { ...car_details_previous, images: files };
-                    });
-                  }}
+                    const files = Array.from(event.target.files);  
+                    setCarDetails((car_details_previous)=>{
+                      return {...car_details_previous, images: files}
+                    })
+                  }}    
                 />
               </div>
 
@@ -407,24 +318,27 @@ export default function NewRenterForm({ socket }) {
               </div> */}
 
               <div className="w-full text-left mt-5 flex justify-between">
+                
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleGoBack}
                   className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
-                  title="Go Back"
-                >
+                  title="Go Back">
                   <HiOutlineArrowCircleLeft size={20} />
                   <span>Go Back</span>
                 </button>
 
+
                 <button
                   type="submit"
                   className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
-                  title="Register"
-                >
+                  title="Register">
                   <span>Register</span>
                   <HiOutlineArrowCircleRight size={20} />
                 </button>
               </div>
+
+
             </form>
           </div>
         </div>

@@ -8,7 +8,7 @@ import LandingPage from "./pages/landingpage";
 import SignupRenter from './pages/signuprenter';
 import OwnerHomePage from './pages/ownerhomepage.js';
 import RenterHomepage from './pages/renterhomepage';
-import RenterForm from './pages/renterform';
+// import RenterForm from './pages/renterform';
 import AvailableCars from './pages/availableCars';
 import ListedCars from './pages/listedCars.js';
 import HowItWorks from './pages/howItWorks.js';
@@ -19,9 +19,8 @@ import ProductFormPage from './pages/ownerform.js';
 import CarDetails from './pages/carDetails.js';
 import AddPost from './pages/posts.js';
 import ViewBookingsPage from './pages/viewbookings.js';
+import ForgotPassword from './pages/forgotpassword.js';
 const socket = io('http://localhost:3001',{ transports: ["websocket"] });
-
-
 
 function App() {
 
@@ -39,7 +38,7 @@ function App() {
           <Route path="/signuprenter" element={<SignupRenter socket = {socket}/>} />
           <Route path="/renterhomepage" element={<RenterHomepage socket = {socket}/>} />
           <Route path="/ownerhomepage" element={<OwnerHomePage socket = {socket}/>} />
-          <Route path='/renterform' element = {<RenterForm socket = {socket}/>}/>
+          {/* <Route path='/renterform' element = {<RenterForm socket = {socket}/>}/> */}
           <Route path='/availablecars' element = {<AvailableCars socket = {socket}/>}/>
           <Route path='/listedcars' element = {<ListedCars socket = {socket}/>}/>
           <Route path='/how-it-works' element = {<HowItWorks />}/>
@@ -49,7 +48,8 @@ function App() {
           <Route path = '/productform' element = {<ProductFormPage socket = {socket}/>}/>
           <Route path = '/cardetails/:carmake' element = {<CarDetails socket = {socket}/>}/>
           <Route path='/posts' element = {<AddPost socket = {socket}/>}/>  
-          <Route path='/view-bookings' element = {<ViewBookingsPage socket = {socket}/>}/> 
+          <Route path='/view-bookings' element = {<ViewBookingsPage socket = {socket}/>}/>
+          <Route path='/forgotpassword' element =  {<ForgotPassword socket = {socket}/>}/>
         </Routes>
       </Router>
     </div>

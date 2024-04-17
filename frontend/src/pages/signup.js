@@ -175,6 +175,9 @@ export default function Signup({socket}) {
 	},[socket])
 
 
+  const handleGoBack = () => {
+    window.location.href = '/ownerhomepage';
+  };
 
   return (
     <div>
@@ -241,7 +244,8 @@ export default function Signup({socket}) {
 
               <div className="w-full text-left mt-5 flex justify-between">
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleGoBack}
                   className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
                   title="Go Back">
                   <HiOutlineArrowCircleLeft size={20} />
