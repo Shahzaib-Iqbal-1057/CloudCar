@@ -245,7 +245,7 @@ const handleReply = (postId) => {
           <div style={{ marginBottom: "2em" }}></div>
           {posts.map((post) => (
             <div className="text-white" key={post.postId}>
-              <p className="block p-2.5 w-1/6 text-sm text-black bg-teal-600 rounded-lg border border-black font-semibold">
+              <p className="inline-block p-2.5 text-sm text-black bg-teal-600 rounded-lg border border-black font-semibold">
                 {post.userName}: {post.messageContent}
               </p>
               <p className="mt-5">Likes #: {post.likes}</p>
