@@ -84,9 +84,10 @@ function Login({ socket }) {
           </div>
           <button type="submit" className="login-button">Login</button>
           <div className="login-links">
-            <a href="/forgotpassword" className="login-link">Forgot my password</a>
-            <a href="/signup" className="login-link">Don't have an account? Sign up</a>
-          </div>
+  <a href="/forgotpassword" className="login-link">Forgot my password</a>
+  <span className="no-account-text">Don't have an account?</span><a href="/signup" className="login-link">Sign up</a>
+</div>
+
         </form>
       </div>
       </div>
