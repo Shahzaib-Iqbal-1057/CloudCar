@@ -1,38 +1,38 @@
 // import React from 'react';
-// // import './App.css'; // Assuming you have a CSS file named App.css for your styles
 
 // function ForgotPassword() {
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+//     // Handle form submission here
+//   };
+
 //   return (
-//     <div style={{paddingTop: '70px'}}> {/* Applying inline style for padding */}
-//       <div className="container">
-//         <div className="row">
-//           <div className="col-md-4 col-md-offset-4">
-//             <div className="panel panel-default">
-//               <div className="panel-body">
-//                 <div className="text-center">
-//                   <h3><i className="fa fa-lock fa-4x"></i></h3>
-//                   <h2 className="text-center">Forgot Password?</h2>
-//                   <p>You can reset your password here.</p>
-//                   <div className="panel-body">
-//                     <form id="register-form" role="form" autoComplete="off" className="form" method="post">
-//                       <div className="form-group">
-//                         <div className="input-group">
-//                           <span className="input-group-addon"><i className="glyphicon glyphicon-envelope color-blue"></i></span>
-//                           <input id="email" name="email" placeholder="email address" className="form-control" type="email" />
-//                         </div>
-//                       </div>
-//                       <div className="form-group">
-//                         <input name="recover-submit" className="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit" />
-//                       </div>
-//                       <input type="hidden" className="hide" name="token" id="token" value="" />
-//                     </form>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
+//     <div className="container-center bg-gradient-to-b from-gray-900 via-gray-700 to-black h-screen flex flex-col justify-center items-center">
+//       <center>
+//         <h3 className="text-teal-600 text-3xl font-bold mb-4">Forgot Password?</h3>
+//         {/* <img src="https://i.imgur.com/LaimZqD.png" className="w-20" alt="Logo" /> */}
+//       </center>
+      
+//       <h2 className="text-teal-600 text-2xl font-bold mb-4">Don't Worry!</h2>
+      
+//       <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-sm">
+//         <h4 className="text-center text-gray-800 text-lg font-semibold mb-4">
+//           Just provide your email<br /> 
+//           and we can do the rest
+//         </h4>
+      
+//         <div className="formgroup relative mb-6">
+//           {/* <input type="email" name="email" className="input-field" placeholder="Email" /> */}
+//             {/* <label className="block text-teal-600">Email Address</label> */}
+//             <input type="email"  name="email" id="" placeholder="Enter Email Address" className="w-full px-4 py-3 text-black rounded-lg bg-white mt-2 border focus:border-teal-600 focus:outline-none" autoFocus autoComplete="email" required />
 //         </div>
-//       </div>
+      
+//         <button id="login-btn" href='login' type="submit" className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300">Next</button>
+      
+//       </form>
+
+
+//       <p className="text-white mt-4">Did you remember? <a href="login" className="text-white font-semibold">Sign In</a></p>
 //     </div>
 //   );
 // }
@@ -41,37 +41,35 @@
 
 
 import React from 'react';
-import '../styles/forgotpassword.css'; // Assuming you have a CSS file named style.css in the styles folder
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 function ForgotPassword() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Handle form submission here
+  };
+
   return (
-    <html lang="en">
-      <head>
-        {/* CSS file imported here */}
-        <link rel="stylesheet" type="text/css" href="./styles/style.css" />
-      </head>
-      <body>
-        <div className="container-center">
-          <center>
-            <img src="https://i.imgur.com/LaimZqD.png" width="30%" alt="logo" />
-          </center>
-          <h2>Don't Worry!</h2>
-          <form action="">
-            <h4>
-              Just provide your email<br />
-              and we can do the rest
-            </h4>
-            <div className="formgroup">
-              <input type="text" name="email" />
-              <label htmlFor="email"><br />Email</label>
-              <span>enter your email</span>
-            </div>
-            <button id="login-btn">Next</button>
-          </form>
-          <p>Did you remember? <a href="">Sign In</a></p>
+    <div className="container-center bg-gradient-to-b from-gray-900 via-gray-700 to-black h-screen flex flex-col justify-center items-center">
+      <center>
+        <h3 className="text-teal-600 text-3xl font-bold mb-4">Forgot Password?</h3>
+      </center>
+      <h2 className="text-teal-600 text-2xl font-bold mb-4">Don't Worry!</h2>
+      <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-sm">
+        <h4 className="text-center text-gray-800 text-lg font-semibold mb-4">
+          Just provide your email<br /> 
+          and we can do the rest
+        </h4>
+        <div className="formgroup relative mb-6">
+          <input type="email" name="email" id="" placeholder="Enter Email Address" className="w-full px-4 py-3 text-black rounded-lg bg-white mt-2 border focus:border-teal-600 focus:outline-none" autoFocus autoComplete="email" required />
         </div>
-      </body>
-    </html>
+        {/* Replace button with Link */}
+        <Link to="/login" className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 inline-block text-center">
+          Next
+        </Link>
+      </form>
+      <p className="text-white mt-4">Did you remember? <a href="login" className="text-white font-semibold">Sign In</a></p>
+    </div>
   );
 }
 
