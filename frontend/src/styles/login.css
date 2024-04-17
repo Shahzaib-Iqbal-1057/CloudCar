@@ -1,31 +1,51 @@
-
-
 .login-container {
   display: flex;
-  justify-content: flex-end; /* Align children to the right */
-  align-items: center;
+  flex-direction: row-reverse; /* Positions the child elements starting from the right */
+  align-items: center; /* Vertically centers the form in the viewport */
   height: 100vh;
-  background: url('../../public/locationsimage.jpg') no-repeat left center fixed; /* Align background image to the left */
+  background: url('../../public/locationsimage.jpg') no-repeat left center fixed; /* Keeps the background image to the left */
   background-size: cover;
 }
 
 .login-form-container {
+  display: flex;
+  flex-direction: column; /* Stacks the form elements vertically */
+  justify-content: center; /* Centers the form elements vertically within the container */
   background: rgba(0, 0, 0, 0.5);
   padding: 40px;
   border-radius: 10px;
-  width: 80vh;
-  height: 100vh;
+  height:100%;
+  width: auto; /* Allows the width to be determined by the content and padding */
+  max-width: 400px; /* Sets a max-width for larger screens */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  justify-content: center;
-  align-items: center;
-
+  margin-left:auto; /* Pushes the container to the right */
+  margin-right:0; /* Spacing from the right edge of the screen */
 }
 
+@media (max-width: 1024px) {
+  .login-container {
+    justify-content: center; /* Center the form on medium screens */
+  }
 
+  .login-form-container {
+    margin: auto; /* Centers the form container */
+    margin-top: 20px; /* Spacing from the top of the viewport */
+    margin-bottom: 20px; /* Spacing from the bottom of the viewport */
+  }
+}
+
+@media (max-width: 600px) {
+  .login-form-container {
+    padding: 20px; /* Reduces padding on small screens */
+    width: 90%; /* Allows the form to be responsive while maintaining padding from the viewport edges */
+  }
+}
 
 .login-title {
-  color: #ffffff;
+  font-size: 1.2em; /* Use em units for scalability */
+  color: #06beb6;
+  font-weight: bold;
   margin-bottom: 10px;
 }
 
@@ -46,9 +66,9 @@
 }
 
 .login-checkbox {
+  align-self: flex-start; /* Align the checkbox to the start */
   color: white;
   margin-bottom: 20px;
-  text-align: left;
 }
 
 .login-checkbox input {
@@ -60,8 +80,7 @@
   padding: 15px;
   border-radius: 20px;
   border: none;
-  background:  rgb(57, 168, 161);
-  
+  background: rgb(57, 168, 161);
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -74,26 +93,20 @@
 
 .login-links {
   color: white;
+  display: flex; /* Use flex to keep links in line */
+  justify-content: center; /* Center the links */
+  gap: 5px; /* Add a small gap between text and link */
 }
 
 .login-link {
-  color:  rgb(57, 168, 161);
+  color: rgb(57, 168, 161);
   text-decoration: none;
-  display: block;
-  margin-top: 10px;
 }
 
 .login-link:hover {
   text-decoration: underline;
 }
 
-.login-title {  
-  font-size: 1.2cm;
-  color: #06beb6;
-  font-weight: bold;
-}
-
 .no-account-text {
-  color: white; /* Replace with the color you want */
+  color: white; /* Adjust the color as needed */
 }
-
