@@ -1,12 +1,36 @@
 import React from 'react';
 
 function Header() {
+
+
+  const getCookieValue = (name) => {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if(cookieName.trim() === name.trim()) {
+        return cookieValue.trim();
+      }
+    }
+    return null;
+    };
+
+
+  function handleClick() {
+    
+    if(getCookieValue("email") === null) {
+      window.location.href = "/ "
+    }
+    else{
+      window.location.href = "/ownerhomepage "
+    }
+  }
+
   return (
     <>
       {/* Section 1 */}
       <nav className="flex justify-between bg-teal-600 text-black w-screen">
         <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-          <a className="text-3xl font-bold font-heading" href="/ ">
+          <a className="text-3xl font-bold font-heading cursor-pointer" onClick={handleClick}>
             {" "}
             CloudCar{" "}
           </a>
