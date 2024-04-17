@@ -29,7 +29,6 @@ function Login({ socket }) {
   React.useEffect(() => {
     socket.on("login", (status) => {
       if (status === "successfull") {
-        alert("login successfull");
         window.location.href = '/ownerhomepage';
       } else {
         alert("incorrect username or password");

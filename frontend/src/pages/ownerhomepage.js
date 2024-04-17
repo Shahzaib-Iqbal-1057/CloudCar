@@ -236,7 +236,7 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="inbox rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4">Inbox</button>
+        <button className="inbox rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href = '/listedcars'}}>See listed Cars</button>
       </div>
 
       <div
