@@ -60,7 +60,7 @@ function Login({socket}) {
             </div>
 
             <div className="text-right mt-2">
-              <a href="#" className="text-sm font-semibold text-white hover:text-blue-700 focus:text-blue-700">Forgot Password?</a>
+              <a href="forgotpassword" className="text-sm font-semibold text-white hover:text-teal-600 focus:text-blue-700">Forgot Password?</a>
             </div>
             
             <div class="flex justify-center">
@@ -70,7 +70,7 @@ function Login({socket}) {
 
           <hr className="my-6 border-gray-300 w-full" />
 
-          <p className="mt-8 text-white text-center">Don't have an account? <a href="signup" className="text-teal-600 hover:text-blue-700 font-semibold">Sign up</a></p>
+          <p className="mt-8 text-white text-center">Don't have an account? <a href="signup" className="text-teal-600 hover:text-teal-400 font-semibold">Sign up</a></p>
 
         </div>
       </div>

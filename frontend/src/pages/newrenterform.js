@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
+import { HiOutlineArrowCircleLeft } from "react-icons/hi";
 import axios from 'axios'
 import { Image } from 'cloudinary-react';
 import styled from "@emotion/styled";
@@ -197,6 +198,9 @@ export default function NewRenterForm({socket}) {
       });
 
       }
+      else{
+        setError("")
+      }
 	
 		if(car_details.year.length != 4 || isNaN(parseInt(car_details.year)) || parseInt(car_details.year) > 2024 || parseInt(car_details.year) < 1300) {
 			setErrorSubmit("")
@@ -207,9 +211,12 @@ export default function NewRenterForm({socket}) {
         year: ""
       });
 		}
+    else{
+      setErrorYear("")
+    }
 
 		if (from < today || till < today) {
-  
+
 			setErrorSubmit("")
 			check = false
 			setError("Selected dates cannot be less than today's date");
@@ -220,6 +227,9 @@ export default function NewRenterForm({socket}) {
 			});
 	
 		}
+    else{
+      setError("")
+    }
 
 		
 
@@ -239,6 +249,9 @@ export default function NewRenterForm({socket}) {
           city: ""
         });
 			} 
+      else{
+        setErrorCity("")
+      }
 		}
 		if(car_details.phone.length != 11 || isNaN(parseInt(car_details.phone))) {
       setCarDetails({
@@ -248,11 +261,18 @@ export default function NewRenterForm({socket}) {
       setErrorPhone("Invalid Phone Number Format")
       check = false
     }
+    else{
+      setErrorPhone("")
+    }
 
     if(car_details.images.length > 5) {
       setErrorImages("Please upload a maximum of 5 images.")
       setErrorSubmit("Please upload a maximum of 5 images.")
       check = false
+    }
+    else{
+      setErrorImages("")
+      setErrorSubmit("")
     }
 
     if(car_details.images.length < 3){
@@ -260,6 +280,11 @@ export default function NewRenterForm({socket}) {
       setErrorSubmit("Please upload atleast 3 images.")
       check = false
     }
+    else{
+      setErrorImages("")
+      setErrorSubmit("")
+    }
+
 
     if(!check){
       return
@@ -342,6 +367,10 @@ export default function NewRenterForm({socket}) {
 		socket.emit("get_display_name", getCookieValue("email"))
 	},[])
 
+
+  const handleGoBack = () => {
+    window.location.href = '/ownerhomepage';
+  };
 
 
   return (
@@ -429,17 +458,33 @@ export default function NewRenterForm({socket}) {
                 />
               </div>
 
-              <div className="w-full text-left mt-5">
-                <button
-                  type="submit"
-                  className="flex justify-center items-center gap-2 w-full py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 lg:m-0 md:px-6"
-                  title="Confirm Order"
-                >
-                  <span>Register</span>
-                 
-                  <HiOutlineArrowCircleRight size={20} />
-                </button>
-              </div>
+
+              <div className="w-full text-left mt-5 flex justify-between">
+              
+              <button
+                type="button"
+                onClick={handleGoBack}
+                className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
+                title="Go Back"
+              >
+                <HiOutlineArrowCircleLeft size={20} />
+                <span>Go Back</span>
+              </button>
+
+              <div className="w-12"></div> {/* This div adds a gap of 1 rem between the buttons */}
+
+              <button
+                type="submit"
+                className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
+                title="Register"
+              >
+                <span>Register</span>
+                <HiOutlineArrowCircleRight size={20} />
+              </button>
+            </div>
+
+              
+              
               <div>
               <span className="text-red-500 text-sm">{errorSubmit}</span>
               </div>
