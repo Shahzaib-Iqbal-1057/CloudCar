@@ -78,6 +78,9 @@
 .login-link:hover {
   text-decoration: underline;
 }
-.h1 {
-  font-size: large;
+
+.login-title {  
+  font-size: 1.2cm;
+  color: #06beb6;
+  font-weight: bold;
 }
