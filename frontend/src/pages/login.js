@@ -89,8 +89,8 @@ function Login({ socket }) {
           </div>
         </form>
       </div>
-    </div>
-    </>
+      </div>
+</>
   );
 }
 
