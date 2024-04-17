@@ -36,9 +36,10 @@ const ViewCarRequests = ({socket}) => {
     },[socket])
 
     
-    function handleApprove(rentalId) {
+    function handleApprove(rentalId,renter) {
         //sending the accept car request to the backend
         socket.emit("acceptRequest",{rentalId:rentalId,car:window.location.href.split('=')[1]})
+        window.location.href = `/chat?to=${renter}`
     }
 
     function handleRemove(e) {
@@ -53,7 +54,7 @@ const ViewCarRequests = ({socket}) => {
           <h2>Request from : {request.renter}</h2>
           <p>Amount : {request.amount}</p>
           <div className="buttongroup" style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button style={{ padding: '5px 10px', cursor: 'pointer' }} onClick={()=>{handleApprove(request.rentalId)}}>Approve</button>
+            <button style={{ padding: '5px 10px', cursor: 'pointer' }} onClick={()=>{handleApprove(request.rentalId,request.renter)}}>Approve</button>
             <button style={{ padding: '5px 10px', cursor: 'pointer' }} onClick={handleRemove}>Remove</button>
           </div>
         </div>

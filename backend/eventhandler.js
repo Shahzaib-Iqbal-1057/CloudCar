@@ -254,7 +254,10 @@ const eventHanlder = (socket, io) => {
                 startDate: car.startDate,
                 endDate: car.endDate,
                 ownerImages: car.images,
-                amount: car.price
+                amount: car.price,
+                make: car.make,
+                model: car.model,
+                variant: car.variant
                 //other data
             }); 
             const savedRental = await newRental.save(); 
@@ -288,10 +291,10 @@ const eventHanlder = (socket, io) => {
             }
             ); 
             //inside all car requests, we have to send the renter display name
-            for(let i = 0; i < uniqueCarRequests.length; i++){
-                const renter = await User.findOne({ email: uniqueCarRequests[i].renter });
-                uniqueCarRequests[i].renter = renter.displayName;
-            }
+            // for(let i = 0; i < uniqueCarRequests.length; i++){
+            //     const renter = await User.findOne({ email: uniqueCarRequests[i].renter });
+            //     uniqueCarRequests[i].renter = renter.displayName;
+            // }
             console.log("unique car requests",uniqueCarRequests)
             io.to(socket.id).emit("viewCarRequests", uniqueCarRequests)
         }
