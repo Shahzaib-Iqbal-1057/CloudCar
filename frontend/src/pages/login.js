@@ -50,12 +50,12 @@ function Login({socket}) {
 
           <form className="mt-6" action="#" method="POST">
             <div>
-              <label className="block text-white">Email Address</label>
+              <label className="block text-black">Email Address</label>
               <input type="email"  name="email" value={login_data.email} onChange={changeLoginData} id="" placeholder="Enter Email Address" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" autoFocus autoComplete="email" required />
             </div>
 
             <div className="mt-4">
-              <label className="block text-white">Password</label>
+              <label className="block text-black">Password</label>
               <input type="password" name="password" value={login_data.password} onChange={changeLoginData}  id="" placeholder="Enter Password" minLength="6" className="w-full px-4 py-3 text-white rounded-lg bg-gray-600 mt-2 border focus:border-blue-500 focus:outline-none" required />
             </div>
 

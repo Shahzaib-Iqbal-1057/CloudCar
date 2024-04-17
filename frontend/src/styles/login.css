@@ -1,4 +1,4 @@
-.message-input-container {
+/* .message-input-container {
    
     border: 1px solid #36454F;
     display: flex;
@@ -8,7 +8,7 @@
     height: fit-content;
     margin-top: 8px;
     background: transparent;
-    color: white;
+    color: rgb(11, 10, 10);
   }
   
   .message-input-container:focus {
@@ -17,4 +17,4 @@
 
   .phone-container {
     background: transparent;  
-  }
+  } */
