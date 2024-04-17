@@ -20,7 +20,6 @@ function Login({ socket }) {
     // Emit the login event with loginData
     socket.emit("login", loginData);
     document.cookie = `email=${loginData.email};path=/`;
-  
     // Remove console.log before production
     console.log(loginData);
   }
@@ -58,7 +57,7 @@ function Login({ socket }) {
     </Helmet>
     <div className="login-container">
       <div className="login-form-container">
-        <h1 className="login-title">CloudCar</h1>
+      <a href="/" className="login-title">CloudCar</a>
         <h2 className="login-subtitle">Log in</h2>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
@@ -85,9 +84,10 @@ function Login({ socket }) {
           </div>
           <button type="submit" className="login-button">Login</button>
           <div className="login-links">
-            <a href="#" className="login-link">Forgot my password</a>
-            <a href="/signup" className="login-link">Don't have an account? Sign up</a>
-          </div>
+  <a href="/forgotpassword" className="login-link">Forgot my password</a>
+  <span className="no-account-text">Don't have an account?</span><a href="/signup" className="login-link">Sign up</a>
+</div>
+
         </form>
       </div>
       </div>

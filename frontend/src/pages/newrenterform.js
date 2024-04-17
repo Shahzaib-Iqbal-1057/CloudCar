@@ -2,29 +2,25 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { HiOutlineArrowCircleLeft } from "react-icons/hi";
-import axios from 'axios'
-import { Image } from 'cloudinary-react';
+import axios from "axios";
+import { Image } from "cloudinary-react";
 import styled from "@emotion/styled";
 import cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 const getCookieValue = (name) => {
-	const cookies = document.cookie.split(';');
-	for (const cookie of cookies) {
-		const [cookieName, cookieValue] = cookie.split('=');
-		if(cookieName.trim() === name.trim()) {
-			return cookieValue.trim();
-		}
-	}
-	return null;
-  };
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split("=");
+    if (cookieName.trim() === name.trim()) {
+      return cookieValue.trim();
+    }
+  }
+  return null;
+};
 
-
-  
-
-export default function NewRenterForm({socket}) {
+export default function NewRenterForm({ socket }) {
   const {
     register,
     handleSubmit,
@@ -33,31 +29,30 @@ export default function NewRenterForm({socket}) {
   } = useForm();
 
   const [error, setError] = React.useState("");
-	const [errorSubmit, setErrorSubmit] = React.useState("");
-	const [errorPrice, setErrorPrice] = React.useState("");
-	const [errorYear, setErrorYear] = React.useState("");
-	const [errorCity, setErrorCity] = React.useState("");
+  const [errorSubmit, setErrorSubmit] = React.useState("");
+  const [errorPrice, setErrorPrice] = React.useState("");
+  const [errorYear, setErrorYear] = React.useState("");
+  const [errorCity, setErrorCity] = React.useState("");
   const [errorImages, setErrorImages] = React.useState("");
   const [errorPhone, setErrorPhone] = React.useState("");
-  const [car_details,setCarDetails] = React.useState({
-		make: "",
-		model: "",
-		year: "",
-		city: "",
-		"rental price": "",
-		"pickup location": "",
-		"additional details": "",
-		"availability from": "",
-		"availability till": "",
-		"car documents": [],
-		"plate number":"",
-		owner: getCookieValue("email"),
-		ownerDisplayName: "",
+  const [car_details, setCarDetails] = React.useState({
+    make: "",
+    model: "",
+    year: "",
+    city: "",
+    "rental price": "",
+    "pickup location": "",
+    "additional details": "",
+    "availability from": "",
+    "availability till": "",
+    "car documents": [],
+    "plate number": "",
+    owner: getCookieValue("email"),
+    ownerDisplayName: "",
     phone: "",
-    images: []
-
-	})
-
+    images: [],
+    description: "",
+  });
 
   const fields = [
     {
@@ -149,138 +144,387 @@ export default function NewRenterForm({socket}) {
       placeholder: "123 Main St, City, Country",
       required: true,
       gridCols: 2,
-    }
+    },
+    {
+      label: "Description",
+      name: "description",
+      type: "text",
+      placeholder: "Write your car description here",
+      required: true,
+      gridCols: 2,
+    },
   ];
 
-  
   function changeCarDetails(e) {
-		if(e.target.name === "rental price" && isNaN(e.target.value)) {
-			setErrorSubmit("")
-			setErrorPrice("Please enter a valid number")
-      return
-		}
-		setCarDetails({
-			...car_details,
-			[e.target.name] : e.target.value
-		})
-		console.log(car_details)
-	}
+    if (e.target.name === "rental price" && isNaN(e.target.value)) {
+      setErrorSubmit("");
+      setErrorPrice("Please enter a valid number");
+      return;
+    }
+    setCarDetails({
+      ...car_details,
+      [e.target.name]: e.target.value,
+    });
+    console.log(car_details);
+  }
 
-	 async function submitCar(event) {
+  async function submitCar(event) {
     event.preventDefault();
-    
-    let check = true
-		const today = new Date();
+
+    let check = true;
+    const today = new Date();
     today.setHours(0, 0, 0, 0);
-		const from = new Date(car_details["availability from"]);
+    const from = new Date(car_details["availability from"]);
     from.setHours(0, 0, 0, 0);
     const till = new Date(car_details["availability till"]);
     till.setHours(0, 0, 0, 0);
 
-		if(car_details.make === "" || car_details.model === "" || car_details.year === "" || car_details.city === "" || car_details["plate number"] === "" || car_details["rental price"] === "" || car_details["pickup location"] === "" || car_details["availability from"] === "" || car_details["availability till"] === "") {
-			setErrorPrice("")
-			setError("")
-			setErrorYear("")
-			setErrorCity("")
-      setErrorImages("")
-      setErrorPhone("")
-			setErrorSubmit("Please fill all the fields")
-			return
-		}
+    if (
+      car_details.make === "" ||
+      car_details.model === "" ||
+      car_details.year === "" ||
+      car_details.city === "" ||
+      car_details["plate number"] === "" ||
+      car_details["rental price"] === "" ||
+      car_details["pickup location"] === "" ||
+      car_details["availability from"] === "" ||
+      car_details["availability till"] === ""
+    ) {
+      setErrorPrice("");
+      setError("");
+      setErrorYear("");
+      setErrorCity("");
+      setErrorImages("");
+      setErrorPhone("");
+      setErrorSubmit("Please fill all the fields");
+      return;
+    }
     if (from > till) {
-	    check = false
-	    setErrorSubmit("")
-      setError("Availability from date cannot be greater than availability till date");
+      check = false;
+      setErrorSubmit("");
+      setError(
+        "Availability from date cannot be greater than availability till date"
+      );
       setCarDetails({
         ...car_details,
         "availability from": "",
-        "availability till": ""
+        "availability till": "",
       });
+    } else {
+      setError("");
+    }
 
-      }
-      else{
-        setError("")
-      }
-	
-		if(car_details.year.length != 4 || isNaN(parseInt(car_details.year)) || parseInt(car_details.year) > 2024 || parseInt(car_details.year) < 1300) {
-			setErrorSubmit("")
-			check = false
-			setErrorYear("Please enter valid year")
+    if (
+      car_details.year.length != 4 ||
+      isNaN(parseInt(car_details.year)) ||
+      parseInt(car_details.year) > 2024 ||
+      parseInt(car_details.year) < 1300
+    ) {
+      setErrorSubmit("");
+      check = false;
+      setErrorYear("Please enter valid year");
       setCarDetails({
         ...car_details,
-        year: ""
+        year: "",
       });
-		}
-    else{
-      setErrorYear("")
+    } else {
+      setErrorYear("");
     }
 
-		if (from < today || till < today) {
-
-			setErrorSubmit("")
-			check = false
-			setError("Selected dates cannot be less than today's date");
-			setCarDetails({
+    if (from < today || till < today) {
+      setErrorSubmit("");
+      check = false;
+      setError("Selected dates cannot be less than today's date");
+      setCarDetails({
         ...car_details,
         "availability from": "",
-        "availability till": ""
-			});
-	
-		}
-    else{
-      setError("")
+        "availability till": "",
+      });
+    } else {
+      setError("");
     }
 
-		
+    if (car_details.city) {
+      let PakistanCities = [
+        "Islamabad",
+        "Ahmed Nager",
+        "Ahmadpur East",
+        "Ali Khan",
+        "Alipur",
+        "Arifwala",
+        "Attock",
+        "Bhera",
+        "Bhalwal",
+        "Bahawalnagar",
+        "Bahawalpur",
+        "Bhakkar",
+        "Burewala",
+        "Chillianwala",
+        "Chakwal",
+        "Chichawatni",
+        "Chiniot",
+        "Chishtian",
+        "Daska",
+        "Darya Khan",
+        "Dera Ghazi",
+        "Dhaular",
+        "Dina",
+        "Dinga",
+        "Dipalpur",
+        "Faisalabad",
+        "Fateh Jhang",
+        "Ghakhar Mandi",
+        "Gojra",
+        "Gujranwala",
+        "Gujrat",
+        "Gujar Khan",
+        "Hafizabad",
+        "Haroonabad",
+        "Hasilpur",
+        "Haveli",
+        "Lakha",
+        "Jalalpur",
+        "Jattan",
+        "Jampur",
+        "Jaranwala",
+        "Jhang",
+        "Jhelum",
+        "Kalabagh",
+        "Karor Lal",
+        "Kasur",
+        "Kamalia",
+        "Kamoke",
+        "Khanewal",
+        "Khanpur",
+        "Kharian",
+        "Khushab",
+        "Kot Adu",
+        "Jauharabad",
+        "Lahore",
+        "Lalamusa",
+        "Layyah",
+        "Liaquat Pur",
+        "Lodhran",
+        "Malakwal",
+        "Mamoori",
+        "Mailsi",
+        "Mandi Bahauddin",
+        "mian Channu",
+        "Mianwali",
+        "Multan",
+        "Murree",
+        "Muridke",
+        "Mianwali Bangla",
+        "Muzaffargarh",
+        "Narowal",
+        "Okara",
+        "Renala Khurd",
+        "Pakpattan",
+        "Pattoki",
+        "Pir Mahal",
+        "Qaimpur",
+        "Qila Didar",
+        "Rabwah",
+        "Raiwind",
+        "Rajanpur",
+        "Rahim Yar",
+        "Rawalpindi",
+        "Sadiqabad",
+        "Safdarabad",
+        "Sahiwal",
+        "Sangla Hill",
+        "Sarai Alamgir",
+        "Sargodha",
+        "Shakargarh",
+        "Sheikhupura",
+        "Sialkot",
+        "Sohawa",
+        "Soianwala",
+        "Siranwali",
+        "Talagang",
+        "Taxila",
+        "Toba Tek",
+        "Vehari",
+        "Wah Cantonment",
+        "Wazirabad",
+        "Badin",
+        "Bhirkan",
+        "Rajo Khanani",
+        "Chak",
+        "Dadu",
+        "Digri",
+        "Diplo",
+        "Dokri",
+        "Ghotki",
+        "Haala",
+        "Hyderabad",
+        "Islamkot",
+        "Jacobabad",
+        "Jamshoro",
+        "Jungshahi",
+        "Kandhkot",
+        "Kandiaro",
+        "Karachi",
+        "Kashmore",
+        "Keti Bandar",
+        "Khairpur",
+        "Kotri",
+        "Larkana",
+        "Matiari",
+        "Mehar",
+        "Mirpur Khas",
+        "Mithani",
+        "Mithi",
+        "Mehrabpur",
+        "Moro",
+        "Nagarparkar",
+        "Naudero",
+        "Naushahro Feroze",
+        "Naushara",
+        "Nawabshah",
+        "Nazimabad",
+        "Qambar",
+        "Qasimabad",
+        "Ranipur",
+        "Ratodero",
+        "Rohri",
+        "Sakrand",
+        "Sanghar",
+        "Shahbandar",
+        "Shahdadkot",
+        "Shahdadpur",
+        "Shahpur Chakar",
+        "Shikarpaur",
+        "Sukkur",
+        "Tangwani",
+        "Tando Adam",
+        "Tando Allahyar",
+        "Tando Muhammad",
+        "Thatta",
+        "Umerkot",
+        "Warah",
+        "Abbottabad",
+        "Adezai",
+        "Alpuri",
+        "Akora Khattak",
+        "Ayubia",
+        "Banda Daud",
+        "Bannu",
+        "Batkhela",
+        "Battagram",
+        "Birote",
+        "Chakdara",
+        "Charsadda",
+        "Chitral",
+        "Daggar",
+        "Dargai",
+        "Darya Khan",
+        "dera Ismail",
+        "Doaba",
+        "Dir",
+        "Drosh",
+        "Hangu",
+        "Haripur",
+        "Karak",
+        "Kohat",
+        "Kulachi",
+        "Lakki Marwat",
+        "Latamber",
+        "Madyan",
+        "Mansehra",
+        "Mardan",
+        "Mastuj",
+        "Mingora",
+        "Nowshera",
+        "Paharpur",
+        "Pabbi",
+        "Peshawar",
+        "Saidu Sharif",
+        "Shorkot",
+        "Shewa Adda",
+        "Swabi",
+        "Swat",
+        "Tangi",
+        "Tank",
+        "Thall",
+        "Timergara",
+        "Tordher",
+        "Awaran",
+        "Barkhan",
+        "Chagai",
+        "Dera Bugti",
+        "Gwadar",
+        "Harnai",
+        "Jafarabad",
+        "Jhal Magsi",
+        "Kacchi",
+        "Kalat",
+        "Kech",
+        "Kharan",
+        "Khuzdar",
+        "Killa Abdullah",
+        "Killa Saifullah",
+        "Kohlu",
+        "Lasbela",
+        "Lehri",
+        "Loralai",
+        "Mastung",
+        "Musakhel",
+        "Nasirabad",
+        "Nushki",
+        "Panjgur",
+        "Pishin valley",
+        "Quetta",
+        "Sherani",
+        "Sibi",
+        "Sohbatpur",
+        "Washuk",
+        "Zhob",
+        "Ziarat",
+      ];
 
-		if(car_details.city){
+      let cityEnteredByUser = car_details.city;
+      let cityEnteredLower = cityEnteredByUser.toLowerCase();
+      let PakistanCitiesLower = PakistanCities.map((city) =>
+        city.toLowerCase()
+      );
 
-			let PakistanCities = [ "Islamabad", "Ahmed Nager", "Ahmadpur East", "Ali Khan", "Alipur", "Arifwala", "Attock", "Bhera", "Bhalwal", "Bahawalnagar", "Bahawalpur", "Bhakkar", "Burewala", "Chillianwala", "Chakwal", "Chichawatni", "Chiniot", "Chishtian", "Daska", "Darya Khan", "Dera Ghazi", "Dhaular", "Dina", "Dinga", "Dipalpur", "Faisalabad", "Fateh Jhang", "Ghakhar Mandi", "Gojra", "Gujranwala", "Gujrat", "Gujar Khan", "Hafizabad", "Haroonabad", "Hasilpur", "Haveli", "Lakha", "Jalalpur", "Jattan", "Jampur", "Jaranwala", "Jhang", "Jhelum", "Kalabagh", "Karor Lal", "Kasur", "Kamalia", "Kamoke", "Khanewal", "Khanpur", "Kharian", "Khushab", "Kot Adu", "Jauharabad", "Lahore", "Lalamusa", "Layyah", "Liaquat Pur", "Lodhran", "Malakwal", "Mamoori", "Mailsi", "Mandi Bahauddin", "mian Channu", "Mianwali", "Multan", "Murree", "Muridke", "Mianwali Bangla", "Muzaffargarh", "Narowal", "Okara", "Renala Khurd", "Pakpattan", "Pattoki", "Pir Mahal", "Qaimpur", "Qila Didar", "Rabwah", "Raiwind", "Rajanpur", "Rahim Yar", "Rawalpindi", "Sadiqabad", "Safdarabad", "Sahiwal", "Sangla Hill", "Sarai Alamgir", "Sargodha", "Shakargarh", "Sheikhupura", "Sialkot", "Sohawa", "Soianwala", "Siranwali", "Talagang", "Taxila", "Toba Tek", "Vehari", "Wah Cantonment", "Wazirabad", "Badin", "Bhirkan", "Rajo Khanani", "Chak", "Dadu", "Digri", "Diplo", "Dokri", "Ghotki", "Haala", "Hyderabad", "Islamkot", "Jacobabad", "Jamshoro", "Jungshahi", "Kandhkot", "Kandiaro", "Karachi", "Kashmore", "Keti Bandar", "Khairpur", "Kotri", "Larkana", "Matiari", "Mehar", "Mirpur Khas", "Mithani", "Mithi", "Mehrabpur", "Moro", "Nagarparkar", "Naudero", "Naushahro Feroze", "Naushara", "Nawabshah", "Nazimabad", "Qambar", "Qasimabad", "Ranipur", "Ratodero", "Rohri", "Sakrand", "Sanghar", "Shahbandar", "Shahdadkot", "Shahdadpur", "Shahpur Chakar", "Shikarpaur", "Sukkur", "Tangwani", "Tando Adam", "Tando Allahyar", "Tando Muhammad", "Thatta", "Umerkot", "Warah", "Abbottabad", "Adezai", "Alpuri", "Akora Khattak", "Ayubia", "Banda Daud", "Bannu", "Batkhela", "Battagram", "Birote", "Chakdara", "Charsadda", "Chitral", "Daggar", "Dargai", "Darya Khan", "dera Ismail", "Doaba", "Dir", "Drosh", "Hangu", "Haripur", "Karak", "Kohat", "Kulachi", "Lakki Marwat", "Latamber", "Madyan", "Mansehra", "Mardan", "Mastuj", "Mingora", "Nowshera", "Paharpur", "Pabbi", "Peshawar", "Saidu Sharif", "Shorkot", "Shewa Adda", "Swabi", "Swat", "Tangi", "Tank", "Thall", "Timergara", "Tordher", "Awaran", "Barkhan", "Chagai", "Dera Bugti", "Gwadar", "Harnai", "Jafarabad", "Jhal Magsi", "Kacchi", "Kalat", "Kech", "Kharan", "Khuzdar", "Killa Abdullah", "Killa Saifullah", "Kohlu", "Lasbela", "Lehri", "Loralai", "Mastung", "Musakhel", "Nasirabad", "Nushki", "Panjgur", "Pishin valley", "Quetta", "Sherani", "Sibi", "Sohbatpur", "Washuk", "Zhob", "Ziarat" ]
-
-			let cityEnteredByUser = car_details.city; 
-			let cityEnteredLower = cityEnteredByUser.toLowerCase();
-			let PakistanCitiesLower = PakistanCities.map(city => city.toLowerCase());
-
-			if (!PakistanCitiesLower.includes(cityEnteredLower)) {
-				setErrorCity("Please Enter Valid City")
-				check = false
+      if (!PakistanCitiesLower.includes(cityEnteredLower)) {
+        setErrorCity("Please Enter Valid City");
+        check = false;
         setCarDetails({
           ...car_details,
-          city: ""
+          city: "",
         });
-			} 
-      else{
-        setErrorCity("")
+      } else {
+        setErrorCity("");
       }
-		}
-		if(car_details.phone.length != 11 || isNaN(parseInt(car_details.phone))) {
+    }
+    if (car_details.phone.length != 11 || isNaN(parseInt(car_details.phone))) {
       setCarDetails({
         ...car_details,
-        phone: ""
+        phone: "",
       });
-      setErrorPhone("Invalid Phone Number Format")
-      check = false
-    }
-    else{
-      setErrorPhone("")
+      setErrorPhone("Invalid Phone Number Format");
+      check = false;
+    } else {
+      setErrorPhone("");
     }
 
-    if(car_details.images.length > 5) {
-      setErrorImages("Please upload a maximum of 5 images.")
-      setErrorSubmit("Please upload a maximum of 5 images.")
-      check = false
-    }
-    else{
-      setErrorImages("")
-      setErrorSubmit("")
+    if (car_details.images.length > 5) {
+      setErrorImages("Please upload a maximum of 5 images.");
+      setErrorSubmit("Please upload a maximum of 5 images.");
+      check = false;
+    } else {
+      setErrorImages("");
+      setErrorSubmit("");
     }
 
 
     if(!check){
       return
     }
-
-    if(check){
+    if (check) {
       setCarDetails({
         make: "",
         model: "",
@@ -292,76 +536,76 @@ export default function NewRenterForm({socket}) {
         "availability from": "",
         "availability till": "",
         "car documents": [],
-        "plate number":"",
+        "plate number": "",
         owner: getCookieValue("email"),
         ownerDisplayName: "",
         phone: "",
-        images: []
+        images: [],
+        description: "",
       });
-			setErrorPrice("")
-			setError("")
-      setErrorPhone("")
-			setErrorYear("")
-			setErrorCity("")
-      setErrorImages("")
-			setErrorSubmit("Car detail have been sent!")
-		
-      let image_urls = []
+      setErrorPrice("");
+      setError("");
+      setErrorPhone("");
+      setErrorYear("");
+      setErrorCity("");
+      setErrorImages("");
+      setErrorSubmit("Car detail have been sent!");
 
-      for(let i=0;i<car_details.images.length;i++) {
+      let image_urls = [];
+
+      for (let i = 0; i < car_details.images.length; i++) {
         const formData = new FormData();
-        formData.append('file', car_details.images[i]);
-        formData.append('upload_preset', 'lgzz6pc4');
+        formData.append("file", car_details.images[i]);
+        formData.append("upload_preset", "lgzz6pc4");
 
         try {
-          const response = await axios.post('https://api.cloudinary.com/v1_1/dgh0rch3f/upload', formData);
-          console.log("response from cloudinary",response)
-          image_urls.push(response.data.secure_url)
-        }
-        catch {
-          console.log("error uploading image")
+          const response = await axios.post(
+            "https://api.cloudinary.com/v1_1/dgh0rch3f/upload",
+            formData
+          );
+          console.log("response from cloudinary", response);
+          image_urls.push(response.data.secure_url);
+        } catch {
+          console.log("error uploading image");
         }
       }
 
-      car_details.images = image_urls
-      socket.emit("carform",car_details)
+      car_details.images = image_urls;
+      socket.emit("carform", car_details);
+      console.log("EMIT HOTI HUI DETAILS", car_details);
     }
+  }
 
-	}
+  React.useEffect(() => {
+    socket.on("carform", (status) => {
+      if (status == "successfull") {
+        setErrorSubmit("Your car has been stored Successfully");
+      } else {
+        setErrorSubmit("Car posting Failed");
+      }
+    });
+    socket.on("get_display_name", (display_name) => {
+      setCarDetails({
+        ...car_details,
+        ownerDisplayName: display_name,
+      });
+    });
+    return () => {
+      socket.off("carform");
+      socket.off("get_display_name");
+    };
+  }, [socket]);
 
-	React.useEffect(()=>{
-		socket.on("carform",(status)=>{
-			if(status == "successfull") {
-				setErrorSubmit("Your car has been stored Successfully")
-			}
-			else {
-				setErrorSubmit("Car posting Failed")
-			}
-		})
-		socket.on("get_display_name",(display_name)=>{
-			setCarDetails({
-				...car_details,
-				ownerDisplayName: display_name
-			})
-		})
-		return ()=>{
-			socket.off("carform")
-			socket.off("get_display_name")
-		}
-	},[socket])
-
-	React.useEffect(()=>{
-    if(getCookieValue("email") === null) {
-      window.location.href = "/login"
+  React.useEffect(() => {
+    if (getCookieValue("email") === null) {
+      window.location.href = "/login";
     }
-		socket.emit("get_display_name", getCookieValue("email"))
-	},[])
-
+    socket.emit("get_display_name", getCookieValue("email"));
+  }, []);
 
   const handleGoBack = () => {
-    window.location.href = '/ownerhomepage';
+    window.location.href = "/ownerhomepage";
   };
-
 
   return (
     <div>
@@ -376,7 +620,15 @@ export default function NewRenterForm({socket}) {
         >
           <div className="lg:w-7/12 pb-10 pt-5 w-full p-4 flex flex-wrap justify-center shadow-2xl rounded-md bg-gradient-to-b from-gray-900 via-gray-700 to-black">
             <div className="pb-3">
-              <h1 className="text-4xl font-bold text-white cursor-pointer" onClick={()=>{window.location.href='/ownerhomepage'}}> CloudCar</h1>
+              <h1
+                className="text-4xl font-bold text-white cursor-pointer"
+                onClick={() => {
+                  window.location.href = "/ownerhomepage";
+                }}
+              >
+                {" "}
+                CloudCar
+              </h1>
               <h2 className="text-2xl font-bold text-teal-600 pt-5">
                 Rent a Car Form
               </h2>
@@ -396,7 +648,7 @@ export default function NewRenterForm({socket}) {
                     <label className="font-semibold text-teal-600">
                       {field.label}
                     </label>
-                    <input
+                    {/* <input
                       value={field.value}
                       {...register(field.label.toLowerCase(), {
                         required: field.required,
@@ -407,7 +659,26 @@ export default function NewRenterForm({socket}) {
                       type={field.type}
                       placeholder={field.placeholder}
                       onChange={changeCarDetails}
+                    /> */}
+                    <input
+                      {...register(field.label.toLowerCase(), {
+                        required: field.required,
+                      })}
+                      className={`bg-gray-600 border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 md:py-3 md:px-4 md:mb-0 focus:border-red-500 ${
+                        field.gridCols === 2 ? "md:w-full" : ""
+                      }`}
+                      type={field.type}
+                      placeholder={field.placeholder}
+                      value={car_details[field.label.toLowerCase()]} // Update value from car_details state
+                      onChange={(e) => {
+                        // Update specific field in car_details state
+                        setCarDetails((prevDetails) => ({
+                          ...prevDetails,
+                          [field.label.toLowerCase()]: e.target.value,
+                        }));
+                      }}
                     />
+                    {console.log("after input:", car_details)}
                     {/* {errors[field.label.toLowerCase()] && (
                       <span>This field is required</span>
                     )} */}
@@ -415,7 +686,9 @@ export default function NewRenterForm({socket}) {
                       <span className="text-red-500 text-sm">{errorPhone}</span>
                     )}
                     {field.label.toLowerCase() === "images" && (
-                      <span className="text-red-500 text-sm">{errorImages}</span>
+                      <span className="text-red-500 text-sm">
+                        {errorImages}
+                      </span>
                     )}
                     {field.label.toLowerCase() === "availability till" && (
                       <span className="text-red-500 text-sm">{error}</span>
@@ -433,50 +706,47 @@ export default function NewRenterForm({socket}) {
                 ))}
               </div>
               <div className="flex flex-col gap-2 w-full">
-                <label className="font-semibold text-teal-600">Upload Images (Max 5)</label>
-                <input 
-                  type="file" 
-                  multiple 
-                  accept="image/*" 
+                <label className="font-semibold text-teal-600">
+                  Upload Images (Max 5)
+                </label>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
                   className="bg-gray-600 border border-teal-600 text-sm font-semibold mb-1 max-w-full w-full outline-none rounded-md m-0 py-3 px-4 focus:border-red-500"
                   onChange={(event) => {
-                    const files = Array.from(event.target.files);  
-                    setCarDetails((car_details_previous)=>{
-                      return {...car_details_previous, images: files}
-                    })
-                  }}    
+                    const files = Array.from(event.target.files);
+                    setCarDetails((car_details_previous) => {
+                      return { ...car_details_previous, images: files };
+                    });
+                  }}
                 />
               </div>
 
-
               <div className="w-full text-left mt-5 flex justify-between">
-              
-              <button
-                type="button"
-                onClick={handleGoBack}
-                className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
-                title="Go Back"
-              >
-                <HiOutlineArrowCircleLeft size={20} />
-                <span>Go Back</span>
-              </button>
+                <button
+                  type="button"
+                  onClick={handleGoBack}
+                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
+                  title="Go Back"
+                >
+                  <HiOutlineArrowCircleLeft size={20} />
+                  <span>Go Back</span>
+                </button>
+                <div className="w-12"></div>{" "}
+                {/* This div adds a gap of 1 rem between the buttons */}
+                <button
+                  type="submit"
+                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
+                  title="Register"
+                >
+                  <span>Register</span>
+                  <HiOutlineArrowCircleRight size={20} />
+                </button>
+              </div>
 
-              <div className="w-12"></div> {/* This div adds a gap of 1 rem between the buttons */}
-
-              <button
-                type="submit"
-                className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
-                title="Register"
-              >
-                <span>Register</span>
-                <HiOutlineArrowCircleRight size={20} />
-              </button>
-            </div>
-
-              
-              
               <div>
-              <span className="text-red-500 text-sm">{errorSubmit}</span>
+                <span className="text-red-500 text-sm">{errorSubmit}</span>
               </div>
             </form>
           </div>
