@@ -4,6 +4,7 @@ import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { HiOutlineArrowCircleLeft } from 'react-icons/hi';
 
 
+
 export default function Signup({socket}) {
   const {
     register,
@@ -175,7 +176,7 @@ export default function Signup({socket}) {
 
 
   const handleGoBack = () => {
-    window.location.href = '/ownerhomepage';
+    window.location.href = '/';
   };
 
   return (

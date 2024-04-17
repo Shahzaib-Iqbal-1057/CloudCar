@@ -275,16 +275,6 @@ export default function NewRenterForm({socket}) {
       setErrorSubmit("")
     }
 
-    if(car_details.images.length < 3){
-      setErrorImages("Please upload atleast 3 images.")
-      setErrorSubmit("Please upload atleast 3 images.")
-      check = false
-    }
-    else{
-      setErrorImages("")
-      setErrorSubmit("")
-    }
-
 
     if(!check){
       return
