@@ -230,26 +230,31 @@ export default function Signup({socket}) {
                 ))}
               </div>
 
-              {/* <div className="w-full text-left">
-                <button
-                  onClick={handleSignup}
-                  className="flex justify-center items-center gap-2 w-full py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 lg:m-0 md:px-6"
-                  title="Register"
-                >
-                  <span>Register</span>
-                  <HiOutlineArrowCircleRight size={20} />
-                </button>
-              </div> */}
-
+              
               <div className="w-full text-left mt-5 flex justify-between">
-                <button
-                  type="button"
-                  onClick={handleGoBack}
-                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
-                  title="Go Back">
-                  <HiOutlineArrowCircleLeft size={20} />
-                  <span>Go Back</span>
-                </button>
+              
+              <button
+                type="button"
+                onClick={handleGoBack}
+                className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
+                title="Go Back"
+              >
+                <HiOutlineArrowCircleLeft size={20} />
+                <span>Go Back</span>
+              </button>
+
+              <div className="w-12"></div> {/* This div adds a gap of 1 rem between the buttons */}
+
+              <button
+                type="submit"
+                className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
+                title="Register"
+              >
+                <span>Register</span>
+                <HiOutlineArrowCircleRight size={20} />
+              </button>
+            </div>
+
 
                 <button
                   type="submit"
@@ -260,7 +265,8 @@ export default function Signup({socket}) {
                   <span>Register</span>
                   <HiOutlineArrowCircleRight size={20} />
                 </button>
-              </div>
+
+
 
             </form>
           </div>

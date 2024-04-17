@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function AddPost({socket}) {
+function AddPost({ socket }) {
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
   const [posts, setPosts] = useState([]);
@@ -10,12 +10,9 @@ function AddPost({socket}) {
   const [selectedPostId, setSelectedPostId] = useState("");
   const [selectedPostId2, setSelectedPostId2] = useState("");
 
-
-
   const allpostsfunction = () => {
     socket.emit("allposts");
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,33 +62,29 @@ function AddPost({socket}) {
     }
   });
 
-
   useEffect(() => {
     socket.on("allposts", (data) => {
       setPosts(data);
     });
-    socket.on("viewReplies",(data)=>{
-      if(data === "Noreplies"){
-          window.location.href = '/posts'
-          setReplies([])
+    socket.on("viewReplies", (data) => {
+      if (data === "Noreplies") {
+        window.location.href = "/posts";
+        setReplies([]);
+      } else {
+        setReplies(data);
       }
-      else{
-          setReplies(data);
-      }
-      
-  });
-    return ()=>{
-        socket.off("allposts")
-        socket.off("viewReplies")
-    }
-},[socket]);
+    });
+    return () => {
+      socket.off("allposts");
+      socket.off("viewReplies");
+    };
+  }, [socket]);
 
-useEffect(()=>{
-  socket.emit("allposts")
-},[])
+  useEffect(() => {
+    socket.emit("allposts");
+  }, []);
 
-
-const handleReply = (postId) => {
+  const handleReply = (postId) => {
     setShowReplyBox(true);
     setSelectedPostId(postId);
   };
@@ -108,8 +101,6 @@ const handleReply = (postId) => {
       setTimeout(() => setReplyContent(""), 1000);
     }
   };
-
-
 
   return (
     <div className="">
@@ -249,16 +240,18 @@ const handleReply = (postId) => {
                 {post.userName}: {post.messageContent}
               </p>
               <p className="mt-5">Likes #: {post.likes}</p>
-              <p className="mt-2.5 mb-5">Time: {new Date(post.dateTime).toLocaleString()}</p>
+              <p className="mt-2.5 mb-5">
+                Time: {new Date(post.dateTime).toLocaleString()}
+              </p>
 
               {/* LIKE BUTTON */}
               <button
                 onClick={() => handleLike(post.postId)}
                 type="button"
-                class="text-teal-600 border border-teal-600 hover:bg-teal-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-teal-600 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-teal-600 dark:text-teal-600 dark:hover:text-white dark:focus:ring-teal-600 dark:hover:bg-teal-600"
+                className="text-teal-600 border border-teal-600 hover:bg-teal-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-teal-600 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-teal-600 dark:text-teal-600 dark:hover:text-white dark:focus:ring-teal-600 dark:hover:bg-teal-600"
               >
                 <svg
-                  class="w-4 h-4"
+                  className="w-4 h-4"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -268,26 +261,51 @@ const handleReply = (postId) => {
                 </svg>
               </button>
 
-        
-
-              <button onClick={() => handleViewReplies(post.postId)} className="relative ml-5 mr-5 inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+              <button
+                onClick={() => handleViewReplies(post.postId)}
+                className="relative ml-5 mr-5 inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
+              >
                 <span className="relative px-5 py-1.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                  View Replies {' '}
+                  View Replies{" "}
                 </span>
               </button>
-              <button onClick={() => handleReply(post.postId)}>Reply </button>
+              {/* <button onClick={() => handleReply(post.postId)}>Reply </button> */}
+              <button
+                onClick={() => handleReply(post.postId)}
+                class="text-black rounded-lg px-4 py-2 bg-gray-200 hover:bg-gray-300 duration-300"
+              >
+                Reply
+              </button>
               <div style={{ marginBottom: "2em" }}></div>
               {selectedPostId2 === post.postId &&
                 replies &&
                 replies.map((reply) => (
                   <div key={reply.postId} style={{ paddingLeft: "50px" }}>
-                    <p>
-                      {reply.userName}: {reply.messageContent}
-                    </p>
-                    <p>Likes: {reply.likes}</p>
-                    <p>Time: {new Date(reply.dateTime).toLocaleString()}</p>
-                    <button onClick={() => handleLike(reply.postId)}>
+                    <div className="inline-block p-2.5 text-sm text-black bg-gray-400 rounded-lg border border-black font-semibold">
+                      <p>
+                        {reply.userName}: {reply.messageContent}
+                      </p>
+                      <p>Likes #: {reply.likes}</p>
+                      <p>Time: {new Date(reply.dateTime).toLocaleString()}</p>
+                    </div>{" "}
+                    {/* <button onClick={() => handleLike(reply.postId)}>
                       {" "}
+                      {post.likedByCurrentUser ? "Unlike" : "Like"}{" "}
+                    </button> */}
+                    <button
+                      onClick={() => handleLike(reply.postId)}
+                      type="button"
+                      className="text-teal-600 border border-teal-600 hover:bg-teal-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-teal-600 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-teal-600 dark:text-teal-600 dark:hover:text-white dark:focus:ring-teal-600 dark:hover:bg-teal-600"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 18 18"
+                      >
+                        <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z" />
+                      </svg>{" "}
                       {post.likedByCurrentUser ? "Unlike" : "Like"}{" "}
                     </button>
                     <div style={{ marginBottom: "2em" }}></div>
