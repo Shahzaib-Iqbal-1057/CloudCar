@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import cookies from "js-cookie";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 /**
  * `<Frame16>` ('Frame 16')
  * - [Open in Figma](https://figma.com/file/asUgXa0tsHsNH105i1oLCa?node-id=75:490)
@@ -52,10 +55,12 @@ const getCookieValue = (name) => {
 
 
 
-
-
 export function CarForm({socket}) {
-
+	const [error, setError] = React.useState("");
+	const [errorSubmit, setErrorSubmit] = React.useState("");
+	const [errorPrice, setErrorPrice] = React.useState("");
+	const [errorYear, setErrorYear] = React.useState("");
+	const [errorCity, setErrorCity] = React.useState("");
 	const [car_details,setCarDetails] = React.useState({
 		make: "",
 		model: "",
@@ -75,9 +80,11 @@ export function CarForm({socket}) {
 
 	function changeCarDetails(e) {
 		if(e.target.name === "rental_price" && isNaN(e.target.value)) {
-			alert("Please enter a valid number")
+			setErrorSubmit("")
+			setErrorPrice("Please enter a valid number")
 			return
 		}
+		setErrorPrice("")
 		setCarDetails({
 			...car_details,
 			[e.target.name] : e.target.value
@@ -86,12 +93,92 @@ export function CarForm({socket}) {
 	}
 
 	function submitCar() {
+		let check = true
+		const today = new Date();
+		const from = new Date(car_details.availability_from);
+        const till = new Date(car_details.availability_till);
+
 		if(car_details.make === "" || car_details.model === "" || car_details.year === "" || car_details.city === "" || car_details.plate_number === "" || car_details.rental_price === "" || car_details.pickup_location === "" || car_details.availability_from === "" || car_details.availability_till === "") {
-			alert("Please fill all the fields")
+			setErrorPrice("")
+			setError("")
+			setErrorYear("")
+			setErrorCity("")
+			setErrorSubmit("Please fill all the fields")
 			return
 		}
-		socket.emit("carform",car_details)
-		console.log("car detail have been sent!")
+
+        if (from > till) {
+	    check = false
+	    setErrorSubmit("")
+            setError("Availability from date cannot be greater than availability till date");
+            setCarDetails({
+                make: "",
+                model: "",
+                year: "",
+                city: "",
+                rental_price: "",
+                pickup_location: "",
+                additional_details: "",
+                availability_from: "",
+                availability_till: "",
+                car_documents: [],
+                car_pictures: [],
+                plate_number: "",
+                owner: getCookieValue("username"),
+                ownerDisplayName: ""
+            });
+
+        }
+	
+		if(car_details.year.length != 4 || isNaN(parseInt(car_details.year)) || parseInt(car_details.year) > 2024 || parseInt(car_details.year) < 1300) {
+			setErrorSubmit("")
+			check = false
+			setErrorYear("Please enter valid year")
+		}
+
+		if (from < today || till < today) {
+			setErrorSubmit("")
+			check = false
+			setError("Selected dates cannot be less than today's date");
+			setCarDetails({
+				...car_details,
+				make: "",
+				model: "",
+				year: "",
+				city: "",
+				rental_price: "",
+				pickup_location: "",
+				additional_details: "",
+				availability_from: "",
+				availability_till: "",
+				car_documents: [],
+				car_pictures: [],
+				plate_number: "",
+				owner: getCookieValue("username"),
+				ownerDisplayName: ""
+			});
+	
+		}
+
+		
+
+		if(car_details.city){
+
+			let PakistanCities = [ "Islamabad", "Ahmed Nager", "Ahmadpur East", "Ali Khan", "Alipur", "Arifwala", "Attock", "Bhera", "Bhalwal", "Bahawalnagar", "Bahawalpur", "Bhakkar", "Burewala", "Chillianwala", "Chakwal", "Chichawatni", "Chiniot", "Chishtian", "Daska", "Darya Khan", "Dera Ghazi", "Dhaular", "Dina", "Dinga", "Dipalpur", "Faisalabad", "Fateh Jhang", "Ghakhar Mandi", "Gojra", "Gujranwala", "Gujrat", "Gujar Khan", "Hafizabad", "Haroonabad", "Hasilpur", "Haveli", "Lakha", "Jalalpur", "Jattan", "Jampur", "Jaranwala", "Jhang", "Jhelum", "Kalabagh", "Karor Lal", "Kasur", "Kamalia", "Kamoke", "Khanewal", "Khanpur", "Kharian", "Khushab", "Kot Adu", "Jauharabad", "Lahore", "Lalamusa", "Layyah", "Liaquat Pur", "Lodhran", "Malakwal", "Mamoori", "Mailsi", "Mandi Bahauddin", "mian Channu", "Mianwali", "Multan", "Murree", "Muridke", "Mianwali Bangla", "Muzaffargarh", "Narowal", "Okara", "Renala Khurd", "Pakpattan", "Pattoki", "Pir Mahal", "Qaimpur", "Qila Didar", "Rabwah", "Raiwind", "Rajanpur", "Rahim Yar", "Rawalpindi", "Sadiqabad", "Safdarabad", "Sahiwal", "Sangla Hill", "Sarai Alamgir", "Sargodha", "Shakargarh", "Sheikhupura", "Sialkot", "Sohawa", "Soianwala", "Siranwali", "Talagang", "Taxila", "Toba Tek", "Vehari", "Wah Cantonment", "Wazirabad", "Badin", "Bhirkan", "Rajo Khanani", "Chak", "Dadu", "Digri", "Diplo", "Dokri", "Ghotki", "Haala", "Hyderabad", "Islamkot", "Jacobabad", "Jamshoro", "Jungshahi", "Kandhkot", "Kandiaro", "Karachi", "Kashmore", "Keti Bandar", "Khairpur", "Kotri", "Larkana", "Matiari", "Mehar", "Mirpur Khas", "Mithani", "Mithi", "Mehrabpur", "Moro", "Nagarparkar", "Naudero", "Naushahro Feroze", "Naushara", "Nawabshah", "Nazimabad", "Qambar", "Qasimabad", "Ranipur", "Ratodero", "Rohri", "Sakrand", "Sanghar", "Shahbandar", "Shahdadkot", "Shahdadpur", "Shahpur Chakar", "Shikarpaur", "Sukkur", "Tangwani", "Tando Adam", "Tando Allahyar", "Tando Muhammad", "Thatta", "Umerkot", "Warah", "Abbottabad", "Adezai", "Alpuri", "Akora Khattak", "Ayubia", "Banda Daud", "Bannu", "Batkhela", "Battagram", "Birote", "Chakdara", "Charsadda", "Chitral", "Daggar", "Dargai", "Darya Khan", "dera Ismail", "Doaba", "Dir", "Drosh", "Hangu", "Haripur", "Karak", "Kohat", "Kulachi", "Lakki Marwat", "Latamber", "Madyan", "Mansehra", "Mardan", "Mastuj", "Mingora", "Nowshera", "Paharpur", "Pabbi", "Peshawar", "Saidu Sharif", "Shorkot", "Shewa Adda", "Swabi", "Swat", "Tangi", "Tank", "Thall", "Timergara", "Tordher", "Awaran", "Barkhan", "Chagai", "Dera Bugti", "Gwadar", "Harnai", "Jafarabad", "Jhal Magsi", "Kacchi", "Kalat", "Kech", "Kharan", "Khuzdar", "Killa Abdullah", "Killa Saifullah", "Kohlu", "Lasbela", "Lehri", "Loralai", "Mastung", "Musakhel", "Nasirabad", "Nushki", "Panjgur", "Pishin valley", "Quetta", "Sherani", "Sibi", "Sohbatpur", "Washuk", "Zhob", "Ziarat" ]
+
+			let cityEnteredByUser = car_details.city; 
+			let cityEnteredLower = cityEnteredByUser.toLowerCase();
+			let PakistanCitiesLower = PakistanCities.map(city => city.toLowerCase());
+
+			if (!PakistanCitiesLower.includes(cityEnteredLower)) {
+				setErrorCity("Please Enter Valid City")
+				check = false
+			} 
+		}
+		if(check){
+			socket.emit("carform",car_details)
+			setErrorSubmit("car detail have been sent!")
+		}
 	
 	}
 
@@ -99,10 +186,10 @@ export function CarForm({socket}) {
 	React.useEffect(()=>{
 		socket.on("carform",(status)=>{
 			if(status == "successfull") {
-				alert("Your car has been stored Successfully")
+				setErrorSubmit("Your car has been stored Successfully")
 			}
 			else {
-				alert("Car posting Failed")
+				setErrorSubmit("Car posting Failed")
 			}
 		})
 		socket.on("get_display_name",(display_name)=>{
@@ -120,6 +207,16 @@ export function CarForm({socket}) {
 	React.useEffect(()=>{
 		socket.emit("get_display_name", getCookieValue("username"))
 	},[])
+
+	function handleDateChange(name, date) {
+		setCarDetails({
+			...car_details,
+			[name] : date
+		})
+        setError(""); 
+    }
+
+	
 
 
 
@@ -205,6 +302,7 @@ export function CarForm({socket}) {
 				value={car_details.year}
 				/>
           </Group30>
+		  {errorYear && <ErrorMessage4>{errorYear}</ErrorMessage4>}
           <Group31>
 			<input
 				type="text"
@@ -215,6 +313,7 @@ export function CarForm({socket}) {
 				value={car_details.city}
 				/>
           </Group31>
+		  {errorCity && <ErrorMessage5>{errorCity}</ErrorMessage5>}
           <Group32>
 			<input
 				type="text"
@@ -235,6 +334,7 @@ export function CarForm({socket}) {
 				value={car_details.rental_price}
 			/>
           </Group33>
+		  {errorPrice && <ErrorMessage3>{errorPrice}</ErrorMessage3>}
           <Group34>
 			<input
 				type="text"
@@ -255,6 +355,7 @@ export function CarForm({socket}) {
 				value={car_details.pickup_location}
 			/>
           </Group34>
+			
           <Group56>
 			<input
 				type="text"
@@ -266,25 +367,23 @@ export function CarForm({socket}) {
 			/>
           </Group56>
           <Group35>
-			<input
-				type="text"
-				placeholder="DD/MM/YYYY"
-				className="message-input-container"
-				name="availability_from"
-				onChange={changeCarDetails}
-				value={car_details.availability_from}
+		  <DatePicker
+				selected={car_details.availability_from ? new Date(car_details.availability_from) : null}
+				onChange={(date) => handleDateChange("availability_from", date)}
+				dateFormat="dd/MM/yyyy"
+				placeholderText="DD/MM/YYYY"
 			/>
           </Group35>
+		  
           <Group45>
-			<input
-				type="text"
-				placeholder="DD/MM/YYYY"
-				className="message-input-container"
-				name="availability_till"
-				onChange={changeCarDetails}
-				value={car_details.availability_till}
+		  <DatePicker
+				selected={car_details.availability_till ? new Date(car_details.availability_till) : null}
+				onChange={(date) => handleDateChange("availability_till", date)}
+				dateFormat="dd/MM/yyyy"
+				placeholderText="DD/MM/YYYY"
 			/>
           </Group45>
+		  {error && <ErrorMessage>{error}</ErrorMessage>}
           <Group26 onClick={submitCar}>
             <Group29_0001>
               <Rectangle18/>
@@ -321,6 +420,7 @@ export function CarForm({socket}) {
           <Line3_0001/>
           {/* <_1491/> */}
           {/* <_1492/> */}
+		  {errorSubmit && <ErrorMessage2>{errorSubmit}</ErrorMessage2>}
           <Group47 src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/8d563b63-1beb-429c-b19c-27db0fa01473" alt="icon"/>
           <Group49 src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/df826d60-cbd8-434f-9b5b-ac842b4dae07" alt="icon"/>
           <Group51 src="https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/c4c7402b-64ea-43df-a5a4-5b258fb2f1a4" alt="icon"/>
@@ -332,6 +432,46 @@ export function CarForm({socket}) {
     </RootWrapperFrame16>
   )
 }
+
+const ErrorMessage = styled.div`
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    top: calc(638px + 18px + 35px); 
+    left: 23px; 
+`;
+
+const ErrorMessage2 = styled.div`
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    top: calc(455px + 1px); 
+    left: 1132px; 
+`;
+
+const ErrorMessage3 = styled.div`
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    top: calc(455px + 85px); 
+    left: 23px; 
+`;
+
+const ErrorMessage4 = styled.div`
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    top: calc(455px - 134px); 
+    left: 23px; 
+`;
+
+const ErrorMessage5 = styled.div`
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    top: calc(455px - 65px); 
+    left: 23px; 
+`;
 
 const RootWrapperFrame16 = styled.div`
 	min-height: 100vh;
@@ -1127,4 +1267,5 @@ const AntonJansson0GYroiAbkigUnsplash1 = styled.div`
 	top: 0px;
 	opacity: 0.5;
 `;
+
 
