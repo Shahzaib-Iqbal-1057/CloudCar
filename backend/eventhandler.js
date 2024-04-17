@@ -8,6 +8,7 @@ import Likes from './models/likes.js'
 import Chat from './models/chat.js'; //imported the DB models here, will use the models to interact with the database
 import bcrypt from 'bcrypt'; // for hashing the passwords
 import verifyData from './helperFunctions.js';
+import Notifications from './models/notifications.js'; 
 
 
 
@@ -262,6 +263,15 @@ const eventHanlder = (socket, io) => {
             }); 
             const savedRental = await newRental.save(); 
             console.log('Rental request submitted:', savedRental);
+
+            const newNotification = new Notifications({
+                type: 'owner',
+                username: data.owner,
+                message: `${data.renter} sent a request for ${data.car} from ${data.startDate} to ${data.endDate} for ${data.amount}`
+            });
+            const savedNotification = await newNotification.save();
+    
+            
             io.to(socket.id).emit("requestCar", "successfull")
         }
         catch(error) {
@@ -316,6 +326,15 @@ const eventHanlder = (socket, io) => {
                 }
             );
             console.log('Rental request accepted:', updatedRental);
+
+            const newNotification = new Notifications({
+                type: 'renter',
+                username: data.renter,
+                message: `${data.owner} approved a request for ${data.car} from ${data.startDate} to ${data.endDate} for ${data.amount}`
+            });
+            const savedNotification = await newNotification.save();
+
+            
             io.to(socket.id).emit("acceptRequest", "successfull")
         }
         catch(error) {
@@ -634,6 +653,28 @@ const eventHanlder = (socket, io) => {
             delete emailToSocketId[email];
         }
     });
+
+    socket.on("Notifications_owner", async (data) => {
+        try {
+          const notifications = await Notifications.find({ type: "owner", username: data});
+          socket.emit("notifications_owner", notifications);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          socket.emit("notifications_owner_error", { message: "Failed to fetch notifications" });
+        }
+      });
+
+      socket.on("Notifications_renter", async (data) => {
+        
+        try {
+          const notifications = await Notifications.find({ type: "renter", username: data});
+          socket.emit("notifications_renter", notifications);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          socket.emit("notifications_owner_error", { message: "Failed to fetch notifications" });
+        }
+      });
+      
 
 
 
