@@ -19,7 +19,9 @@ function Login({ socket }) {
     e.preventDefault();
     // Emit the login event with loginData
     socket.emit("login", loginData);
-  
+
+    document.cookie = `email=${loginData.email};path=/`;
+    
     // Remove console.log before production
     console.log(loginData);
   }

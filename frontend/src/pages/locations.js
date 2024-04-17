@@ -1,10 +1,36 @@
 import React from 'react';
 
 function Nav() {
+
+
+  const getCookieValue = (name) => {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if(cookieName.trim() === name.trim()) {
+        return cookieValue.trim();
+      }
+    }
+    return null;
+    };
+
+
+  function handleClick() {
+    
+    if(getCookieValue("email") === null) {
+      window.location.href = "/ "
+    }
+    else{
+      window.location.href = "/ownerhomepage "
+    }
+  }
+
+
+
   return (
     <nav className="flex justify-between bg-teal-600 text-black w-screen">
         <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-          <a className="text-3xl font-bold font-heading" href="/ ">
+          <a className="text-3xl font-bold font-heading cursor-pointer" onClick={handleClick}>
             {" "}
             CloudCar{" "}
           </a>
@@ -40,8 +66,7 @@ function Nav() {
             </a>
 
 
-            {/* <a className="flex items-center hover:text-gray-200" href="#"></a> */}
-
+            
             {/* Sign Up */}
             <a className="flex items-center hover:text-gray-700 transition-colors" href="signup">
               
@@ -67,20 +92,6 @@ function Nav() {
   );
 }
 
-
-
-// function Hero() {
-//   return (
-//     <div className="py-20 bg-cover bg-no-repeat bg-fixed" style={{backgroundImage: "url(https://unsplash.com/photos/man-driving-a-car-wearing-wrist-watch-8e2gal_GIE8)"}}>
-//       <div className="container m-auto text-center px-6 opacity-100">
-//         <h2 className="text-4xl font-bold mb-2 text-white">Echo Base...I've got something!</h2>
-//         <h3 className="text-2xl mb-8 text-gray-200">Not much, but it could be a life form. This is Rouge Two. this is Rouge Two. Captain Solo, so you copy?</h3>
-//         <button className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider hover:border-transparent hover:text-blue-500 hover:bg-gray-800 transition-all">Commander Skywalker, do you copy?</button>
-//       </div>
-//     </div>
-//   );
-// }
-
 function Hero() {
   return (
     <div className="py-20 bg-cover bg-no-repeat bg-fixed" style={{backgroundImage: "url(/loc3.jpg)"}}>
@@ -96,25 +107,7 @@ function Hero() {
 function Features() {
   return (
     <section className="container mx-auto px-6 p-10">
-      {/* <h2 className="text-4xl font-bold text-center text-gray-800 mb-8">Artoo!</h2>
-      <div className="flex items-center flex-wrap mb-20">
-        <div className="w-full md:w-1/2 pr-10">
-          <h4 className="text-3xl text-gray-800 font-bold mb-3">Vortex</h4>
-          <p className="text-gray-600 mb-8">Their primary target will be the power generators. Prepare to open the shield. Sir, Rebel ships are coming into our sector. Good. Our first catch of the day. Stand by, ion control....Fire! The first transport is away.</p>
-        </div>
-        <div className="w-full md:w-1/2">
-          <img className="rounded-lg" src="https://pbs.twimg.com/media/CR45LOXVEAADG5E.jpg" alt="Vortex" />
-        </div>
-      </div> */}
-      {/* <div className="flex items-center flex-wrap mb-20">
-        <div className="w-full md:w-1/2">
-          <img className="rounded-lg" src="https://www.thesun.co.uk/wp-content/uploads/2019/06/SWJFO-EAPlay-08-1.jpg" alt="use the force" />
-        </div>
-        <div className="w-full md:w-1/2 pl-10">
-          <h4 className="text-3xl text-white font-bold mb-3">Use the Force!</h4>
-          <p className="text-white mb-8">We'll never get it out now. So certain are you. Always with you it cannot be done. Hear you nothing that I say? Master, moving stones around is one thing. This is totally different. No! No different!</p>
-        </div>
-      </div> */}
+      
       <div className="flex items-center flex-wrap mb-20">
         <div className="w-full md:w-1/2">
           <img className="rounded-lg" src="/lahore.jpg" alt="use the force" />

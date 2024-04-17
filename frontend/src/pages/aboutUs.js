@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import React, { useState } from "react";
 
 function AboutUs() {
   const handleLogin = () => {
@@ -9,33 +10,51 @@ function AboutUs() {
     window.location.href = "/signup";
   };
 
-  // if(getCookieValue("email") === null) {
-  //   window.location.href = "/login"
-  // }
+  const getCookieValue = (name) => {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if(cookieName.trim() === name.trim()) {
+        return cookieValue.trim();
+      }
+    }
+    return null;
+    };  
+
+  function handleClick() {
+    
+    if(getCookieValue("email") === null) {
+      window.location.href = "/ "
+    }
+    else{
+      window.location.href = "/ownerhomepage "
+    }
+  }
+
 
   return (
     <>
       {/* Section 1 */}
       <nav className="flex justify-between bg-teal-600 text-black w-screen">
         <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-          <a className="text-3xl font-bold font-heading" href="/ ">
+          <div className="text-3xl font-bold font-heading cursor-pointer" onClick={handleClick}>
             {" "}
             CloudCar{" "}
-          </a>
+          </div>
           {/* <!-- Nav Links --> */}
           <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
             <li>
-              <a className="hover:text-gray-200" href="how-it-works">
+              <div className="hover:text-gray-200 cursor-pointer" href="how-it-works">
                 How it Works
-              </a>
+              </div>
             </li>
             <li>
-              <a className="hover:text-gray-200" href="locations">
+              <a className="hover:text-gray-200 cursor-pointer" href="locations">
                 Locations
               </a>
             </li>
             <li>
-              <a className="hover:text-gray-200">
+              <a className="hover:text-gray-200 cursor-pointer">
                 About Us
               </a>
             </li>
