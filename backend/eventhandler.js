@@ -8,6 +8,7 @@ import Likes from './models/likes.js'
 import Chat from './models/chat.js'; //imported the DB models here, will use the models to interact with the database
 import bcrypt from 'bcrypt'; // for hashing the passwords
 import verifyData from './helperFunctions.js';
+import Notifications from './models/notifications.js'; 
 
 
 
@@ -262,6 +263,15 @@ const eventHanlder = (socket, io) => {
             }); 
             const savedRental = await newRental.save(); 
             console.log('Rental request submitted:', savedRental);
+
+            const newNotification = new Notifications({
+                type: 'owner',
+                username: data.owner,
+                message: `${data.renter} sent a request for ${data.car} from ${data.startDate} to ${data.endDate} for ${data.amount}`
+            });
+            const savedNotification = await newNotification.save();
+    
+            
             io.to(socket.id).emit("requestCar", "successfull")
         }
         catch(error) {
@@ -303,6 +313,36 @@ const eventHanlder = (socket, io) => {
         }
     })
 
+
+
+
+
+    socket.on("viewBookings", async (data) => {
+        try {
+            //console.log("data in viewbookings: ", data);
+            const email = data.loggedInUser; // Assuming you're sending the logged-in user info from the frontend
+            //console.log("email: ", email);
+            // Fetch rentals where status is 'reserved' and renter is the logged-in user
+            const bookings = await Rental.find({ status: 'reserved', renter: email });
+            console.log("Bookings: ",bookings);
+            
+            const cars = bookings.map(booking => booking.car);
+            console.log("Cars: ", cars);
+        
+            // Fetch the details of each car based on its plate number
+            //const requiredCars = await Car.find({ plateNumber: { $in: cars } });
+            //console.log("Required Cars: ", requiredCars);
+            // Send the bookings data to the frontend
+            socket.emit("bookingsData", { bookings: bookings, redirectUrl: "/view-bookings" });
+            
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching bookings:", error);
+            // Send error message to frontend if needed
+            socket.emit("bookingError", { error: "Failed to fetch bookings" });
+        }
+    });
+
     //handling event in which a request will be accepted, making the reservation
     socket.on("acceptRequest",async (data)=>{
         console.log("accept request data",data.rentalId)
@@ -316,6 +356,15 @@ const eventHanlder = (socket, io) => {
                 }
             );
             console.log('Rental request accepted:', updatedRental);
+
+            const newNotification = new Notifications({
+                type: 'renter',
+                username: data.renter,
+                message: `${data.owner} approved a request for ${data.car} from ${data.startDate} to ${data.endDate} for ${data.amount}`
+            });
+            const savedNotification = await newNotification.save();
+
+            
             io.to(socket.id).emit("acceptRequest", "successfull")
         }
         catch(error) {
@@ -340,23 +389,6 @@ const eventHanlder = (socket, io) => {
 
     
 
-    socket.on("viewBookings", async (data) => {
-        try {
-            const { email } = data; // Assuming you're sending the logged-in user info from the frontend
-    
-            // Fetch rentals where status is 'reserved' and renter is the logged-in user
-            const bookings = await Rental.find({ status: 'reserved', renter: email });
-    
-            // Send the bookings data to the frontend
-            socket.emit("bookingsData", { bookings: bookings, redirectUrl: "/view-bookings" });
-            
-        } catch (error) {
-            // Handle errors
-            console.error("Error fetching bookings:", error);
-            // Send error message to frontend if needed
-            socket.emit("bookingError", { error: "Failed to fetch bookings" });
-        }
-    });
 
 
 
@@ -634,6 +666,28 @@ const eventHanlder = (socket, io) => {
             delete emailToSocketId[email];
         }
     });
+
+    socket.on("Notifications_owner", async (data) => {
+        try {
+          const notifications = await Notifications.find({ type: "owner", username: data});
+          socket.emit("notifications_owner", notifications);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          socket.emit("notifications_owner_error", { message: "Failed to fetch notifications" });
+        }
+      });
+
+      socket.on("Notifications_renter", async (data) => {
+        
+        try {
+          const notifications = await Notifications.find({ type: "renter", username: data});
+          socket.emit("notifications_renter", notifications);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          socket.emit("notifications_owner_error", { message: "Failed to fetch notifications" });
+        }
+      });
+      
 
 
 

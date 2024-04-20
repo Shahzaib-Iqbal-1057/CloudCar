@@ -22,7 +22,7 @@ import ViewBookingsPage from './pages/viewbookings.js';
 import ForgotPassword from './pages/forgotpassword.js';
 import ViewCarRequests from './pages/viewRequests.js';
 import Chat from './pages/chat.js';
-const socket = io('http://localhost:3001',{ transports: ["websocket"] });
+const socket = io('https://cloud-car-gmq4.vercel.app',{ transports: ["websocket"] });
 
 function App() {
 
