@@ -34,7 +34,11 @@ const Chat = ({socket}) => {
   return (
     <div className = "right-side-container messages-container mt-5">
     <div className = "message-box ">
-        
+    {messages.slice().reverse().map((msg, index) => (
+        <div key={index} className = "message">
+            <p>{msg.message}</p>
+        </div>
+    ))}
     </div>
     <input className="message-input-container border-none focus:outline-none bg-transparent" placeholder="Enter Message Here to Chat" value={message} onChange = {handleChange} onKeyDown = {handleKeyDown}>
     </input>
