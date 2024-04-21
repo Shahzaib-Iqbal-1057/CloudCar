@@ -1,5 +1,21 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
+
 
 
 const getCookieValue = (name) => {
@@ -18,6 +34,8 @@ const CarDetails = ({ socket }) => {
 
   const location = useLocation();
 
+  const [modal, showModal] = React.useState(false);
+  const [text, setText] = React.useState("");
   // Extract pathname, search, and hash from the location object
   const { pathname } = location;
 
@@ -39,10 +57,12 @@ const CarDetails = ({ socket }) => {
     });
     socket.on("requestCar", (data) => {
       if (data === "successfull") {
-        alert("Request sent successfully");
+        setText("Request sent successfully");
+        showModal(true);
       }
       else {
-        alert("Request failed");
+        setText("Request failed");
+        showModal(true);
       }
     })
     return () => {
@@ -66,6 +86,22 @@ const CarDetails = ({ socket }) => {
 
   return (
     <>
+      {modal ? <Modal
+        open={modal}
+        onClose={()=>{showModal(false)}}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Message:
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {text}
+          </Typography>
+        </Box>
+      </Modal> : 
+      null}
       <div className="flex flex-wrap  h-screen">
         <section className="relative mx-auto">
           {/* <!-- navbar --> */}

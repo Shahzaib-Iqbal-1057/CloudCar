@@ -1,7 +1,22 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { HiOutlineArrowCircleLeft } from 'react-icons/hi';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
 
 
 
@@ -25,6 +40,9 @@ export default function Signup({socket}) {
 		"confirm password": "",
 
 	})
+
+  const [modal, showModal] = React.useState(false);
+  const [text, setText] = React.useState("");
 
 
   const fields = [
@@ -133,11 +151,13 @@ export default function Signup({socket}) {
     event.preventDefault()
     console.log("signup data : ", signup_data)
 		if(signup_data.password !== signup_data["confirm password"]) {
-			alert("Passwords don't match")
+			setText("Passwords don't match")
+      showModal(true)
 			return
 		}
 		if(signup_data["first name"] === "" || signup_data["last name"] === ""|| signup_data.email === "" || signup_data.phone === ""  || signup_data.address === "" || signup_data.password === "" || signup_data["confirm password"] === "") {
-			alert("Please fill all fields")
+			setText("Please fill all fields")
+      showModal(true)
 			return
 		}
 		document.cookie = `display_name=${signup_data["display name"]};path=/`
@@ -147,25 +167,31 @@ export default function Signup({socket}) {
 		socket.on("signup",(status)=>{
       console.log("STATUS: ", status);
 			if(status === "successfull") {
-				alert("Signup Successfull")
+				setText("Signup Successfull")
+        showModal(true)
         window.location.href = '/login'
 			}
 			else {
 				if(status === "username_already_exists") {
-					alert("Email already exists")
+					setText("Username already exists")
+          showModal(true)
 				}
 				if(status === "weak_password") {
           console.log("STATUS password ka", status);
-					alert("Password is weak. It should be at least 8 characters including 1 uppercase character, and a number")
+					setText("Password is weak. It should be at least 8 characters including 1 uppercase character, and a number")
+          showModal(true)
 				}
 				if(status === "invalid_email") {
-					alert("Invalid . Your email must contain '@' and a '.' characters.")
+					setText("Invalid . Your email must contain '@' and a '.' characters.")
+          showModal(true)
 				}
 				if(status === "invalid_phone_number_length") {
-					alert("Invalid phone number. Phone number entered must be a 10-digit number.")
+					setText("Invalid phone number. Phone number entered must be a 10-digit number.")
+          showModal(true)
 				}
         if(status === "invalid_phone_number_type") {
-					alert("Invalid phone number. Phone number entered must be numbers only.")
+					setText("Invalid phone number. Phone number entered must be numbers only.")
+          showModal(true)
 				}
 			}
 		})
@@ -180,7 +206,24 @@ export default function Signup({socket}) {
   };
 
   return (
-    <div>
+    <>
+    {modal ? <Modal
+        open={modal}
+        onClose={()=>{showModal(false)}}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Message:
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {text}
+          </Typography>
+        </Box>
+      </Modal> : 
+      null}
+     <div>
       <div className="container mx-auto h-screen">
         <div
           className="h-auto flex items-center justify-center"
@@ -250,29 +293,17 @@ export default function Signup({socket}) {
                 type="submit"
                 className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-teal-600 md:px-6"
                 title="Register"
+                onClick={handleSignup}
               >
                 <span>Register</span>
                 <HiOutlineArrowCircleRight size={20} />
               </button>
             </div>
-
-
-                <button
-                  type="submit"
-                  className="flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-600 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-white hover:text-red-500 md:px-6"
-                  title="Register"
-                  onClick={handleSignup}
-                  >
-                  <span>Register</span>
-                  <HiOutlineArrowCircleRight size={20} />
-                </button>
-
-
-
             </form>
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -64,10 +64,21 @@ const OwnerHomePage = ({ socket }) => {
           {/* <!-- navbar --> */}
           <nav className="flex justify-between bg-teal-600 text-black w-screen">
             <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-              <a className="text-3xl font-bold font-heading" href="/ ">
-                {/* <!-- <img className="h-9" src="logo.png" alt="logo"> --> */}
+              <div className="text-3xl font-bold font-heading" 
+                onClick={() => {
+                if(getCookieValue('email') === "" || getCookieValue('email') === null){
+                  window.location.href = "/login";
+                }
+                else {
+                  window.location.href="/ownerhomepage";
+                }
+              }} 
+              >
+              </div>
+              <a href="/ownerhomepage" class="text-2xl font-bold p-2 hover:text-blue-500">
                 CloudCar
               </a>
+
               {/* <!-- Nav Links --> */}
               <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
                 <li>
@@ -109,7 +120,7 @@ const OwnerHomePage = ({ socket }) => {
                   className="flex items-center hover:text-gray-200"
                   href="#"
                 ></a> */}
-                <a className="hover:text-gray-200" href="#" onClick={notificationFinder}>
+                <div className="hover:text-gray-200 mr-1 mb-1" onClick={notificationFinder}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"
@@ -124,9 +135,9 @@ const OwnerHomePage = ({ socket }) => {
                       d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                     />
                   </svg>
-                </a>
+                </div>
                 {dropdownVisible && (
-                <div className="absolute bg-white border border-gray-200 rounded-lg shadow-md z-10 w-100 top-35 left-60"> {/* Added w-64 for a width of 64px */}
+                <div className="absolute bg-white border border-gray-200 rounded-lg shadow-md z-10 w-100 top-35 left-60 mt-20 ml-20"> {/* Added w-64 for a width of 64px */}
                   {notifications.map((notification, index) => (
                     <div key={index} className="p-2">
                       <div>{notification.username}</div>
@@ -249,8 +260,6 @@ const OwnerHomePage = ({ socket }) => {
           backgroundRepeat: "no-repeat",
         }}
       ></div>
-
-      
       <div
         className="Unlock-text absolute"
         style={{
@@ -261,10 +270,11 @@ const OwnerHomePage = ({ socket }) => {
           top: "230px",
           fontFamily: "Urbanist",
           fontStyle: "normal",
-          fontWeight: 800,
+          fontWeight: 300,
           fontSize: "50px",
           lineHeight: "60px",
           color: "#FFFFFF",
+          fontFamily: "Poppins"
         }}
       >
         Unlock the Potential of Your Idle Car!
@@ -283,6 +293,7 @@ const OwnerHomePage = ({ socket }) => {
           fontSize: "35px",
           lineHeight: "35px",
           color: "#39A8A1",
+          fontFamily: "Poppins"
         }}
       >
         Rent it out and earn from home, hassle-free.
@@ -303,7 +314,7 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="list-a-car rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href="/newrenterform"}}>List a Car</button>
+        <button className="list-a-car rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" style={{ fontFamily: "Inter"}} onClick={()=>{window.location.href="/newrenterform"}}>List a Car</button>
       </div>
 
       <div
@@ -321,7 +332,7 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="inbox rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4">Inbox</button>
+        <button className="inbox rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" style={{ fontFamily: "Inter"}} onClick={()=>{window.location.href = "/inbox"}}>Inbox</button>
       </div>
 
       <div
@@ -339,8 +350,28 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" onClick={()=>{window.location.href='/renterhomepage'}}>Rent a car yourself!</button>
+        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" style={{ fontFamily: "Inter"}} onClick={()=>{window.location.href='/renterhomepage'}}>Rent a car yourself!</button>
       </div>
+
+      <div
+        className="view-bookings-button absolute"
+        style={{
+          position: "absolute",
+          width: "300px",
+          height: "47px",
+          left: "149px",
+          top: "98%",
+          fontFamily: "Urbanist",
+          fontStyle: "normal",
+          fontSize: "27px",
+          lineHeight: "35px",
+          
+        }}
+      >
+        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" style={{ fontFamily: "Inter"}} onClick={()=>{window.location.href='/listedcars'}}>Your Listed Cars</button>
+      </div>
+
+      
 
 
 

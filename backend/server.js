@@ -13,7 +13,7 @@ app.use(cors())
 const server = http.createServer(app)
 const io = new Server(
     server,{cors:{
-        origin:"https://vercel.com/umer-jamils-projects/cloud-car-38j4",
+        origin:"localhost:3000",
         methods: ["GET", "POST"]
     },
 })

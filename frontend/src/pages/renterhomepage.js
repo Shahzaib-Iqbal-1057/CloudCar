@@ -1,7 +1,6 @@
 import React from "react";
-// import { Button } from "@material-tailwind/react";
-// import type { ButtonProps } from "@material-tailwind/react";
 import { io } from "socket.io-client";
+import { HiOutlineArrowCircleRight } from "react-icons/hi";
 
 const getCookieValue = (name) => {
   const cookies = document.cookie.split(";");
@@ -27,7 +26,6 @@ const RenterHomePage = ({ socket }) => {
     else{
       setDropdownVisible(false);
     }
-    
     
   }
   socket.on("notifications_renter",(data)=>{
@@ -248,10 +246,11 @@ const RenterHomePage = ({ socket }) => {
           top: "230px",
           fontFamily: "Urbanist",
           fontStyle: "normal",
-          fontWeight: 800,
+          fontWeight: 300,
           fontSize: "50px",
           lineHeight: "60px",
           color: "#FFFFFF",
+          fontFamily: "Poppins"
         }}
       >
         Rent Cars Near You!
@@ -270,6 +269,7 @@ const RenterHomePage = ({ socket }) => {
           fontSize: "30px",
           lineHeight: "35px",
           color: "#39A8A1",
+          fontFamily: "Poppins"
         }}
       >
         Convenient hours and daily rentals. Insurance included.
@@ -324,6 +324,15 @@ const RenterHomePage = ({ socket }) => {
               Search
             </button>
           </div>
+          <button
+                  type="submit"
+                  className="mt-8 flex justify-center items-center gap-2 w-1/2 py-3 px-4 bg-teal-700 text-black text-md font-bold border border-black rounded-md ease-in-out duration-150 shadow-slate-600 hover:bg-teal-500 md:px-6"
+                  title="Register"
+                  onClick={() => {window.location.href = "/view-bookings";}}
+                  >
+                  <span>Your bookings</span>
+                  <HiOutlineArrowCircleRight size={20} />
+                </button>
         </form>
       </div>
     </>

@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const getCookieValue = (name) => {
   const cookies = document.cookie.split(";");
   for (const cookie of cookies) {
@@ -36,111 +37,58 @@ const ViewBookingsPage = ({ socket }) => {
       console.error("Error fetching bookings:", error);
       // Handle error display or logging
     });
+
+    return () => {
+      socket.off("bookingsData");
+      socket.off("bookingError");
+    };
+
   }, [socket]);
 
 
-
-  
-
-  // const ProductObject = (props) =>{
-
-  // const handleCardClick = (plateNumber) => {
-  //   // Construct the URL for the product details page
-  //   const productUrl = `/cardetails/${plateNumber}`; // Assuming product ID is used for the URL
-  //   // Navigate to the product details page
-  //   // window.location.href = productUrl;
-  //   console.log("new constructed product url", productUrl);
-  // };
-
   const ProductObject = ({ booking }) => {
-    console.log("IDHR Hun", booking);
-    const handleCardClick = (plateNumber) => {
-      
-      // // Construct the URL for the product details page
-      // const productUrl = `/cardetails/${plateNumber}`; // Assuming product ID is used for the URL
-      // // Navigate to the product details page
-      
-      // // window.location.href = productUrl;
-      // console.log("new constructed product url", productUrl);
-      
+    const handleCardClick = () => {
+      window.location.href = `/chat?to=${booking.owner}`
     };
 
-    //   return (
-    //     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+    if(booking.ownerImages && booking.ownerImages.length > 0)
+    {
+      console.log("owner image",booking.ownerImages[0])
+    }
 
-    //       {bookings.map((booking) => (
-    //         <div
-    //           key={booking.rentalId}
-    //           className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
-    //           onClick={() => handleCardClick(booking.car)}
-    //         >
-    //           {/* right half of the product card */}
-    //           <div
-    //             className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-    //             style={{ backgroundImage: `url(${booking.ownerImages[0]})` }}
-    //           ></div>
-
-    //           {/* left half of the product cards */}
-    //           <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
-    //             <div
-    //               className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-    //               style={{ backgroundImage: `url(${booking.renterImages[0]})` }}
-    //             ></div>
-    //             <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
-    //               <div>
-    //                 <h3 className="text-lg font-semibold mb-2">
-    //                   <span className="font-semibold underline">Car</span>:{" "}
-    //                   <span className="text-gray-300">{booking.car}</span>
-    //                 </h3>
-    //                 <div className="flex flex-col mt-10">
-    //                   <span className="text-black">
-    //                     <span className="font-semibold underline">Model</span>:{" "}
-    //                     <span className="text-gray-300">{booking.model}</span>
-    //                   </span>
-    //                   <span className="text-black">
-    //                     <span className="font-semibold underline">Owner</span>:{" "}
-    //                     <span className="text-gray-300">{booking.owner}</span>
-    //                   </span>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       ))}
-    //     </div>
-    //   );
-    // };
 
     return (
       <div
-        className="h-48 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
-        onClick={() => handleCardClick(bookings.car)}
+        className="h-48 w-60 relative rounded-md shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-110 cursor-pointer"
+        onClick={handleCardClick}
       >
 
-        {console.log("bookings.car: ", bookings.car)};
         {/* right half of the product card */}
-        <div className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0" style={{ backgroundImage: bookings.ownerImages ? `url(${bookings.product.ownerImages[0]})` : '' }}></div>
+        {booking.ownerImages && booking.ownerImages.length > 0 && (
+          <div className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0" 
+                style={{ backgroundImage: `url("${booking.ownerImages[0]}")` }}>
+          </div>
+        )}
 
         {/* left half of the product cards */}
         <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
-        <div className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0" style={{ backgroundImage: bookings.renterImages ? `url(${bookings.renterImages[0]})` : '' }}></div>
+        <div className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0" style={{ backgroundImage: booking.renterImages[0] ? `url(${booking.renterImages[0]})` : '' }}></div>
           <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
             <div>
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="text-lg font-semibold mb-2 flex flex-row">
                 <span className="font-semibold underline">Car</span>:{" "}
-                <span className="text-gray-300">{bookings.car}</span>
+                <span className="text-gray-300 ml-8">{booking.car}</span>
               </h3>
               <div className="flex flex-col mt-10">
-                <span className="text-black">
+                <span className="text-black flex flex-row">
                   <span className="font-semibold underline">Model</span>:{" "}
-                  <span className="text-gray-300">
-                    {console.log("Bookings make: ", bookings.make)}
-                    {bookings.make} {bookings.model}
+                  <span className="text-gray-300 ml-4">
+                    {booking.make} {booking.model}
                   </span>
                 </span>
-                <span className="text-black">
-                  <span className="font-semibold underline">Owner</span>:{" "}
-                  <span className="text-gray-300">{bookings.owner}</span>
+                <span className="text-black flex flex-row">
+                  <span className="font-semibold underline ">Owner</span>:{" "}
+                  <span className="text-gray-300 ml-3">{booking.owner}</span>
                 </span>
               </div>
             </div>
@@ -191,9 +139,9 @@ const ViewBookingsPage = ({ socket }) => {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                     />
                   </svg>
@@ -212,9 +160,9 @@ const ViewBookingsPage = ({ socket }) => {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
@@ -231,9 +179,9 @@ const ViewBookingsPage = ({ socket }) => {
                 stroke="currentColor"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
@@ -251,9 +199,9 @@ const ViewBookingsPage = ({ socket }) => {
                 stroke="currentColor"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
@@ -262,12 +210,12 @@ const ViewBookingsPage = ({ socket }) => {
 
           <div className="relative w-screen h-screen">
             <div className="dark-background absolute inset-0 bg-gradient-to-b from-gray-900 to-black flex flex-col items-center">
-              <h1 className="px-5 py-5 text-4xl font-bold text-teal-600">
+              <h1 className="px-5 py-5 text-4xl font-bold text-teal-600 text-white">
                 My Bookings
               </h1>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ml-7 mt-5 mb-5 relative z-10">
-                {bookings.map((booking)=>{
-                  <ProductObject booking={booking}/>
+                {bookings.map((booking,index)=>{
+                  return <ProductObject booking={booking} key = {index}/>
                 })}
               </div>
             </div>

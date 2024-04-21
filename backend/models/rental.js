@@ -48,11 +48,13 @@ const rental = new schema({
     },
     ownerImages: {
         type: [String],
-        required: false
+        required: false,
+        default: []
     },
     renterImages: {
         type: [String],
-        required: false
+        required: false,
+        default: []
     },
     amount: {
         type: Number,

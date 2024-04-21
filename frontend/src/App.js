@@ -8,7 +8,6 @@ import LandingPage from "./pages/landingpage";
 import SignupRenter from './pages/signuprenter';
 import OwnerHomePage from './pages/ownerhomepage.js';
 import RenterHomepage from './pages/renterhomepage';
-// import RenterForm from './pages/renterform';
 import AvailableCars from './pages/availableCars';
 import ListedCars from './pages/listedCars.js';
 import HowItWorks from './pages/howItWorks.js';
@@ -22,12 +21,17 @@ import ViewBookingsPage from './pages/viewbookings.js';
 import ForgotPassword from './pages/forgotpassword.js';
 import ViewCarRequests from './pages/viewRequests.js';
 import Chat from './pages/chat.js';
-const socket = io('https://cloud-car-gmq4.vercel.app',{ transports: ["websocket"] });
+import Inbox from './pages/inbox.js';
+import getCookieValue from './helpers.js';
+const socket = io('localhost:3001',{ transports: ["websocket"] });
 
 function App() {
 
   React.useEffect(()=>{
     socket.connect()
+    if (getCookieValue("email") !== "" && getCookieValue("email") !== null) {
+      socket.emit("user_connected", getCookieValue("email"));
+    }
   },[])
   
   return (
@@ -40,7 +44,6 @@ function App() {
           <Route path="/signuprenter" element={<SignupRenter socket = {socket}/>} />
           <Route path="/renterhomepage" element={<RenterHomepage socket = {socket}/>} />
           <Route path="/ownerhomepage" element={<OwnerHomePage socket = {socket}/>} />
-          {/* <Route path='/renterform' element = {<RenterForm socket = {socket}/>}/> */}
           <Route path='/availablecars' element = {<AvailableCars socket = {socket}/>}/>
           <Route path='/listedcars' element = {<ListedCars socket = {socket}/>}/>
           <Route path='/how-it-works' element = {<HowItWorks />}/>
@@ -54,6 +57,7 @@ function App() {
           <Route path='/forgotpassword' element =  {<ForgotPassword socket = {socket}/>}/>
           <Route path='/viewCarRequests' element = {<ViewCarRequests socket = {socket}/>}/> 
           <Route path= '/chat' element = {<Chat socket = {socket}/>}/>
+          <Route path = '/inbox' element = {<Inbox socket = {socket}/>}/>
         </Routes>
       </Router>
     </div>

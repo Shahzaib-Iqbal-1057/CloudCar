@@ -42,28 +42,30 @@ const ViewCarRequests = ({socket}) => {
         window.location.href = `/chat?to=${renter}`
     }
 
-    function handleRemove(e) {
+    function handleRemove(index) {
       // removing the car request from the array
-      const index = e.target.parentElement.parentElement.parentElement.getAttribute('key');
       const newCarRequests = carRequests.filter((_, i) => i !== index);
       setCarRequests(newCarRequests);
     }
 
-    const Card = ({ request, message }) => (
-        <div className="card" style={{ border: '1px solid #ccc', padding: '10px', maxWidth: '300px' }}>
-          <h2>Request from : {request.renter}</h2>
-          <p>Amount : {request.amount}</p>
-          <div className="buttongroup" style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <button style={{ padding: '5px 10px', cursor: 'pointer' }} onClick={()=>{handleApprove(request.rentalId,request.renter)}}>Approve</button>
-            <button style={{ padding: '5px 10px', cursor: 'pointer' }} onClick={handleRemove}>Remove</button>
-          </div>
-        </div>
-    );
+    const Card = ({ request, index}) => {
+
+        return (
+            <div className="card" style={{ border: '1px solid #ccc', padding: '10px', maxWidth: '300px' }}>
+              <h2>Request from : {request.renter}</h2>
+              <p>Amount : {request.amount}</p>
+              <div className="buttongroup" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <button style={{ padding: '5px 10px', cursor: 'pointer' }} onClick={()=>{handleApprove(request.rentalId,request.renter)}}>Approve</button>
+                <button style={{ padding: '5px 10px', cursor: 'pointer' }} onClick={()=>handleRemove(index)}>Remove</button>
+              </div>
+            </div>
+        );
+    }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-5">
         {carRequests.map((request, index) => (
-        <Card key={index} request = {request}/>
+        <Card key={index} index = {index} request = {request}/>
         ))}
     </div>
   )
