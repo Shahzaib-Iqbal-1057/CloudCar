@@ -15,27 +15,21 @@ const getCookieValue = (name) => {
   };
 
 
-
-  const ListedCars = ({ socket }) => {
-
+  const Inbox = ({ socket }) => {
 
     const [cars, setCars] = React.useState([]);
     
     React.useEffect(() => {
-      socket.emit("listedcars", getCookieValue("email"));
+      socket.emit("renters_to_talk_with", getCookieValue("email"));
     }, []);
   
     
     React.useEffect(() => {
-      socket.on("listedcars", (data) => {
+      socket.on("renters_to_talk_with", (data) => {
         setCars(data);
       });
-      socket.on("viewCarRequests", (data) => {
-        console.log(data)  
-      })
       return () => {
-        socket.off("listedcars");
-        socket.off("viewCarRequests")
+        socket.off("renters_to_talk_with");
       };
     }, [socket]); // Add searchQuery to the dependency array
   
@@ -44,7 +38,7 @@ const getCookieValue = (name) => {
   
       const handleCardClick = () => {
         // socket.emit("viewCarRequests", props.product.plateNumber);
-        window.location.href = `/viewCarRequests?plateNumber=${props.product.plateNumber}`
+        window.location.href = `/chat?person=${props.product.person}`
       };
   
       return (
@@ -53,37 +47,27 @@ const getCookieValue = (name) => {
           {/* right half of the product card */}
           <div
             className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-            style={{ backgroundImage: `url(${props.product.images[0]})` }}
           ></div>
   
           {/* left half of the product cards */}
           <div className="h-48 relative rounded-md shadow-md overflow-hidden bg-teal-600 transform transition-transform duration-300 hover:scale-100">
             <div
               className="bg-cover bg-center bg-no-repeat w-1/2 h-full absolute right-0"
-              style={{ backgroundImage: `url(${props.product.images[0]})` }}
             ></div>
             <div className="absolute inset-0 w-1/2 p-4 text-black flex flex-col justify-between rounded-md">
               <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  <span className="font-semibold underline">Car</span>:{" "}
-                  <span className="text-gray-300">{props.product.make}</span>
+                <h3 className="text-lg font-semibold mb-2 flex flex-row">
+                  <span className="font-semibold underline">Person</span>:{" "}
+                  <span className="text-gray-300 ml-3">{props.product.person}</span>
                 </h3>
                 <div className="flex flex-col mt-10">
                   <span className="text-black">
-                    <span className="font-semibold underline">Model</span>:{" "}
-                    <span className="text-gray-300">{props.product.model}</span>
+                    <span className="font-semibold underline">Car</span>:{" "}
+                    <span className="text-gray-300">{props.product.car}</span>
                   </span>
                   <span className="text-black">
-                    <span className="font-semibold underline">Owner</span>:{" "}
-                    <span className="text-gray-300">
-                      {props.product.ownerDisplayName}
-                    </span>
+                    <span className="font-semibold cursor:pointer">Click to Chat</span>{" "}
                   </span>
-
-                  <span className="text-black">
-                    <span className="font-semibold cursor:pointer">Click to view requests</span>{" "}
-                  </span>
-                  
                 </div>
                 {/* <p className="text-gray-300 text-sm mt-1">Item Id: {props.product.itemId}</p> */}
               </div>
@@ -93,7 +77,7 @@ const getCookieValue = (name) => {
       );
     };
 
-  
+
     return (
       <>
         <div className="flex flex-wrap  h-screen">
@@ -219,5 +203,5 @@ const getCookieValue = (name) => {
     );
   };
   
-  export default ListedCars;
+  export default Inbox;
   

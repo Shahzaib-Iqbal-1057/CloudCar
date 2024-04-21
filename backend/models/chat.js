@@ -20,6 +20,10 @@ const chat = new schema({
                 type: String,
                 required: true
             },
+            receiver: {
+                type: String,
+                required: false
+            },
             message: {
                 type: String,
                 required: true 

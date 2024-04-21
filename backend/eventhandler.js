@@ -8,6 +8,7 @@ import Likes from './models/likes.js'
 import Chat from './models/chat.js'; //imported the DB models here, will use the models to interact with the database
 import bcrypt from 'bcrypt'; // for hashing the passwords
 import verifyData from './helperFunctions.js';
+import Notifications from './models/notifications.js'; 
 
 
 
@@ -207,8 +208,10 @@ const eventHanlder = (socket, io) => {
 
     socket.on("listedcars",async (data)=>{
         try {
+            console.log("getting listed cars : ", data)
             const listedCars = await Car.find({owner: data}); 
             io.to(socket.id).emit("listedcars", listedCars)
+            console.log("sending listed cars : ", listedCars)
         }
         catch(error) {
             console.log("error getting listed cars",error)
@@ -254,11 +257,23 @@ const eventHanlder = (socket, io) => {
                 startDate: car.startDate,
                 endDate: car.endDate,
                 ownerImages: car.images,
-                amount: car.price
+                amount: car.price,
+                make: car.make,
+                model: car.model,
+                variant: car.variant
                 //other data
             }); 
             const savedRental = await newRental.save(); 
             console.log('Rental request submitted:', savedRental);
+
+            const newNotification = new Notifications({
+                type: 'owner',
+                username: car.owner,
+                message: `${data.renter} sent a request for ${data.car} from ${data.startDate} to ${data.endDate} for ${data.amount}`
+            });
+            const savedNotification = await newNotification.save();
+    
+            
             io.to(socket.id).emit("requestCar", "successfull")
         }
         catch(error) {
@@ -287,6 +302,11 @@ const eventHanlder = (socket, io) => {
                 }
             }
             ); 
+            //inside all car requests, we have to send the renter display name
+            // for(let i = 0; i < uniqueCarRequests.length; i++){
+            //     const renter = await User.findOne({ email: uniqueCarRequests[i].renter });
+            //     uniqueCarRequests[i].renter = renter.displayName;
+            // }
             console.log("unique car requests",uniqueCarRequests)
             io.to(socket.id).emit("viewCarRequests", uniqueCarRequests)
         }
@@ -295,19 +315,53 @@ const eventHanlder = (socket, io) => {
         }
     })
 
+
+    socket.on("viewBookings", async (data) => {
+        try {
+            //console.log("data in viewbookings: ", data);
+            const email = data.loggedInUser; // Assuming you're sending the logged-in user info from the frontend
+            //console.log("email: ", email);
+            // Fetch rentals where status is 'reserved' and renter is the logged-in user
+            const bookings = await Rental.find({ status: 'reserved', renter: email });
+
+            
+        
+            // Fetch the details of each car based on its plate number
+            //const requiredCars = await Car.find({ plateNumber: { $in: cars } });
+            //console.log("Required Cars: ", requiredCars);
+            // Send the bookings data to the frontend
+            socket.emit("bookingsData", { bookings: bookings, redirectUrl: "/view-bookings" });
+            
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching bookings:", error);
+            // Send error message to frontend if needed
+            socket.emit("bookingError", { error: "Failed to fetch bookings" });
+        }
+    });
+
     //handling event in which a request will be accepted, making the reservation
     socket.on("acceptRequest",async (data)=>{
-        console.log("accept request data",data)
+        console.log("accept request data",data.rentalId)
         //accept request logic here(will be using the database here)
         try {
             const updatedRental = await Rental.findOneAndUpdate
             (
-                { rentalId: data.rentalId },
+                { rentalId: data.rentalId},
                 {
                     status: "reserved"
                 }
             );
             console.log('Rental request accepted:', updatedRental);
+
+            const newNotification = new Notifications({
+                type: 'renter',
+                username: data.renter,
+                message: `${data.owner} approved a request for ${data.car} from ${data.startDate} to ${data.endDate} for ${data.amount}`
+            });
+            const savedNotification = await newNotification.save();
+
+            
             io.to(socket.id).emit("acceptRequest", "successfull")
         }
         catch(error) {
@@ -328,39 +382,13 @@ const eventHanlder = (socket, io) => {
         }
     })
 
-
-
-    
-
-    socket.on("viewBookings", async (data) => {
-        try {
-            const { email } = data; // Assuming you're sending the logged-in user info from the frontend
-    
-            // Fetch rentals where status is 'reserved' and renter is the logged-in user
-            const bookings = await Rental.find({ status: 'reserved', renter: email });
-    
-            // Send the bookings data to the frontend
-            socket.emit("bookingsData", { bookings: bookings, redirectUrl: "/view-bookings" });
-            
-        } catch (error) {
-            // Handle errors
-            console.error("Error fetching bookings:", error);
-            // Send error message to frontend if needed
-            socket.emit("bookingError", { error: "Failed to fetch bookings" });
-        }
-    });
-
-
-
-
     //event in which a message will be sent from one user to the other
     socket.on("sendMessage",async (data)=>{
         //code here
         console.log("sending message from ", data.sender, " to ", data.receiver)
         console.log("message : ", data.message)
         //sending the message to the receiver
-        io.to(emailToSocketId[data.receiver]).emit("receiveMessage", data.message)
-
+        io.to(emailToSocketId[data.receiver]).emit("sendMessage", data)
         try {
             let chat;
             const existingChat = await Chat.findOne({ user1: data.sender, user2: data.receiver });
@@ -376,7 +404,7 @@ const eventHanlder = (socket, io) => {
                 }); 
                 chat = await newChat.save(); 
             }
-            chat.messages.push({sender: data.sender, message: data.message});
+            chat.messages.push({sender: data.sender, message: data.message, receiver: data.receiver});
             const savedChat = await chat.save();
             console.log('Message saved:', savedChat);
         }
@@ -388,24 +416,25 @@ const eventHanlder = (socket, io) => {
     //event in which user has just logged in and needs to get all the messages from the database if there are any
     socket.on("getMessages",async (data)=>{
         //code here
-        console.log("getting messages for ", data.user)
+        console.log("getting messages between ", data.user1 , " and ", data.user2)
         //getting the messages from the database
         try {
-            const chats = await Chat.find({ $or: [ { user1: data.user }, { user2: data.user } ] });
-            console.log("chats",chats)
-            let messages = [];
-            chats.forEach(chat => {
-                chat.messages.forEach(message => {
-                    messages.push({sender: message.sender, message: message.message})
-                });
-            });
-            console.log("messages",messages)
-            io.to(socket.id).emit("getMessages", messages)
+            const chat = await Chat.findOne({ user1: data.user1, user2: data.user2 });
+            if (chat === null) {
+                chat = await Chat.findOne({ user1: data.user2, user2: data.user1 });    
+            }
+            if(chat){
+                io.to(socket.id).emit("getMessages", chat.messages)
+            }
+            else {
+                io.to(socket.id).emit("getMessages", [])
+            }
         }
         catch(error) {
             console.log("error getting messages",error)
         }
     })
+
 
 
      socket.on("posts", async (data) => {
@@ -627,6 +656,51 @@ const eventHanlder = (socket, io) => {
         }
     });
 
+    socket.on("Notifications_owner", async (data) => {
+        try {
+          const notifications = await Notifications.find({ type: "owner", username: data});
+          socket.emit("notifications_owner", notifications);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          socket.emit("notifications_owner_error", { message: "Failed to fetch notifications" });
+        }
+      });
+
+      socket.on("Notifications_renter", async (data) => {
+        
+        try {
+          const notifications = await Notifications.find({ type: "renter", username: data});
+          socket.emit("notifications_renter", notifications);
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          socket.emit("notifications_owner_error", { message: "Failed to fetch notifications" });
+        }
+      });
+
+
+    
+    socket.on("renters_to_talk_with", async (data) => {
+        try {
+            const renters = await Rental.find({ owner: data });
+            let rentersToTalkWith = [];
+            renters.forEach(renter => {
+                if(!rentersToTalkWith.includes(renter.renter)){
+                    rentersToTalkWith.push({person : renter.renter, car : renter.car});
+                }
+            });
+            console.log("renters to talk with : ", rentersToTalkWith)
+            socket.emit("renters_to_talk_with", rentersToTalkWith);
+        } catch (error) {
+            console.error("Error fetching renters to talk with:", error);
+            socket.emit("renters_to_talk_with_error", { message: "Failed to fetch renters to talk with" });
+        }
+    });
+      
+    socket.on("user_connected", (email) => {
+        emailToSocketId[email] = socket.id;
+        console.log("new user connected", emailToSocketId)
+        console.log("users connected", emailToSocketId)
+    });
 
 
 

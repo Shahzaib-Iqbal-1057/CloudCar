@@ -8,6 +8,10 @@ import styled from "@emotion/styled";
 import cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 const getCookieValue = (name) => {
   const cookies = document.cookie.split(";");
@@ -19,6 +23,18 @@ const getCookieValue = (name) => {
   }
   return null;
 };
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
+
 
 export default function NewRenterForm({ socket }) {
   const {
@@ -53,6 +69,9 @@ export default function NewRenterForm({ socket }) {
     images: [],
     description: "",
   });
+
+  const [modal, showModal] = React.useState(false);
+  const [text, setText] = React.useState("");
 
   const fields = [
     {
@@ -520,19 +539,10 @@ export default function NewRenterForm({ socket }) {
       setErrorSubmit("");
     }
 
-    if (car_details.images.length < 3) {
-      setErrorImages("Please upload atleast 3 images.");
-      setErrorSubmit("Please upload atleast 3 images.");
-      check = false;
-    } else {
-      setErrorImages("");
-      setErrorSubmit("");
-    }
 
-    if (!check) {
-      return;
+    if(!check){
+      return
     }
-
     if (check) {
       setCarDetails({
         make: "",
@@ -589,6 +599,8 @@ export default function NewRenterForm({ socket }) {
     socket.on("carform", (status) => {
       if (status == "successfull") {
         setErrorSubmit("Your car has been stored Successfully");
+        setText("Car posting Successful");
+        showModal(true);
       } else {
         setErrorSubmit("Car posting Failed");
       }
@@ -617,6 +629,23 @@ export default function NewRenterForm({ socket }) {
   };
 
   return (
+    <>
+    {modal ? <Modal
+        open={modal}
+        onClose={()=>{showModal(false)}}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Message:
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {text}
+          </Typography>
+        </Box>
+      </Modal> : 
+      null}
     <div>
       <div className="container mx-auto h-screen">
         <div
@@ -762,5 +791,6 @@ export default function NewRenterForm({ socket }) {
         </div>
       </div>
     </div>
+    </>
   );
 }

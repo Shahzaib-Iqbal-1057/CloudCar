@@ -19,9 +19,7 @@ function Login({ socket }) {
     e.preventDefault();
     // Emit the login event with loginData
     socket.emit("login", loginData);
-
     document.cookie = `email=${loginData.email};path=/`;
-    
     // Remove console.log before production
     console.log(loginData);
   }
@@ -29,7 +27,7 @@ function Login({ socket }) {
   React.useEffect(() => {
     socket.on("login", (status) => {
       if (status === "successfull") {
-        window.location.href = '/ownerhomepage';
+        window.location.href = '/renterhomepage';
       } else {
         alert("incorrect username or password");
       }
@@ -62,7 +60,6 @@ function Login({ socket }) {
         <h2 className="login-subtitle">Log in</h2>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
-            type="email"
             name="email"
             value={loginData.email}
             onChange={changeLoginData}
