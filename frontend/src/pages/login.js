@@ -38,7 +38,7 @@ function Login({ socket }) {
   }, [socket]);
 
   return (
-    <>
+    <div className='h-screen w-screen'>
     <Helmet>
       <link
         rel="preconnect"
@@ -89,7 +89,7 @@ function Login({ socket }) {
         </form>
       </div>
       </div>
-</>
+</div>
   );
 }
 

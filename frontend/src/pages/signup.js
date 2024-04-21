@@ -206,7 +206,7 @@ export default function Signup({socket}) {
   };
 
   return (
-    <>
+    <div className="h-screen w-screen">
     {modal ? <Modal
         open={modal}
         onClose={()=>{showModal(false)}}
@@ -304,6 +304,6 @@ export default function Signup({socket}) {
         </div>
       </div>
     </div>
-    </>
+    </div>
   );
 }
