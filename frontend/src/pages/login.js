@@ -25,6 +25,7 @@ function Login({ socket }) {
   }
 
   React.useEffect(() => {
+    if (socket === undefined) return;
     socket.on("login", (status) => {
       if (status === "successfull") {
         window.location.href = '/renterhomepage';
@@ -60,6 +61,7 @@ function Login({ socket }) {
         <h2 className="login-subtitle">Log in</h2>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
+            type='email'
             name="email"
             value={loginData.email}
             onChange={changeLoginData}

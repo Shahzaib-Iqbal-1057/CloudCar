@@ -164,6 +164,7 @@ export default function Signup({socket}) {
 		socket.emit("signup",signup_data)
 	}
 	React.useEffect(()=>{
+    if(socket === undefined) return
 		socket.on("signup",(status)=>{
       console.log("STATUS: ", status);
 			if(status === "successfull") {
