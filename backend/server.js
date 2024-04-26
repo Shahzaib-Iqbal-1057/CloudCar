@@ -13,7 +13,7 @@ app.use(cors())
 const server = http.createServer(app)
 const io = new Server(
     server,{cors:{
-        origin:"localhost:3000",
+        origin:"cloud-car-liart.vercel.app",
         methods: ["GET", "POST"]
     },
 })
@@ -32,8 +32,8 @@ server.listen(3001, ()=>{
 
 
 io.on("connection",(socket)=>{
+
     console.log("Socket connected", socket.id)
-    
     eventHanlder(socket,io)
 
 })

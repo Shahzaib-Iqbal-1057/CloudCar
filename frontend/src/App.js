@@ -23,7 +23,7 @@ import ViewCarRequests from './pages/viewRequests.js';
 import Chat from './pages/chat.js';
 import Inbox from './pages/inbox.js';
 import getCookieValue from './helpers.js';
-const socket = io('localhost:3001',{ transports: ["websocket"] });
+const socket = io('http://localhost:3001/',{ transports: ["websocket"] });
 
 function App() {
 
