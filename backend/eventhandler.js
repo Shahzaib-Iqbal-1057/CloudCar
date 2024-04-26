@@ -23,7 +23,7 @@ const eventHanlder = (socket, io) => {
     socket.on("myEvent", (myData) => {
         console.log('Received myMessage:', myData);
         io.to(socket.id).emit("myEvent", myData);
-    });
+    }); 
 
     socket.on("signup",async (data)=>{
 
