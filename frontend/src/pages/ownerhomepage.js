@@ -96,6 +96,12 @@ const OwnerHomePage = ({ socket }) => {
                     About Us
                   </a>
                 </li>
+
+                <li>
+                  <a className="hover:text-gray-200" href="posts">
+                    Discussion Forum
+                  </a>
+                </li>
                 {/* <li><a className="hover:text-gray-200" href="#">Contact Us</a></li> */}
               </ul>
               {/* <!-- Header Icons --> */}
@@ -355,7 +361,7 @@ const OwnerHomePage = ({ socket }) => {
       </div>
 
       <div
-        className="view-bookings-button absolute"
+        className="your-listed-cars absolute"
         style={{
           position: "absolute",
           width: "300px",
@@ -369,7 +375,7 @@ const OwnerHomePage = ({ socket }) => {
           
         }}
       >
-        <button className="view-bookings rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" style={{ fontFamily: "Inter"}} onClick={()=>{window.location.href='/listedcars'}}>Your Listed Cars</button>
+        <button className="your-listed-cars rounded-full bg-teal-600 hover:bg-white text-black py-1 px-4" style={{ fontFamily: "Inter"}} onClick={()=>{window.location.href='/listedcars'}}>Your Listed Cars</button>
       </div>
 
       
